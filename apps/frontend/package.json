@@ -1,0 +1,48 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start",
+    "lint": "eslint --max-warnings 0",
+    "check-types": "next typegen && tsc --noEmit"
+  },
+  "dependencies": {
+    "@repo/ui": "workspace:*",
+    "@deck.gl/layers": "^9.2.4",
+    "@deck.gl/mapbox": "^9.2.4",
+    "@deck.gl/react": "^9.2.4",
+    "@icons-pack/react-simple-icons": "^13.8.0",
+    "@maptiler/sdk": "^3.10.2",
+    "@radix-ui/react-slot": "^1.2.4",
+    "class-variance-authority": "^0.7.1",
+    "lucide-react": "^0.556.0",
+    "mapbox-gl": "^3.17.0",
+    "next": "16.0.7",
+    "react": "19.2.1",
+    "react-dom": "19.2.1"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@eslint/eslintrc": "^3",
+    "@radix-ui/react-label": "^2.1.8",
+    "@tailwindcss/postcss": "^4.1.17",
+    "@types/node": "^24",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "clsx": "^2.1.1",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.7",
+    "motion": "^12.23.25",
+    "postcss": "^8.5.6",
+    "prettier": "^3.7.4",
+    "react-map-gl": "^8.1.0",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss": "^4.1.17",
+    "typescript": "^5"
+  }
+}
