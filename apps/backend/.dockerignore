@@ -1,0 +1,25 @@
+# Ignore IDE specific files
+.idea
+
+# Build output
+dist
+generated
+
+# Dependency directories
+node_modules
+
+# Git
+.gitignore
+
+# Environment files
+.env.example
+.env.dev
+
+# Biome
+biome.json
+
+# Docker
+Dockerfile
+docker-compose.deps.yaml
+docker-compose.yaml
+.dockerignore

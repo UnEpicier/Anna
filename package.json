@@ -1,7 +1,8 @@
 {
-  "name": "Anna",
+  "name": "anna",
   "private": true,
   "scripts": {
+    "deps": "docker compose -f docker-compose.deps.yaml --env-file ./apps/backend/.env up -d",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",

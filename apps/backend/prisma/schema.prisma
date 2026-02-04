@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client"
+  output = "../src/generated/prisma-client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Informations {
+  id            Int      @id @default(autoincrement())
+  email         String
+  phone         String
+  address       String?
+  actionAddress String?
+  actionLong    Float?
+  actionLat     Float?
+  actionRadius  Int?
+  facebook      String?
+  instagram     String?
+  notifyLeave   Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Departments {
+  code		   String @id
+  name         String
+  geojson      Json @db.JsonB
+  active       Boolean @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Schedules {
+  day       String @id
+  startTime DateTime
+  endTime   DateTime
+  open      Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Leave {
+  id        Int      @id @default(autoincrement())
+  from      DateTime
+  to        DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Services {
+  id          Int @id @default(autoincrement())
+  title       String
+  icon        String
+  price       Decimal @db.Decimal(10,2)
+  duration    String
+  description String
+  enabled     Boolean @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model BlogPosts {
+  id              Int @id @default(autoincrement())
+  title           String @unique
+  uri             String @unique
+  illustrationUrl String
+  excerpt         String
+  content         Json @db.JsonB
+  visible         Boolean @default(true)
+  categories      BlogCategories[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model BlogCategories {
+  id        Int @id @default(autoincrement())
+  name      String @unique
+  posts     BlogPosts[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

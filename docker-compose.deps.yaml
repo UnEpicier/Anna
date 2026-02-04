@@ -1,0 +1,56 @@
+services:
+    postgres:
+        image: postgres:17-alpine
+        container_name: postgres_container
+        networks:
+            - backend
+        environment:
+            POSTGRES_HOST: ${POSTGRES_HOST:-localhost}
+            POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+            POSTGRES_USER: ${POSTGRES_USER:-postgres}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+            POSTGRES_DB: ${POSTGRES_DB:-website}
+            PGDATA: /var/lib/postgresql/data
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        ports:
+            - "${POSTGRES_PORT:-5432}:5432"
+        restart: unless-stopped
+
+    redis:
+        image: redis:8-alpine
+        container_name: redis_container
+        networks:
+            - backend
+        environment:
+            REDIS_HOST: ${REDIS_HOST:-localhost}
+            REDIS_PORT: ${REDIS_PORT:-6379}
+        volumes:
+            - redis_data:/data
+        ports:
+            - "${REDIS_PORT:-6379}:6379"
+        restart: unless-stopped
+
+    minio:
+        image: minio/minio
+        container_name: minio_container
+        networks:
+            - backend
+        environment:
+            MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+            MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+        volumes:
+            -   minio_data:/data/minio
+        command: 'minio server /data/minio --console-address ":9001"'
+        ports:
+            - "${MINIO_PORT:-9000}:9000"
+            - "9001:9001"
+        restart: unless-stopped
+
+volumes:
+    postgres_data:
+    redis_data:
+    minio_data:
+
+networks:
+    backend:

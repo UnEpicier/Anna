@@ -2,8 +2,25 @@ import { Heart, Mail, Phone } from 'lucide-react';
 import { SiFacebook, SiInstagram } from '@icons-pack/react-simple-icons';
 import Link from 'next/link';
 import { siteData } from '@/mock/defaultData';
+import { Department, Informations, Response, Schedule } from '@/utils/types';
+import { formatPhoneNumber } from '@/utils/format';
 
-export default function Footer() {
+async function getData() {
+	const infoRes = await fetch(`${process.env.API_URL}/informations`, {
+		next: { revalidate: 60 },
+	});
+	const infoResponseData: Response<Informations> = await infoRes.json();
+
+	if (infoResponseData.success) {
+		return infoResponseData.responseObject;
+	}
+
+	return null;
+}
+
+export default async function Footer() {
+	const data = await getData();
+	
 	return (
 		<footer
 			data-landmark-index='2'
@@ -42,7 +59,7 @@ export default function Footer() {
 								<Link
 									href='/seance'
 									className='text-gray-600 hover:text-primary transition-colors hover:translate-x-1 inline-block'>
-									Déroulement d'une Séance
+									Déroulement d&apos;une Séance
 								</Link>
 							</li>
 							<li>
@@ -62,43 +79,47 @@ export default function Footer() {
 						</ul>
 					</div>
 
-					<div>
-						<h4 className='text-primary mb-6'>Contact</h4>
-						<div className='space-y-4 text-gray-600'>
-							<Link
-								href={`tel:${siteData.contactInfo.phone}`}
-								className='flex items-center gap-3 hover:text-primary transition-colors group'>
-								<div className='bg-primary/10 p-2 rounded-xl group-hover:bg-primary/20 transition-colors'>
-									<Phone className='h-4 w-4 text-primary' />
-								</div>
-								<span>{siteData.contactInfo.phone}</span>
-							</Link>
-							<Link
-								href={`mailto:${siteData.contactInfo.email}`}
-								className='flex items-center gap-3 hover:text-primary transition-colors group'>
-								<div className='bg-primary/10 p-2 rounded-xl group-hover:bg-primary/20 transition-colors'>
-									<Mail className='h-4 w-4 text-primary' />
-								</div>
-								<span>{siteData.contactInfo.email}</span>
-							</Link>
-							<div className='flex gap-3 mt-6'>
+					{data ? (
+						<div>
+							<h4 className='text-primary mb-6'>Contact</h4>
+							<div className='space-y-4 text-gray-600'>
 								<Link
-									href={siteData.socialLinks.facebook}
-									target='_blank'
-									rel='noopener noreferrer'
-									className='bg-primary/10 p-3 rounded-xl text-primary hover:bg-primary hover:text-white transition-all hover:scale-110 shadow-sm'>
-									<SiFacebook className='h-5 w-5' />
+									href={`tel:${formatPhoneNumber(data.phone)}`}
+									className='flex items-center gap-3 hover:text-primary transition-colors group'>
+									<div className='bg-primary/10 p-2 rounded-xl group-hover:bg-primary/20 transition-colors'>
+										<Phone className='h-4 w-4 text-primary' />
+									</div>
+									<span>{formatPhoneNumber(data.phone)}</span>
 								</Link>
 								<Link
-									href={siteData.socialLinks.instagram}
-									target='_blank'
-									rel='noopener noreferrer'
-									className='bg-primary/10 p-3 rounded-xl text-primary hover:bg-primary hover:text-white transition-all hover:scale-110 shadow-sm'>
-									<SiInstagram className='h-5 w-5' />
+									href={`mailto:${data.email}`}
+									className='flex items-center gap-3 hover:text-primary transition-colors group'>
+									<div className='bg-primary/10 p-2 rounded-xl group-hover:bg-primary/20 transition-colors'>
+										<Mail className='h-4 w-4 text-primary' />
+									</div>
+									<span>{data.email}</span>
 								</Link>
+								<div className='flex gap-3 mt-6'>
+									<Link
+										href={data.facebook}
+										target='_blank'
+										rel='noopener noreferrer'
+										className='bg-primary/10 p-3 rounded-xl text-primary hover:bg-primary hover:text-white transition-all hover:scale-110 shadow-sm'>
+										<SiFacebook className='h-5 w-5' />
+									</Link>
+									<Link
+										href={data.instagram}
+										target='_blank'
+										rel='noopener noreferrer'
+										className='bg-primary/10 p-3 rounded-xl text-primary hover:bg-primary hover:text-white transition-all hover:scale-110 shadow-sm'>
+										<SiInstagram className='h-5 w-5' />
+									</Link>
+								</div>
 							</div>
 						</div>
-					</div>
+					) : (
+						<div />
+					)}
 				</div>
 
 				<div className='mt-12 pt-8 border-t border-border'>

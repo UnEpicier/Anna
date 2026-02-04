@@ -1,0 +1,20 @@
+include:
+    - docker-compose.deps.yaml
+
+services:
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: api_container
+        env_file:
+            -   .env
+        networks:
+            - backend
+        ports:
+            - "${PORT:-8080}:${PORT:-8080}"
+        depends_on:
+            - postgres
+            - redis
+            - minio
+        restart: unless-stopped
