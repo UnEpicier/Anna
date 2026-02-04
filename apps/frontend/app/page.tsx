@@ -5,6 +5,7 @@ import { ArrowRight, Award, CheckCircle, Clock, Heart } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Card, CardContent } from '@/components/Card';
 import { ImageWithFallback } from '@/components/ImageWithFallback';
+import Link from 'next/link';
 
 // Content
 const benefits = [
@@ -106,15 +107,21 @@ export default function Home() {
 							<div className='flex flex-wrap gap-4'>
 								<Button
 									size='lg'
-									className='bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all group'>
-									Prendre Rendez-vous
-									<ArrowRight className='ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform' />
+									className='bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all group'
+									asChild>
+									<Link href='/contact'>
+										Prendre Rendez-vous
+										<ArrowRight className='ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform' />
+									</Link>
 								</Button>
 								<Button
 									variant='outline'
 									size='lg'
-									className='border-2 border-primary/20 text-primary hover:bg-primary/5 hover:border-primary/40'>
-									Découvrir les Services
+									className='border-2 border-primary/20 text-primary hover:bg-primary/5 hover:border-primary/40'
+									asChild>
+									<Link href='/services'>
+										Découvrir les Services
+									</Link>
 								</Button>
 							</div>
 						</motion.div>
@@ -129,7 +136,7 @@ export default function Home() {
 								<ImageWithFallback
 									src='https://images.unsplash.com/photo-1450778869180-41d0601e046e'
 									alt='Ostéopathie animalière'
-									className='w-full h-[500px] lg:h-[600px] object-cover'
+									className='w-full h-125 lg:h-150 object-cover'
 								/>
 							</div>
 						</motion.div>
@@ -147,7 +154,7 @@ export default function Home() {
 						transition={{ duration: 0.6 }}
 						className='text-center mb-16'>
 						<h2 className='text-4xl md:text-5xl text-primary mb-4'>
-							Pourquoi Choisir l'Ostéopathie Animalière ?
+							Pourquoi Choisir l&apos;Ostéopathie Animalière ?
 						</h2>
 						<p className='text-gray-600 text-lg max-w-2xl mx-auto'>
 							Une approche naturelle et holistique pour la santé
@@ -197,9 +204,9 @@ export default function Home() {
 							Tous Vos Compagnons Sont les Bienvenus
 						</h2>
 						<p className='text-gray-600 text-lg max-w-2xl mx-auto'>
-							J'interviens auprès de différentes espèces animales,
-							chacune nécessitant une approche spécifique et
-							adaptée.
+							J&apos;interviens auprès de différentes espèces
+							animales, chacune nécessitant une approche
+							spécifique et adaptée.
 						</p>
 					</motion.div>
 
@@ -249,7 +256,7 @@ export default function Home() {
 								<ImageWithFallback
 									src='https://images.unsplash.com/photo-1548681528-6a5c45b66b42'
 									alt='Anna Nischwitz'
-									className='w-full h-[550px] object-cover'
+									className='w-full h-137.5 object-cover'
 								/>
 							</div>
 						</motion.div>
@@ -271,23 +278,26 @@ export default function Home() {
 								</p>
 								<p>
 									Ma passion pour les animaux et mon expertise
-									me permettent d'identifier et de traiter les
-									tensions, blocages et déséquilibres qui
-									peuvent affecter la qualité de vie de vos
-									animaux.
+									me permettent d&apos;identifier et de
+									traiter les tensions, blocages et
+									déséquilibres qui peuvent affecter la
+									qualité de vie de vos animaux.
 								</p>
 								<p>
 									Chaque séance est personnalisée en fonction
-									des besoins spécifiques de l'animal, dans le
-									respect de son bien-être et de sa
+									des besoins spécifiques de l&apos;animal,
+									dans le respect de son bien-être et de sa
 									physiologie.
 								</p>
 							</div>
 							<Button
 								className='mt-8 bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all group'
-								size='lg'>
-								Me Contacter
-								<ArrowRight className='ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform' />
+								size='lg'
+								asChild>
+								<Link href='/contact'>
+									Me Contacter
+									<ArrowRight className='ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform' />
+								</Link>
 							</Button>
 						</motion.div>
 					</div>
@@ -311,15 +321,18 @@ export default function Home() {
 						Prêt à Améliorer le Bien-être de Votre Animal ?
 					</h2>
 					<p className='text-xl mb-10 opacity-95 max-w-2xl mx-auto leading-relaxed'>
-						Prenez rendez-vous dès aujourd'hui pour une consultation
-						personnalisée.
+						Prenez rendez-vous dès aujourd&apos;hui pour une
+						consultation personnalisée.
 					</p>
 					<Button
 						size='lg'
 						variant='secondary'
-						className='bg-white text-primary hover:bg-gray-100 shadow-2xl hover:shadow-xl transition-all hover:scale-105'>
-						Prendre Rendez-vous
-						<ArrowRight className='ml-2 h-5 w-5' />
+						className='bg-white text-primary hover:bg-gray-100 shadow-2xl hover:shadow-xl transition-all hover:scale-105'
+						asChild>
+						<Link href='/contact'>
+							Prendre Rendez-vous
+							<ArrowRight className='ml-2 h-5 w-5' />
+						</Link>
 					</Button>
 				</motion.div>
 			</section>

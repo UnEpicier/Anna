@@ -14,6 +14,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/Card';
 import Button from '@/components/Button';
 import { Service, Informations } from '@/utils/types';
+import Link from 'next/link';
 
 const containerVariants = {
 	hidden: { opacity: 0 },
@@ -161,7 +162,7 @@ export default function ContentService({
 							Quand Consulter un Ostéopathe Animalier ?
 						</h2>
 						<p className='text-gray-600 text-lg'>
-							L'ostéopathie peut aider dans de nombreuses
+							L&apos;ostéopathie peut aider dans de nombreuses
 							situations
 						</p>
 					</motion.div>
@@ -218,7 +219,7 @@ export default function ContentService({
 									<div className='bg-white/60 rounded-xl p-4'>
 										<p className='text-gray-700'>
 											<strong className='text-primary'>
-												Zone d'intervention :
+												Zone d&apos;intervention :
 											</strong>
 											<br />
 											Rayon de {informations.actionRadius}
@@ -263,7 +264,7 @@ export default function ContentService({
 													Annulation :
 												</strong>
 												<br />
-												48h à l'avance sans frais
+												48h à l&apos;avance sans frais
 											</p>
 										</div>
 										<div className='bg-white/60 rounded-xl p-4'>
@@ -301,15 +302,18 @@ export default function ContentService({
 						Des Questions sur les Tarifs ?
 					</h2>
 					<p className='text-xl mb-10 opacity-95 max-w-2xl mx-auto'>
-						N'hésitez pas à me contacter pour toute information
+						N&apos;hésitez pas à me contacter pour toute information
 						complémentaire.
 					</p>
 					<Button
 						size='lg'
 						variant='secondary'
+						asChild
 						className='bg-white text-primary hover:bg-gray-100 shadow-2xl hover:shadow-xl transition-all hover:scale-105'>
-						Me Contacter
-						<ArrowRight className='ml-2 h-5 w-5' />
+						<Link href='/contact'>
+							Me Contacter
+							<ArrowRight className='ml-2 h-5 w-5' />
+						</Link>
 					</Button>
 				</motion.div>
 			</section>

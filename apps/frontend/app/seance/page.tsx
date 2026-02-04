@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { ImageWithFallback } from '@/components/ImageWithFallback';
 import { motion } from 'motion/react';
+import Link from 'next/link';
 
 export default function SeanceTypePage() {
 	const steps = [
@@ -156,11 +157,11 @@ export default function SeanceTypePage() {
 					transition={{ duration: 0.6 }}
 					className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
 					<h1 className='text-5xl md:text-6xl text-primary mb-6'>
-						Déroulement d'une Séance
+						Déroulement d&apos;une Séance
 					</h1>
 					<p className='text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed'>
-						Découvrez comment se déroule une séance d'ostéopathie
-						pour votre animal, étape par étape.
+						Découvrez comment se déroule une séance
+						d&apos;ostéopathie pour votre animal, étape par étape.
 					</p>
 				</motion.div>
 			</section>
@@ -180,7 +181,7 @@ export default function SeanceTypePage() {
 							<p className='text-gray-600 mb-6 leading-relaxed'>
 								Chaque séance est unique car elle est adaptée
 								aux besoins spécifiques de votre animal. Mon
-								objectif est d'identifier et de traiter les
+								objectif est d&apos;identifier et de traiter les
 								causes des déséquilibres pour améliorer
 								durablement son bien-être.
 							</p>
@@ -295,7 +296,7 @@ export default function SeanceTypePage() {
 							Points Importants
 						</h2>
 						<p className='text-gray-600 text-lg'>
-							Ce qu'il faut savoir avant la séance
+							Ce qu&apos;il faut savoir avant la séance
 						</p>
 					</motion.div>
 
@@ -382,8 +383,8 @@ export default function SeanceTypePage() {
 										<li className='flex items-start gap-3'>
 											<CheckCircle className='h-5 w-5 text-primary mt-0.5 shrink-0' />
 											<span>
-												Évitez de nourrir l'animal juste
-												avant
+												Évitez de nourrir l&apos;animal
+												juste avant
 											</span>
 										</li>
 									</ul>
@@ -419,15 +420,15 @@ export default function SeanceTypePage() {
 										<li className='flex items-start gap-3'>
 											<CheckCircle className='h-5 w-5 text-primary mt-0.5 shrink-0' />
 											<span>
-												Surveillez l'évolution et notez
-												les changements
+												Surveillez l&apos;évolution et
+												notez les changements
 											</span>
 										</li>
 										<li className='flex items-start gap-3'>
 											<CheckCircle className='h-5 w-5 text-primary mt-0.5 shrink-0' />
 											<span>
-												N'hésitez pas à me contacter en
-												cas de question
+												N&apos;hésitez pas à me
+												contacter en cas de question
 											</span>
 										</li>
 									</ul>
@@ -517,9 +518,12 @@ export default function SeanceTypePage() {
 					<Button
 						size='lg'
 						variant='secondary'
-						className='bg-white text-primary hover:bg-gray-100 shadow-2xl hover:shadow-xl transition-all hover:scale-105'>
-						Prendre Rendez-vous
-						<ArrowRight className='ml-2 h-5 w-5' />
+						className='bg-white text-primary hover:bg-gray-100 shadow-2xl hover:shadow-xl transition-all hover:scale-105'
+						asChild>
+						<Link href='/contact'>
+							Prendre Rendez-vous
+							<ArrowRight className='ml-2 h-5 w-5' />
+						</Link>
 					</Button>
 				</motion.div>
 			</section>
