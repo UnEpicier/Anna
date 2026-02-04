@@ -125,7 +125,7 @@ export default async function Footer() {
 				<div className='mt-12 pt-8 border-t border-border'>
 					<div className='flex flex-col md:flex-row justify-between items-center gap-4'>
 						<p className='text-sm text-gray-600 flex items-center gap-2'>
-							© 2025 Anna Nischwitz. Tous droits réservés.
+							© {new Date().getFullYear()} Anna Nischwitz. Tous droits réservés.
 							<Heart className='h-4 w-4 text-primary inline' />
 						</p>
 						<div className='flex flex-wrap gap-6 text-sm'>
