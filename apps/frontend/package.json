@@ -11,13 +11,15 @@
     "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
-    "@repo/ui": "workspace:*",
+    "@deck.gl/core": "^9.2.6",
     "@deck.gl/layers": "^9.2.4",
     "@deck.gl/mapbox": "^9.2.4",
     "@deck.gl/react": "^9.2.4",
     "@icons-pack/react-simple-icons": "^13.8.0",
     "@maptiler/sdk": "^3.10.2",
     "@radix-ui/react-slot": "^1.2.4",
+    "@repo/ui": "workspace:*",
+    "@turf/turf": "^7.3.3",
     "class-variance-authority": "^0.7.1",
     "lucide-react": "^0.556.0",
     "mapbox-gl": "^3.17.0",
@@ -26,10 +28,10 @@
     "react-dom": "19.2.1"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
-    "@repo/typescript-config": "workspace:*",
     "@eslint/eslintrc": "^3",
     "@radix-ui/react-label": "^2.1.8",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/node": "^24",
     "@types/react": "^19",
@@ -43,6 +45,6 @@
     "react-map-gl": "^8.1.0",
     "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.17",
-    "typescript": "^5"
+    "typescript": "^5.9.2"
   }
 }

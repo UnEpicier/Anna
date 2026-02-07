@@ -4,9 +4,10 @@ import DeckGL from '@deck.gl/react';
 import MapGL, { ScaleControl } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import useLayers from '@/app/contact/components/Map/hooks/useLayers';
+import { Department } from '@/utils/types';
 
 export interface MapProps {
-	departments?: any[];
+	departments?: Department[];
 	radius?: number;
 	longitude?: number;
 	latitude?: number;
@@ -18,8 +19,8 @@ export default function Map({
 	longitude = -0.56667,
 	latitude = 44.833328,
 }: MapProps) {
-	const layer = useLayers(departments, radius, longitude, latitude);
-
+	const layer = useLayers(departments, radius *2 , longitude, latitude);
+	
 	return (
 		<DeckGL
 			initialViewState={{

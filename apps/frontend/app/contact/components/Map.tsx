@@ -28,10 +28,10 @@ export default function ContactMap({
 					transition={{ duration: 0.6 }}
 					className='text-center mb-12'>
 					<h2 className='text-4xl md:text-5xl text-primary mb-4'>
-						Zone d'Intervention
+						Zone d&apos;Intervention
 					</h2>
 					<p className='text-gray-600 text-lg'>
-						Découvrez les départements où j'interviens
+						Découvrez les départements où j&apos;interviens
 					</p>
 				</motion.div>
 
@@ -40,7 +40,7 @@ export default function ContactMap({
 					whileInView={{ opacity: 1, scale: 1 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.6 }}
-					className='relative h-[600px] rounded-xl shadow-lg overflow-hidden'>
+					className='relative h-150 rounded-xl shadow-lg overflow-hidden'>
 					<Suspense fallback={<MapLoader />}>
 						<Map
 							departments={departments}
