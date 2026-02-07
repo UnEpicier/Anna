@@ -1,10 +1,8 @@
 'use client';
 
-import Button from '@/components/Button';
 import { ArrowRight, Award, CheckCircle, Clock, Heart } from 'lucide-react';
 import { motion } from 'motion/react';
-import { Card, CardContent } from '@/components/Card';
-import { ImageWithFallback } from '@/components/ImageWithFallback';
+import { Button, Card, CardContent, ImageWithFallback } from '@repo/ui';
 import Link from 'next/link';
 
 // Content

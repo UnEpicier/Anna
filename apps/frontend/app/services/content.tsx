@@ -11,8 +11,7 @@ import {
 	Rabbit,
 	Sparkles,
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/Card';
-import Button from '@/components/Button';
+import { Button, Card, CardContent, CardHeader, CardTitle } from '@repo/ui';
 import { Service, Informations } from '@/utils/types';
 import Link from 'next/link';
 

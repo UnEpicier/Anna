@@ -1,7 +1,7 @@
-import { cn } from '@/utils/style';
+import { cn } from './utils/style';
 import { ComponentProps } from 'react';
 
-function Textarea({ className, ...props }: ComponentProps<'textarea'>) {
+export function Textarea({ className, ...props }: ComponentProps<'textarea'>) {
 	return (
 		<textarea
 			data-slot='textarea'
@@ -13,5 +13,3 @@ function Textarea({ className, ...props }: ComponentProps<'textarea'>) {
 		/>
 	);
 }
-
-export { Textarea };

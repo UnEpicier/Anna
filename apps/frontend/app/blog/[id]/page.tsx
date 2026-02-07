@@ -1,7 +1,6 @@
 import { siteData } from '@/mock/defaultData';
-import Button from '@/components/Button';
 import { ArrowLeft, Calendar } from 'lucide-react';
-import { ImageWithFallback } from '@/components/ImageWithFallback';
+import { Button, ImageWithFallback } from '@repo/ui';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 

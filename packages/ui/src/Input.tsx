@@ -1,7 +1,7 @@
-import { cn } from '@/utils/style';
+import { cn } from './utils/style';
 import { ComponentProps } from 'react';
 
-function Input({ className, type, ...props }: ComponentProps<'input'>) {
+export function Input({ className, type, ...props }: ComponentProps<'input'>) {
 	return (
 		<input
 			type={type}
@@ -16,5 +16,3 @@ function Input({ className, type, ...props }: ComponentProps<'input'>) {
 		/>
 	);
 }
-
-export { Input };

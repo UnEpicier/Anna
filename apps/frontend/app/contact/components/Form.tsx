@@ -1,9 +1,14 @@
 import { useActionState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/Card';
-import { Label } from '@/components/Label';
-import { Input } from '@/components/Input';
-import { Textarea } from '@/components/Textarea';
-import Button from '@/components/Button';
+import {
+	Button,
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+	Input,
+	Label,
+	Textarea,
+} from '@repo/ui';
 import { Send } from 'lucide-react';
 import { motion } from 'motion/react';
 

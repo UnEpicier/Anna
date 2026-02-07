@@ -1,8 +1,7 @@
 import { Heart, Mail, Phone } from 'lucide-react';
 import { SiFacebook, SiInstagram } from '@icons-pack/react-simple-icons';
 import Link from 'next/link';
-import { siteData } from '@/mock/defaultData';
-import { Department, Informations, Response, Schedule } from '@/utils/types';
+import { Informations, Response } from '@/utils/types';
 import { formatPhoneNumber } from '@/utils/format';
 
 async function getData() {

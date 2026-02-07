@@ -1,9 +1,7 @@
 'use client';
 import { useMemo, useState } from 'react';
-import { Card, CardContent, CardHeader } from '@/components/Card';
+import { Badge, Card, CardContent, CardHeader, ImageWithFallback } from '@repo/ui';
 import { ArrowRight, Calendar } from 'lucide-react';
-import { ImageWithFallback } from '@/components/ImageWithFallback';
-import { Badge } from '@/components/Badge';
 import { motion } from 'motion/react';
 import { siteData } from '@/mock/defaultData';
 import { useRouter } from 'next/navigation';

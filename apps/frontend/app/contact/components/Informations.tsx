@@ -1,7 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui';
 import { capitalize, formatPhoneNumber, formatTime } from '@/utils/format';
 import { AlertCircle, Clock, Mail, MapPin, Phone } from 'lucide-react';
-import { siteData } from '@/mock/defaultData';
 import { motion } from 'motion/react';
 import { Informations, Schedule } from '@/utils/types';
 

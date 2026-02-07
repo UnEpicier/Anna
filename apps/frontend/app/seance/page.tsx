@@ -1,7 +1,6 @@
 'use client';
 
-import { Card, CardContent } from '@/components/Card';
-import Button from '@/components/Button';
+import { Button, Card, CardContent, ImageWithFallback } from '@repo/ui';
 import {
 	ArrowRight,
 	CalendarCheck,
@@ -13,7 +12,6 @@ import {
 	MessageSquare,
 	Stethoscope,
 } from 'lucide-react';
-import { ImageWithFallback } from '@/components/ImageWithFallback';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 
