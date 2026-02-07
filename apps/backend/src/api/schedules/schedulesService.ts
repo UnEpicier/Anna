@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import type { Schedule } from "@/api/schedules/schedulesModel";
+import type { Schedule } from "@repo/app-types";
 import { SchedulesRepository } from "@/api/schedules/schedulesRepository";
 import { ServiceResponse } from "@/commons/models/serviceResponse";
 

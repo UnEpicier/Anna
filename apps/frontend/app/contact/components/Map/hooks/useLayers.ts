@@ -9,7 +9,7 @@ export default function useLayers(
 	latitude?: number,
 ) {
 	return useMemo(() => {
-		if (departments.length === 0) {
+		if (departments.length > 0) {
 			const formattedDepartments = departments.map(
 				(dept) => dept.geojson,
 			);

@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import type { Department } from "@/api/departments/departmentsModel";
+import type { Department } from "@repo/app-types";
 import { DepartmentsRepository } from "@/api/departments/departmentsRepository";
 import { ServiceResponse } from "@/commons/models/serviceResponse";
 

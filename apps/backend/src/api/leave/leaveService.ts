@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import type { Leave } from "@/api/leave/leaveModel";
+import type { Leave } from "@repo/app-types";
 import { LeaveRepository } from "@/api/leave/leaveRepository";
 import { ServiceResponse } from "@/commons/models/serviceResponse";
 

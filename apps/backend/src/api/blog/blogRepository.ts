@@ -5,7 +5,7 @@ import {
 	type BlogPost,
 	BlogPostBaseSchema,
 	BlogPostContentSchema,
-} from "./blogModel";
+} from "@repo/app-types";
 
 export const categories: BlogCategory[] = [
 	{

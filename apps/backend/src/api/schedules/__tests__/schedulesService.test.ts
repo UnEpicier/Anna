@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import type { Mock } from "vitest";
-import type { Schedule } from "@/api/schedules/schedulesModel";
+import type { Schedule } from "@repo/app-types";
 import { schedule as mockSchedule, SchedulesRepository } from "@/api/schedules/schedulesRepository";
 import { SchedulesService } from "@/api/schedules/schedulesService";
 

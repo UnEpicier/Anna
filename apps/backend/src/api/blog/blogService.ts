@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { type BlogCategory, type BlogPost, BlogPostSchema } from "@/api/blog/blogModel";
+import { type BlogCategory, type BlogPost, BlogPostSchema } from "@repo/app-types";
 import { BlogRepository } from "@/api/blog/blogRepository";
 import { ServiceResponse } from "@/commons/models/serviceResponse";
 

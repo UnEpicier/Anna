@@ -1,5 +1,5 @@
 import prisma from "@/libs/prisma";
-import { type Department, GeoJsonSchema } from "./departmentsModel";
+import { type Department, GeoJsonSchema } from "@repo/app-types";
 
 export const department: Department = {
 	code: "33",

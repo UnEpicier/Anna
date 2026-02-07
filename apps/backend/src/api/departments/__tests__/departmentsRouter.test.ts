@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import request from "supertest";
-import type { Department } from "@/api/departments/departmentsModel";
+import type { Department } from "@repo/app-types";
 import { department } from "@/api/departments/departmentsRepository";
 import type { ServiceResponse } from "@/commons/models/serviceResponse";
 import app from "@/server";

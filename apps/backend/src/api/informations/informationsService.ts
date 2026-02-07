@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import type { Informations } from "@/api/informations/informationsModel";
+import type { Informations } from "@repo/app-types";
 import { InformationsRepository } from "@/api/informations/informationsRepository";
 import { ServiceResponse } from "@/commons/models/serviceResponse";
 

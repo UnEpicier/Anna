@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import request from "supertest";
-import type { BlogCategory, BlogPost } from "@/api/blog/blogModel";
+import type { BlogCategory, BlogPost } from "@repo/app-types";
 import { categories, posts } from "@/api/blog/blogRepository";
 import type { ServiceResponse } from "@/commons/models/serviceResponse";
 import app from "@/server";

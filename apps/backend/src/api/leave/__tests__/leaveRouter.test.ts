@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import request from "supertest";
-import type { Leave } from "@/api/leave/leaveModel";
+import type { Leave } from "@repo/app-types";
 import { leave } from "@/api/leave/leaveRepository";
 import type { ServiceResponse } from "@/commons/models/serviceResponse";
 import app from "@/server";

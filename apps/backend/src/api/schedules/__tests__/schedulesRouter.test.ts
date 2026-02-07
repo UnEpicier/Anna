@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import request from "supertest";
-import type { Schedule } from "@/api/schedules/schedulesModel";
+import type { Schedule } from "@repo/app-types";
 import { schedule } from "@/api/schedules/schedulesRepository";
 import type { ServiceResponse } from "@/commons/models/serviceResponse";
 import app from "@/server";

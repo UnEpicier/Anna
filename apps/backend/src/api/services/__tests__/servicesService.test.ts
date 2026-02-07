@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import type { Mock } from "vitest";
-import type { Service } from "@/api/services/servicesModel";
+import type { Service } from "@repo/app-types";
 import { service as mockService, ServicesRepository } from "@/api/services/servicesRepository";
 import { ServicesService } from "@/api/services/servicesService";
 

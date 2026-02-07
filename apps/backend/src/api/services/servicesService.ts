@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { type Service, ServiceSchema } from "@/api/services/servicesModel";
+import { type Service, ServiceSchema } from "@repo/app-types";
 import { ServicesRepository } from "@/api/services/servicesRepository";
 import { ServiceResponse } from "@/commons/models/serviceResponse";
 

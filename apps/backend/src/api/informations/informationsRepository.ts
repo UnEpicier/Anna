@@ -1,5 +1,5 @@
 import prisma from "@/libs/prisma";
-import type { Informations } from "./informationsModel";
+import type { Informations } from "@repo/app-types";
 
 export const informations: Informations = {
 	id: 1,

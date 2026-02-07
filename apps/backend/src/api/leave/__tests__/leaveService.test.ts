@@ -1,6 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import type { Mock } from "vitest";
-import type { Leave } from "@/api/leave/leaveModel";
+import type { Leave } from "@repo/app-types";
 import { LeaveRepository, leave as mockLeave } from "@/api/leave/leaveRepository";
 import { LeaveService } from "@/api/leave/leaveService";
 

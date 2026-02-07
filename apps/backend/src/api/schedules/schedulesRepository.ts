@@ -1,5 +1,5 @@
 import prisma from "@/libs/prisma";
-import type { Schedule } from "./schedulesModel";
+import type { Schedule } from "@repo/app-types";
 
 export const schedule: Schedule = {
 	day: "monday",

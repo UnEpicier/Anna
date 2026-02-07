@@ -1,5 +1,5 @@
 import prisma from "@/libs/prisma";
-import type { Leave } from "./leaveModel";
+import type { Leave } from "@repo/app-types";
 
 export const leave: Leave = {
 	id: 1,

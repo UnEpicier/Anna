@@ -1,13 +1,5 @@
 import { z } from "zod";
-
-export const GeoJsonSchema = z.object({
-	type: z.literal("Feature"),
-	geometry: z.object({
-		type: z.string(),
-		coordinates: z.any(),
-	}),
-	properties: z.record(z.string(), z.any()),
-});
+import {GeoJsonSchema} from "./geojson.js";
 
 export type Department = z.infer<typeof DepartmentSchema>;
 export const DepartmentSchema = z.object({

@@ -1,5 +1,5 @@
 import prisma from "@/libs/prisma";
-import type { Service } from "./servicesModel";
+import type { Service } from "@repo/app-types";
 
 export const service: Service = {
 	id: 1,

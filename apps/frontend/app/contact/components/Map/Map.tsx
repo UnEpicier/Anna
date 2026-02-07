@@ -19,7 +19,7 @@ export default function Map({
 	longitude = -0.56667,
 	latitude = 44.833328,
 }: MapProps) {
-	const layer = useLayers(departments, radius *2 , longitude, latitude);
+	const layer = useLayers(departments, radius , longitude, latitude);
 	
 	return (
 		<DeckGL
