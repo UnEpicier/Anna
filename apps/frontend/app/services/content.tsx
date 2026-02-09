@@ -12,7 +12,7 @@ import {
 	Sparkles,
 } from 'lucide-react';
 import { Button, Card, CardContent, CardHeader, CardTitle } from '@repo/ui';
-import { Service, Informations } from '@/utils/types';
+import { Service, Informations } from '@repo/app-types';
 import Link from 'next/link';
 
 const containerVariants = {

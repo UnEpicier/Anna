@@ -1,4 +1,4 @@
-import { cn } from './utils/style';
+import { cn } from '../utils/style';
 import { ComponentProps } from 'react';
 
 export function Textarea({ className, ...props }: ComponentProps<'textarea'>) {

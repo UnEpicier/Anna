@@ -5,3 +5,4 @@ export {InformationSchema, type Informations} from './informations.js';
 export {LeaveSchema, type Leave} from './leave.js';
 export {ScheduleSchema, type Schedule} from './schedule.js';
 export {ServiceSchema, type Service} from './service.js';
+export {ResponseSchema, type Response} from './response.js';

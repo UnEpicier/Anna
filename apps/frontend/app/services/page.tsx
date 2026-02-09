@@ -1,5 +1,5 @@
 import ContentService from '@/app/services/content';
-import { Informations, Response, Service } from '@/utils/types';
+import { Informations, Response, Service } from '@repo/app-types';
 
 const serviceDetails: Record<string, string[]> = {
 	Chiens: [

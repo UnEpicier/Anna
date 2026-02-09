@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui';
 import { capitalize, formatPhoneNumber, formatTime } from '@/utils/format';
 import { AlertCircle, Clock, Mail, MapPin, Phone } from 'lucide-react';
 import { motion } from 'motion/react';
-import { Informations, Schedule } from '@/utils/types';
+import { Informations, Schedule } from '@repo/app-types';
 
 interface Props {
 	informations: Informations;

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { GeoJsonLayer, ScatterplotLayer } from '@deck.gl/layers';
-import { Department } from '@/utils/types';
+import { Department } from '@repo/app-types';
 
 export default function useLayers(
 	departments: Department[] = [],

@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { Suspense } from 'react';
 import MapLoader from '@/app/contact/components/Map/MapLoader';
 import dynamic from 'next/dynamic';
-import { Department } from '@/utils/types';
+import { Department } from '@repo/app-types';
 const Map = dynamic(() => import('@/app/contact/components/Map/Map'));
 
 interface Props {

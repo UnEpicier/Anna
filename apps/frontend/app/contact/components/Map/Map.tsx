@@ -4,7 +4,7 @@ import DeckGL from '@deck.gl/react';
 import MapGL, { ScaleControl } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import useLayers from '@/app/contact/components/Map/hooks/useLayers';
-import { Department } from '@/utils/types';
+import { Department } from '@repo/app-types';
 
 export interface MapProps {
 	departments?: Department[];

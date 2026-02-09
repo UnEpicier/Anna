@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import { Button } from '@repo/ui';
+import { Button } from '../../../packages/ui/src/components';
 import { AnimatePresence, motion } from 'motion/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';

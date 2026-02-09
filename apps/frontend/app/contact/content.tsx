@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'motion/react';
-import { Department, Informations, Schedule } from '@/utils/types';
+import { Department, Informations, Schedule } from '@repo/app-types';
 import Form from '@/app/contact/components/Form';
 import ContactMap from '@/app/contact/components/Map';
 import ContactInformations from '@/app/contact/components/Informations';

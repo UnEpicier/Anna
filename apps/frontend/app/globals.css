@@ -1,4 +1,4 @@
-@import "@repo/ui/styles.css";
+@import "../../../packages/ui/src/style.css";
 
-/* Sources additionnelles de l'app */
-@source "../**/*.{js,ts,jsx,tsx,mdx}";
+/* Scan de ton app + du package ui */
+@source "./**/*.{js,ts,jsx,tsx,mdx}";

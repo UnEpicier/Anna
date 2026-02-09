@@ -1,5 +1,5 @@
 import ContactContent from '@/app/contact/content';
-import { Response, Informations, Department, Schedule } from '@/utils/types';
+import { Response, Informations, Department, Schedule } from '@repo/app-types';
 
 async function getData() {
 	const result: {
