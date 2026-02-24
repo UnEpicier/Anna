@@ -14,7 +14,7 @@ class DepartmentsController {
 	};
 
 	public updateDepartment: RequestHandler = async (req: Request, res: Response) => {
-		const serviceResponse = await departmentsService.update(req.params.id, req.body);
+		const serviceResponse = await departmentsService.update(<string>req.params.id, req.body);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 }

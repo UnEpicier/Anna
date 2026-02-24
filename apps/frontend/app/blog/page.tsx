@@ -34,7 +34,7 @@ async function getData() {
 	// --- Posts
 
 	const postsRes = await fetch(
-		`${process.env.API_URL}/blog/posts?includeCategories=true`,
+		`${process.env.API_URL}/blog/posts?include-categories=true`,
 		{
 			next: { revalidate: 60 },
 		},

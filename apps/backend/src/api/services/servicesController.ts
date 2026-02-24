@@ -9,7 +9,7 @@ class ServicesController {
 	};
 
 	public getServiceById: RequestHandler = async (req: Request, res: Response) => {
-		const serviceResponse = await servicesService.find(req.params.id);
+		const serviceResponse = await servicesService.find(<string>req.params.id);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 
@@ -19,12 +19,12 @@ class ServicesController {
 	};
 
 	public updateService: RequestHandler = async (req: Request, res: Response) => {
-		const serviceResponse = await servicesService.update(req.params.id, req.body);
+		const serviceResponse = await servicesService.update(<string>req.params.id, req.body);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 
 	public deleteService: RequestHandler = async (req: Request, res: Response) => {
-		const serviceResponse = await servicesService.delete(req.params.id);
+		const serviceResponse = await servicesService.delete(<string>req.params.id);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 }

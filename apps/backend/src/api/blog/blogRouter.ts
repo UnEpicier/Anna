@@ -15,7 +15,7 @@ blogRouter.delete("/categories/:id", blogController.deleteCategory);
 
 blogRouter.get("/posts", blogController.getPosts);
 
-blogRouter.get("/posts/:url", blogController.getPost);
+blogRouter.get("/posts/:uri", blogController.getPost);
 
 blogRouter.post("/posts", blogController.createPost);
 

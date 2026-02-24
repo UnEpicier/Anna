@@ -11,7 +11,7 @@ class SchedulesController {
 	};
 
 	public updateSchedule: RequestHandler = async (req: Request, res: Response) => {
-		if (!days.includes(req.params.day.toLowerCase())) {
+		if (!days.includes((<string>req.params.day).toLowerCase())) {
 			return res.status(400).send({
 				success: false,
 				message: "Invalid day parameter",
@@ -19,7 +19,7 @@ class SchedulesController {
 			});
 		}
 
-		const serviceResponse = await schedulesService.update(req.params.day, req.body);
+		const serviceResponse = await schedulesService.update(<string>req.params.day, req.body);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 }

@@ -6,7 +6,7 @@ import { BlogPost, ResponseObject } from '@repo/app-types';
 
 async function getData(uri: string) {
 	const res = await fetch(
-		`${process.env.API_URL}/blog/posts/${uri}?includeCategories=true`,
+		`${process.env.API_URL}/blog/posts/${uri}?include-categories=true`,
 	);
 
 	const data: ResponseObject<BlogPost> = await res.json();
