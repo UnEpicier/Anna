@@ -31,8 +31,8 @@ export default function ContactContent({
 						Contact
 					</h1>
 					<p className='text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed'>
-						Une question ? Besoin de prendre rendez-vous ? N'hésitez
-						pas à me contacter.
+						Une question ? Besoin de prendre rendez-vous ?
+						N&apos;hésitez pas à me contacter.
 					</p>
 				</motion.div>
 			</section>
@@ -54,9 +54,9 @@ export default function ContactContent({
 			{/* Map Section */}
 			<ContactMap
 				departments={departments}
-				actionLong={informations.actionLong}
-				actionLat={informations.actionLat}
-				actionRadius={informations.actionRadius}
+				actionLong={informations.actionLong ?? 0}
+				actionLat={informations.actionLat ?? 0}
+				actionRadius={informations.actionRadius ?? 0}
 			/>
 		</div>
 	);

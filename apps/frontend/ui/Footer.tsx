@@ -1,14 +1,14 @@
 import { Heart, Mail, Phone } from 'lucide-react';
 import { SiFacebook, SiInstagram } from '@icons-pack/react-simple-icons';
 import Link from 'next/link';
-import { Informations, Response } from '@repo/app-types';
+import type { Informations, ResponseObject } from '@repo/app-types';
 import { formatPhoneNumber } from '@/utils/format';
 
 async function getData() {
 	const infoRes = await fetch(`${process.env.API_URL}/informations`, {
 		next: { revalidate: 60 },
 	});
-	const infoResponseData: Response<Informations> = await infoRes.json();
+	const infoResponseData: ResponseObject<Informations> = await infoRes.json();
 
 	if (infoResponseData.success) {
 		return infoResponseData.responseObject;
@@ -19,7 +19,7 @@ async function getData() {
 
 export default async function Footer() {
 	const data = await getData();
-	
+
 	return (
 		<footer
 			data-landmark-index='2'

@@ -1,4 +1,4 @@
-export type Response<T = null> = {
+export type ResponseObject<T = null> = {
 	success: boolean;
 	message: string;
 	statusCode: number;

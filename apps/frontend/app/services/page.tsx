@@ -1,5 +1,5 @@
 import ContentService from '@/app/services/content';
-import { Informations, Response, Service } from '@repo/app-types';
+import { Informations, ResponseObject, Service } from '@repo/app-types';
 
 const serviceDetails: Record<string, string[]> = {
 	Chiens: [
@@ -42,7 +42,8 @@ async function getData() {
 	const servicesRes = await fetch(`${process.env.API_URL}/services`, {
 		next: { revalidate: 60 },
 	});
-	const servicesResponseData: Response<Service[]> = await servicesRes.json();
+	const servicesResponseData: ResponseObject<Service[]> =
+		await servicesRes.json();
 
 	if (servicesResponseData.success) {
 		const allServices = servicesResponseData.responseObject;
@@ -54,7 +55,7 @@ async function getData() {
 	const infoRes = await fetch(`${process.env.API_URL}/informations`, {
 		next: { revalidate: 300 },
 	});
-	const infoResponseData: Response<Informations> = await infoRes.json();
+	const infoResponseData: ResponseObject<Informations> = await infoRes.json();
 
 	if (infoResponseData.success) {
 		result.informations = infoResponseData.responseObject;

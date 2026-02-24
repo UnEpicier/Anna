@@ -1,5 +1,10 @@
 import ContactContent from '@/app/contact/content';
-import { Response, Informations, Department, Schedule } from '@repo/app-types';
+import {
+	ResponseObject,
+	Informations,
+	Department,
+	Schedule,
+} from '@repo/app-types';
 
 async function getData() {
 	const result: {
@@ -20,7 +25,7 @@ async function getData() {
 			next: { revalidate: 60 },
 		},
 	);
-	const departmentsResponseData: Response<Department[]> =
+	const departmentsResponseData: ResponseObject<Department[]> =
 		await departmentsRes.json();
 
 	if (departmentsResponseData.success) {
@@ -34,7 +39,7 @@ async function getData() {
 	const infoRes = await fetch(`${process.env.API_URL}/informations`, {
 		next: { revalidate: 60 },
 	});
-	const infoResponseData: Response<Informations> = await infoRes.json();
+	const infoResponseData: ResponseObject<Informations> = await infoRes.json();
 
 	if (infoResponseData.success) {
 		result.informations = infoResponseData.responseObject;
@@ -46,7 +51,7 @@ async function getData() {
 		//next: { revalidate: 60 },
 		cache: 'no-cache',
 	});
-	const schedulesResponseData: Response<Schedule[]> =
+	const schedulesResponseData: ResponseObject<Schedule[]> =
 		await schedulesRes.json();
 
 	if (schedulesResponseData.success) {
