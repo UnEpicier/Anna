@@ -56,7 +56,7 @@ async function getData() {
 
 	if (schedulesResponseData.success) {
 		// Sort schedules by day of the week
-		const sortedDays = schedulesResponseData.responseObject.toSorted(
+		result.schedules = schedulesResponseData.responseObject.toSorted(
 			(a, b) => {
 				const daysOfWeek = [
 					'monday',
@@ -73,8 +73,6 @@ async function getData() {
 				);
 			},
 		);
-
-		result.schedules = sortedDays;
 	}
 
 	return result;

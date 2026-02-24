@@ -10,7 +10,6 @@ import {
 } from '@repo/ui';
 import { ArrowRight, Calendar } from 'lucide-react';
 import { motion } from 'motion/react';
-import { siteData } from '@/mock/defaultData';
 import { useRouter } from 'next/navigation';
 import type { BlogCategory, BlogPost } from '@repo/app-types';
 
@@ -141,6 +140,7 @@ export default function BlogContent({
 						</motion.div>
 					) : (
 						<motion.div
+							key={selectedCategory ?? 'all'}
 							variants={containerVariants}
 							initial='hidden'
 							animate='visible'
@@ -154,7 +154,7 @@ export default function BlogContent({
 									<Card
 										className='overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-300 group cursor-pointer h-full bg-white'
 										onClick={() =>
-											router.push(`/blog/${post.id}`)
+											router.push(`/blog/${post.uri}`)
 										}>
 										<div className='relative h-56 overflow-hidden'>
 											<ImageWithFallback

@@ -22,18 +22,31 @@ async function getData() {
 		await categoriesRes.json();
 
 	if (categoriesResponseData.success) {
-		result.categories = categoriesResponseData.responseObject;
+		result.categories = categoriesResponseData.responseObject.map(
+			(category) => ({
+				...category,
+				createdAt: new Date(category.createdAt),
+				updatedAt: new Date(category.updatedAt),
+			}),
+		);
 	}
 
 	// --- Posts
 
-	const postsRes = await fetch(`${process.env.API_URL}/blog/posts`, {
-		next: { revalidate: 60 },
-	});
-	const postsResponseData = await postsRes.json();
+	const postsRes = await fetch(
+		`${process.env.API_URL}/blog/posts?includeCategories=true`,
+		{
+			next: { revalidate: 60 },
+		},
+	);
+	const postsResponseData: ResponseObject<BlogPost[]> = await postsRes.json();
 
 	if (postsResponseData.success) {
-		result.posts = postsResponseData.responseObject;
+		result.posts = postsResponseData.responseObject.map((post) => ({
+			...post,
+			createdAt: new Date(post.createdAt),
+			updatedAt: new Date(post.updatedAt),
+		}));
 	}
 
 	return result;

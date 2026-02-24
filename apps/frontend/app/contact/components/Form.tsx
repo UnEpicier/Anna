@@ -89,7 +89,7 @@ export default function Form() {
 								<Label
 									htmlFor='animal'
 									className='text-gray-700'>
-									Type d'Animal *
+									Type d&apos;Animal *
 								</Label>
 								<Input
 									id='animal'

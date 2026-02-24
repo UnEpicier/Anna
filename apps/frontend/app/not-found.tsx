@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Button } from '../../../packages/ui/src/components';
+import { Button } from '@repo/ui';
 
 export default function NotFound() {
 	return (
@@ -9,7 +9,8 @@ export default function NotFound() {
 					404
 				</h1>
 				<p className='mt-8 text-base text-gray-600'>
-					La page demandée n&apos;existe pas ou n&apos;est pas accéssible pour le moment.
+					La page demandée n&apos;existe pas ou n&apos;est pas
+					accéssible pour le moment.
 				</p>
 
 				<Button

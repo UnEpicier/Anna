@@ -61,7 +61,7 @@ export default function ContactInformations({
 						</div>
 						<div>
 							<p className='text-gray-900 mb-1'>
-								Zone d'intervention
+								Zone d&apos;intervention
 							</p>
 							<p className='text-gray-600'>
 								{informations.actionRadius}km autour de{' '}
@@ -93,9 +93,9 @@ export default function ContactInformations({
 								Urgences
 							</h3>
 							<p className='text-amber-800/80 text-sm leading-relaxed'>
-								En cas d'urgence vétérinaire, veuillez contacter
-								directement votre vétérinaire ou les urgences
-								vétérinaires les plus proches.
+								En cas d&apos;urgence vétérinaire, veuillez
+								contacter directement votre vétérinaire ou les
+								urgences vétérinaires les plus proches.
 							</p>
 						</div>
 					</div>
@@ -123,11 +123,11 @@ function SchedulesList({ schedules }: { schedules: Schedule[] }) {
 	let sameHoursDays = 1;
 	for (let i = 1; i < schedules.length; i++) {
 		if (
-			formatTime(schedules[i].startTime) ===
-				formatTime(schedules[0].startTime) &&
-			formatTime(schedules[i].endTime) ===
-				formatTime(schedules[0].endTime) &&
-			schedules[i].open
+			formatTime(schedules[i]!.startTime) ===
+				formatTime(schedules[0]!.startTime) &&
+			formatTime(schedules[i]!.endTime) ===
+				formatTime(schedules[0]!.endTime) &&
+			schedules[i]!.open
 		) {
 			sameHoursDays++;
 			continue;
@@ -139,8 +139,8 @@ function SchedulesList({ schedules }: { schedules: Schedule[] }) {
 	if (sameHoursDays === 7) {
 		return (
 			<p className='text-gray-600'>
-				Ouvert tous les jours de {formatTime(schedules[0].startTime)} à{' '}
-				{formatTime(schedules[0].endTime)}
+				Ouvert tous les jours de {formatTime(schedules[0]!.startTime)} à{' '}
+				{formatTime(schedules[0]!.endTime)}
 			</p>
 		);
 	}
@@ -149,8 +149,8 @@ function SchedulesList({ schedules }: { schedules: Schedule[] }) {
 		return (
 			<>
 				<p className='text-gray-600'>
-					Du lundi au samedi de {formatTime(schedules[0].startTime)} à{' '}
-					{formatTime(schedules[0].endTime)}
+					Du lundi au samedi de {formatTime(schedules[0]!.startTime)}{' '}
+					à {formatTime(schedules[0]!.endTime)}
 				</p>
 
 				{schedules.at(6) &&
@@ -173,8 +173,9 @@ function SchedulesList({ schedules }: { schedules: Schedule[] }) {
 		return (
 			<>
 				<p className='text-gray-600'>
-					Du lundi au vendredi de {formatTime(schedules[0].startTime)}{' '}
-					à {formatTime(schedules[0].endTime)}
+					Du lundi au vendredi de{' '}
+					{formatTime(schedules[0]!.startTime)} à{' '}
+					{formatTime(schedules[0]!.endTime)}
 				</p>
 
 				{differDays.every((x) => !x.open) ? (
@@ -185,8 +186,8 @@ function SchedulesList({ schedules }: { schedules: Schedule[] }) {
 							key={day.day}
 							className='text-gray-600'>
 							{day.open
-								? `Le ${capitalize(days[day.day])} de ${formatTime(day.startTime)} à ${formatTime(day.endTime)}`
-								: `Fermé le ${capitalize(days[day.day])}`}
+								? `Le ${capitalize(days[day.day]!)} de ${formatTime(day.startTime)} à ${formatTime(day.endTime)}`
+								: `Fermé le ${capitalize(days[day.day]!)}`}
 						</p>
 					))
 				)}
@@ -200,7 +201,7 @@ function SchedulesList({ schedules }: { schedules: Schedule[] }) {
 				<p
 					key={schedule.day}
 					className='text-gray-600'>
-					{capitalize(days[schedule.day])}&nbsp;:{' '}
+					{capitalize(days[schedule.day]!)}&nbsp;:{' '}
 					{schedule.open
 						? `de ${formatTime(schedule.startTime)} à ${formatTime(schedule.endTime)}`
 						: 'Fermé'}

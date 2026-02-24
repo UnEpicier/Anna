@@ -2,7 +2,7 @@
 
 import { ArrowRight, Award, CheckCircle, Clock, Heart } from 'lucide-react';
 import { motion } from 'motion/react';
-import { Button, Card, CardContent, ImageWithFallback } from '../../../packages/ui/src/components';
+import { Button, Card, CardContent, ImageWithFallback } from '@repo/ui';
 import Link from 'next/link';
 
 // Content
