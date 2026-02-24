@@ -9,7 +9,9 @@ export default function RootLayout({
 	children: ReactNode;
 }>) {
 	return (
-		<html lang='fr'>
+		<html
+			lang='fr'
+			data-scroll-behavior='smooth'>
 			<body>
 				<div className='min-h-screen flex flex-col'>
 					<Navbar />

@@ -1,17 +1,37 @@
-import { siteData } from '@/mock/defaultData';
 import { ArrowLeft, Calendar } from 'lucide-react';
 import { Button, ImageWithFallback } from '@repo/ui';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { BlogPost, ResponseObject } from '@repo/app-types';
 
-export default async function BlogPostPage(props: PageProps<'/blog/[id]'>) {
-	const { id } = await props.params;
+async function getData(uri: string) {
+	const res = await fetch(
+		`${process.env.API_URL}/blog/posts/${uri}?includeCategories=true`,
+	);
 
-	const post = siteData.blogPosts.find((p) => p.id === id);
+	const data: ResponseObject<BlogPost> = await res.json();
+
+	if (res.status === 404) {
+		notFound();
+	}
+
+	const post = data.responseObject;
 
 	if (!post) {
 		notFound();
 	}
+
+	return {
+		...post,
+		createdAt: new Date(post.createdAt),
+		updatedAt: new Date(post.updatedAt),
+	};
+}
+
+export default async function BlogPostPage(props: PageProps<'/blog/[uri]'>) {
+	const { uri } = await props.params;
+
+	const post = await getData(uri);
 
 	return (
 		<div className='min-h-screen bg-white'>
@@ -36,11 +56,13 @@ export default async function BlogPostPage(props: PageProps<'/blog/[id]'>) {
 				itemScope
 				itemType='https://schema.org/BlogPosting'>
 				<header>
-					<div className='mb-6'>
-						<span className='bg-primary text-white px-3 py-1 rounded-full text-sm'>
-							{post.category}
-						</span>
-					</div>
+					{post.categories && (
+						<div className='mb-6'>
+							<span className='bg-primary text-white px-3 py-1 rounded-full text-sm'>
+								{post.categories.map((x) => x.name).join(', ')}
+							</span>
+						</div>
+					)}
 
 					<h1
 						className='text-4xl text-primary mb-4'
@@ -51,15 +73,28 @@ export default async function BlogPostPage(props: PageProps<'/blog/[id]'>) {
 					<div className='flex items-center space-x-2 text-gray-500 mb-8'>
 						<Calendar className='h-4 w-4' />
 						<time
-							dateTime={post.date}
+							dateTime={post.createdAt.toISOString()}
 							itemProp='datePublished'>
-							{post.date}
+							{post.createdAt.toLocaleDateString('fr-FR', {
+								year: 'numeric',
+								month: 'long',
+								day: 'numeric',
+							})}
 						</time>
 
-						{/*Si l'article a été modifié*/}
-						{/*<time datetime="2024-12-05T14:30:00+01:00" itemprop="dateModified" class="sr-only">
-						Mis à jour le 5 décembre 2024
-					</time>*/}
+						{post.updatedAt !== post.createdAt && (
+							<time
+								dateTime={post.updatedAt.toISOString()}
+								itemProp='dateModified'
+								className='sr-only'>
+								Mis à jour le{' '}
+								{post.updatedAt.toLocaleDateString('fr-FR', {
+									year: 'numeric',
+									month: 'long',
+									day: 'numeric',
+								})}
+							</time>
+						)}
 
 						<address
 							className='sr-only'
@@ -70,15 +105,13 @@ export default async function BlogPostPage(props: PageProps<'/blog/[id]'>) {
 						</address>
 					</div>
 
-					{post.image && (
-						<div className='relative h-96 mb-8 rounded-lg overflow-hidden'>
-							<ImageWithFallback
-								src={post.image}
-								alt={post.title}
-								className='w-full h-full object-cover'
-							/>
-						</div>
-					)}
+					<div className='relative h-96 mb-8 rounded-lg overflow-hidden'>
+						<ImageWithFallback
+							src={post.illustrationUrl}
+							alt={post.title}
+							className='w-full h-full object-cover'
+						/>
+					</div>
 				</header>
 
 				<div
@@ -114,11 +147,11 @@ export default async function BlogPostPage(props: PageProps<'/blog/[id]'>) {
 				{/* CTA */}
 				<div className='mt-12 p-8 bg-secondary rounded-lg text-center'>
 					<h3 className='text-2xl text-primary mb-4'>
-						Besoin d'un Rendez-vous ?
+						Besoin d&apos;un Rendez-vous ?
 					</h3>
 					<p className='text-gray-600 mb-6'>
-						N'hésitez pas à me contacter pour discuter des besoins
-						de votre animal.
+						N&apos;hésitez pas à me contacter pour discuter des
+						besoins de votre animal.
 					</p>
 					<Button
 						className='bg-primary hover:bg-primary/90'
