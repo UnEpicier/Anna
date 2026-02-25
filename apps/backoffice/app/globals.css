@@ -1,0 +1,4 @@
+@import "../../../packages/ui/src/style.css";
+
+/* Scan de ton app + du package ui */
+@source "./**/*.{js,ts,jsx,tsx,mdx}";

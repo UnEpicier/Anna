@@ -2,7 +2,7 @@ import { Heart, Mail, Phone } from 'lucide-react';
 import { SiFacebook, SiInstagram } from '@icons-pack/react-simple-icons';
 import Link from 'next/link';
 import type { Informations, ResponseObject } from '@repo/app-types';
-import { formatPhoneNumber } from '@/utils/format';
+import { formatPhoneNumber } from '@repo/utils';
 
 async function getData() {
 	const infoRes = await fetch(`${process.env.API_URL}/informations`, {
@@ -98,22 +98,28 @@ export default async function Footer() {
 									</div>
 									<span>{data.email}</span>
 								</Link>
-								<div className='flex gap-3 mt-6'>
-									<Link
-										href={data.facebook}
-										target='_blank'
-										rel='noopener noreferrer'
-										className='bg-primary/10 p-3 rounded-xl text-primary hover:bg-primary hover:text-white transition-all hover:scale-110 shadow-sm'>
-										<SiFacebook className='h-5 w-5' />
-									</Link>
-									<Link
-										href={data.instagram}
-										target='_blank'
-										rel='noopener noreferrer'
-										className='bg-primary/10 p-3 rounded-xl text-primary hover:bg-primary hover:text-white transition-all hover:scale-110 shadow-sm'>
-										<SiInstagram className='h-5 w-5' />
-									</Link>
-								</div>
+								{data.facebook || data.instagram ? (
+									<div className='flex gap-3 mt-6'>
+										{data.facebook && (
+											<Link
+												href={data.facebook}
+												target='_blank'
+												rel='noopener noreferrer'
+												className='bg-primary/10 p-3 rounded-xl text-primary hover:bg-primary hover:text-white transition-all hover:scale-110 shadow-sm'>
+												<SiFacebook className='h-5 w-5' />
+											</Link>
+										)}
+										{data.instagram && (
+											<Link
+												href={data.instagram}
+												target='_blank'
+												rel='noopener noreferrer'
+												className='bg-primary/10 p-3 rounded-xl text-primary hover:bg-primary hover:text-white transition-all hover:scale-110 shadow-sm'>
+												<SiInstagram className='h-5 w-5' />
+											</Link>
+										)}
+									</div>
+								) : null}
 							</div>
 						</div>
 					) : (

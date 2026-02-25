@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui';
-import { capitalize, formatPhoneNumber, formatTime } from '@/utils/format';
+import { capitalize, formatPhoneNumber, formatTime } from '@repo/utils';
 import { AlertCircle, Clock, Mail, MapPin, Phone } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Informations, Schedule } from '@repo/app-types';
