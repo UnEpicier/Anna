@@ -1,9 +1,11 @@
+import type { ServiceResponse } from '@/commons/models/serviceResponse';
+import app from '@/server';
 import type { Service } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 import request from 'supertest';
-import { service } from '@/api/services/servicesRepository';
-import type { ServiceResponse } from '@/commons/models/serviceResponse';
-import app from '@/server';
+import { services } from '../../../../prisma/data/services';
+
+const service = services[0];
 
 describe('Services API Endpoints', () => {
 	describe('GET /services', () => {

@@ -1,7 +1,17 @@
-import type { Schedule } from '@repo/app-types';
-import { StatusCodes } from 'http-status-codes';
 import { SchedulesRepository } from '@/api/schedules/schedulesRepository';
 import { ServiceResponse } from '@/commons/models/serviceResponse';
+import type { Schedule } from '@repo/app-types';
+import { StatusCodes } from 'http-status-codes';
+
+const days = [
+	'monday',
+	'tuesday',
+	'wednesday',
+	'thursday',
+	'friday',
+	'saturday',
+	'sunday',
+];
 
 export class SchedulesService {
 	private schedulesRepository: SchedulesRepository;
@@ -35,18 +45,21 @@ export class SchedulesService {
 		}
 	}
 
-	async update(
-		day: string,
-		data: Partial<Schedule>
-	): Promise<ServiceResponse<Schedule | null>> {
+	async update(data: Schedule[]): Promise<ServiceResponse<Schedule | null>> {
 		try {
-			const updatedSchedule = await this.schedulesRepository.updateAsync(
-				day,
-				data
-			);
-			return ServiceResponse.success<Schedule>(
+			for (const schedule of data) {
+				if (!days.includes(schedule.day)) continue;
+
+				await this.schedulesRepository.updateAsync(
+					schedule.day,
+					schedule
+				);
+			}
+
+			const newSchedules = await this.schedulesRepository.findAllAsync();
+			return ServiceResponse.success<Schedule[]>(
 				'Schedule updated successfully',
-				updatedSchedule
+				newSchedules
 			);
 		} catch (error) {
 			const errorMessage = `Error updating schedule: ${(error as Error).message}`;

@@ -1,9 +1,11 @@
+import type { ServiceResponse } from '@/commons/models/serviceResponse';
+import app from '@/server';
 import type { Schedule } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 import request from 'supertest';
-import { schedule } from '@/api/schedules/schedulesRepository';
-import type { ServiceResponse } from '@/commons/models/serviceResponse';
-import app from '@/server';
+import { schedules } from '../../../../prisma/data/schedules';
+
+const schedule = schedules[0];
 
 describe('Schedules API Endpoints', () => {
 	describe('GET /schedules', () => {

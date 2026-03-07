@@ -1,12 +1,11 @@
-import { exit } from "node:process";
-import { categories, posts } from "../src/api/blog/blogRepository";
-import { department } from "../src/api/departments/departmentsRepository";
-import { informations } from "../src/api/informations/informationsRepository";
-import { leave } from "../src/api/leave/leaveRepository";
-import { schedule } from "../src/api/schedules/schedulesRepository";
-import { service } from "../src/api/services/servicesRepository";
-import prisma from "../src/libs/prisma";
-import {readFileSync, readdirSync} from "fs";
+import { readdirSync, readFileSync } from 'node:fs';
+import { exit } from 'node:process';
+import prisma from '../src/libs/prisma.js';
+import { categories, posts } from './data/blog.js';
+import { informations } from './data/informations.js';
+import { leave } from './data/leave.js';
+import { schedules } from './data/schedules.js';
+import { services } from './data/services.js';
 
 async function main() {
 	const { id: informationsId, ...restInformations } = informations;
@@ -16,31 +15,38 @@ async function main() {
 		create: restInformations,
 	});
 
-	const { id: serviceId, ...restService } = service;
-	await prisma.services.upsert({
-		where: { id: serviceId },
-		update: {},
-		create: restService,
-	});
+	for (const service of services) {
+		const { id: serviceId, ...restService } = service;
+		await prisma.services.upsert({
+			where: { id: serviceId },
+			update: {},
+			create: restService,
+		});
+	}
 
-	await prisma.schedules.upsert({
-		where: { day: "monday" },
-		update: {},
-		create: schedule,
-	});
-	
+	for (const schedule of schedules) {
+		await prisma.schedules.upsert({
+			where: { day: schedule.day },
+			update: {},
+			create: schedule,
+		});
+	}
+
 	const files = readdirSync(`${process.cwd()}/departments`);
-	
+
 	for (const file of files) {
-		const fileContent = readFileSync(`${process.cwd()}/departments/${file}`, 'utf-8');
+		const fileContent = readFileSync(
+			`${process.cwd()}/departments/${file}`,
+			'utf-8'
+		);
 		const departmentData = JSON.parse(fileContent);
-		
+
 		const department = {
 			code: departmentData.properties.code,
 			name: departmentData.properties.name,
 			geojson: departmentData,
-		}
-		
+		};
+
 		await prisma.departments.upsert({
 			where: { code: department.code },
 			update: {},
@@ -75,7 +81,9 @@ async function main() {
 			create: {
 				...restPost,
 				categories: {
-					connect: (categories ?? []).map((category) => ({ id: category.id })),
+					connect: (categories ?? []).map((category) => ({
+						id: category.id,
+					})),
 				},
 			},
 		});

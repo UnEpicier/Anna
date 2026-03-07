@@ -1,11 +1,11 @@
+import { ServicesRepository } from '@/api/services/servicesRepository';
+import { ServicesService } from '@/api/services/servicesService';
 import type { Service } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 import type { Mock } from 'vitest';
-import {
-	service as mockService,
-	ServicesRepository,
-} from '@/api/services/servicesRepository';
-import { ServicesService } from '@/api/services/servicesService';
+import { services } from '../../../../prisma/data/services';
+
+const mockService = services[0];
 
 vi.mock('@/api/services/servicesRepository');
 

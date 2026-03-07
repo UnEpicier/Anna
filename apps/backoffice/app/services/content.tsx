@@ -2,24 +2,18 @@
 
 import type { Service } from '@repo/app-types';
 import { Button, Input, Label, Switch, Textarea } from '@repo/ui';
-import {
-	AlignLeft,
-	Cat,
-	Clock,
-	Dog,
-	DollarSign,
-	Rabbit,
-	Sparkles,
-} from 'lucide-react';
+import * as icons from 'lucide-react';
 import { motion } from 'motion/react';
 import { type FormEvent, useCallback, useState } from 'react';
 
-const animalIcons: Record<string, any> = {
-	Chiens: Dog,
-	Chats: Cat,
-	NAC: Rabbit,
-	Chevaux: Sparkles,
-};
+const availableIcons = Object.entries(icons)
+	.filter(
+		([key, value]) => key.endsWith('Icon') && 'displayName' in value // les composants lucide ont tous un displayName
+	)
+	.map(([key, Icon]) => ({
+		name: key.replace('Icon', ''),
+		Icon: Icon as React.FC<icons.LucideProps>,
+	}));
 
 export default function ServicesContent({
 	services: dbServices,
@@ -53,7 +47,10 @@ export default function ServicesContent({
 		>
 			<div className='grid gap-6'>
 				{services.map((service, index) => {
-					const Icon = animalIcons[service.icon] || Dog;
+					const Icon =
+						availableIcons.find((x) => x.name === service.icon)
+							?.Icon || icons.Dog;
+
 					return (
 						<motion.div
 							key={service.id}
@@ -106,7 +103,7 @@ export default function ServicesContent({
 											htmlFor={`price-${index}`}
 											className='flex items-center gap-2 mb-2'
 										>
-											<DollarSign className='w-4 h-4 text-gray-500' />
+											<icons.DollarSign className='w-4 h-4 text-gray-500' />
 											Prix
 										</Label>
 										<Input
@@ -129,7 +126,7 @@ export default function ServicesContent({
 											htmlFor={`duration-${index}`}
 											className='flex items-center gap-2 mb-2'
 										>
-											<Clock className='w-4 h-4 text-gray-500' />
+											<icons.Clock className='w-4 h-4 text-gray-500' />
 											Durée
 										</Label>
 										<Input
@@ -153,7 +150,7 @@ export default function ServicesContent({
 										htmlFor={`description-${index}`}
 										className='flex items-center gap-2 mb-2'
 									>
-										<AlignLeft className='w-4 h-4 text-gray-500' />
+										<icons.AlignLeft className='w-4 h-4 text-gray-500' />
 										Description
 									</Label>
 									<Textarea

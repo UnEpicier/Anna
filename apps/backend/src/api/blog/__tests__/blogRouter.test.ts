@@ -1,9 +1,9 @@
+import type { ServiceResponse } from '@/commons/models/serviceResponse';
+import app from '@/server';
 import type { BlogCategory, BlogPost } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 import request from 'supertest';
-import { categories, posts } from '@/api/blog/blogRepository';
-import type { ServiceResponse } from '@/commons/models/serviceResponse';
-import app from '@/server';
+import { categories, posts } from '../../../../prisma/data/blog';
 
 describe('Blog API Endpoints', () => {
 	describe('GET /blog/categories', () => {

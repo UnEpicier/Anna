@@ -1,11 +1,9 @@
+import { LeaveRepository } from '@/api/leave/leaveRepository';
+import { LeaveService } from '@/api/leave/leaveService';
 import type { Leave } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 import type { Mock } from 'vitest';
-import {
-	LeaveRepository,
-	leave as mockLeave,
-} from '@/api/leave/leaveRepository';
-import { LeaveService } from '@/api/leave/leaveService';
+import { leave as mockLeave } from '../../../../prisma/data/leave';
 
 vi.mock('@/api/leave/leaveRepository');
 

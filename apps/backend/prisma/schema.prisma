@@ -34,8 +34,8 @@ model Departments {
 
 model Schedules {
   day       String @id
-  startTime DateTime
-  endTime   DateTime
+  time      String
+  location  String
   open      Boolean @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

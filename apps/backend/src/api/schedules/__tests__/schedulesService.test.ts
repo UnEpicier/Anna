@@ -1,13 +1,13 @@
+import { SchedulesRepository } from '@/api/schedules/schedulesRepository';
+import { SchedulesService } from '@/api/schedules/schedulesService';
 import type { Schedule } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 import type { Mock } from 'vitest';
-import {
-	schedule as mockSchedule,
-	SchedulesRepository,
-} from '@/api/schedules/schedulesRepository';
-import { SchedulesService } from '@/api/schedules/schedulesService';
+import { schedules as mockSchedules } from '../../../../prisma/data/schedules';
 
 vi.mock('@/api/schedules/schedulesRepository');
+
+const mockSchedule = mockSchedules[0];
 
 describe('schedulesService', () => {
 	let schedulesServiceInstance: SchedulesService;
@@ -87,10 +87,9 @@ describe('schedulesService', () => {
 			);
 
 			// Act
-			const result = await schedulesServiceInstance.update(
-				mockSchedule.day,
-				updateData
-			);
+			const result = await schedulesServiceInstance.update([
+				updatedInformations,
+			]);
 
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.OK);
@@ -101,16 +100,16 @@ describe('schedulesService', () => {
 
 		it('handles errors for updateAsync', async () => {
 			// Arrange
-			const updateData: Partial<Schedule> = { open: false };
+			const updateData: Schedule = {
+				...mockSchedule,
+				open: false,
+			};
 			(schedulesRepositoryInstance.updateAsync as Mock).mockRejectedValue(
 				new Error('Database error')
 			);
 
 			// Act
-			const result = await schedulesServiceInstance.update(
-				mockSchedule.day,
-				updateData
-			);
+			const result = await schedulesServiceInstance.update([updateData]);
 
 			// Assert
 			expect(result.statusCode).toEqual(

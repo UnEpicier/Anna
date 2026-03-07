@@ -1,9 +1,9 @@
+import type { ServiceResponse } from '@/commons/models/serviceResponse';
+import app from '@/server';
 import type { Leave } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 import request from 'supertest';
-import { leave } from '@/api/leave/leaveRepository';
-import type { ServiceResponse } from '@/commons/models/serviceResponse';
-import app from '@/server';
+import { leave } from '../../../../prisma/data/leave';
 
 describe('Leave API Endpoints', () => {
 	describe('GET /leave', () => {

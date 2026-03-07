@@ -1,9 +1,9 @@
+import type { ServiceResponse } from '@/commons/models/serviceResponse';
+import app from '@/server';
 import type { Informations } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 import request from 'supertest';
-import { informations } from '@/api/informations/informationsRepository';
-import type { ServiceResponse } from '@/commons/models/serviceResponse';
-import app from '@/server';
+import { informations } from '../../../../prisma/data/informations';
 
 describe('Informations API Endpoints', () => {
 	describe('GET /informations', () => {
