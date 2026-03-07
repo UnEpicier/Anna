@@ -1,19 +1,62 @@
 'use client';
 
 import { Button, Input, Label } from '@repo/ui';
-import { Facebook, Instagram } from 'lucide-react';
-import { useActionState } from 'react';
+import { Facebook, Instagram, LoaderCircle } from 'lucide-react';
+import { type FormEvent, useCallback, useState } from 'react';
 
 export default function SocialContent({
 	socials,
 }: {
 	socials: { facebook: string; instagram: string };
 }) {
-	const [_error, action, pending] = useActionState(() => {}, null);
+	const [isPending, setIsPending] = useState(false);
+	const [message, setMessage] = useState<{
+		type: 'success' | 'error';
+		text: string;
+	} | null>(null);
+
+	const onSubmit = useCallback(async (ev: FormEvent<HTMLFormElement>) => {
+		ev.preventDefault();
+		const formData = new FormData(ev.currentTarget);
+		const body = {
+			facebook: (formData.get('facebook') as string).toString(),
+			instagram: (formData.get('instagram') as string).toString(),
+		};
+
+		setIsPending(true);
+		setMessage(null);
+
+		try {
+			const res = await fetch(`/api/informations`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(body),
+			});
+
+			if (!res.ok) {
+				throw new Error('Failed to update socials');
+			}
+
+			setMessage({
+				type: 'success',
+				text: 'Les modifications ont été enregistrées avec succès.',
+			});
+		} catch (error) {
+			console.error(error);
+			setMessage({
+				type: 'error',
+				text: "Une erreur est survenue lors de l'enregistrement des modifications.",
+			});
+		} finally {
+			setIsPending(false);
+		}
+	}, []);
 
 	return (
 		<form
-			action={action}
+			onSubmit={onSubmit}
 			className='space-y-6'
 		>
 			<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
@@ -22,7 +65,7 @@ export default function SocialContent({
 
 					<div className='relative'>
 						<Label
-							htmlFor='instagram'
+							htmlFor='facebook'
 							className='flex items-center gap-3 mb-4 cursor-pointer'
 						>
 							<div className='p-3 rounded-xl bg-linear-to-br from-blue-500 to-blue-600 text-white shadow-lg'>
@@ -34,11 +77,13 @@ export default function SocialContent({
 						</Label>
 
 						<Input
-							id='instagram'
+							id='facebook'
+							name='facebook'
+							type='url'
 							defaultValue={socials.facebook}
 							placeholder='https://www.facebook.com/votreprofil'
 							className='border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20 transition-all duration-200'
-							disabled={pending}
+							disabled={isPending}
 						/>
 					</div>
 				</div>
@@ -61,10 +106,12 @@ export default function SocialContent({
 
 						<Input
 							id='instagram'
+							name='instagram'
+							type='url'
 							defaultValue={socials.instagram}
 							placeholder='https://www.instagram.com/votreprofil'
 							className='border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20 transition-all duration-200'
-							disabled={pending}
+							disabled={isPending}
 						/>
 					</div>
 				</div>
@@ -80,11 +127,27 @@ export default function SocialContent({
 			</div>
 
 			<div className='pt-4 border-t border-gray-200'>
+				{message && (
+					<p
+						className={`text-sm mb-4 ${message.type === 'error' ? 'text-red-600' : 'text-green-600'}`}
+					>
+						{message.text}
+					</p>
+				)}
+
 				<Button
 					type='submit'
+					disabled={isPending}
 					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'
 				>
-					Enregistrer les modifications
+					{isPending ? (
+						<>
+							<LoaderCircle className='animate-spin' />
+							Enregistrement...
+						</>
+					) : (
+						'Enregistrer les modifications'
+					)}
 				</Button>
 			</div>
 		</form>

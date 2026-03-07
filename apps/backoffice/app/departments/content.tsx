@@ -2,9 +2,9 @@
 
 import type { Department } from '@repo/app-types';
 import { Badge, Button, Input } from '@repo/ui';
-import { MapPin, Search, X } from 'lucide-react';
+import { LoaderCircle, MapPin, Search, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { useActionState, useCallback, useMemo, useState } from 'react';
+import { type FormEvent, useCallback, useMemo, useState } from 'react';
 
 export default function DepartmentsContent({
 	departments,
@@ -39,11 +39,56 @@ export default function DepartmentsContent({
 		[selectedDepartments]
 	);
 
-	const [_error, action, _pending] = useActionState(() => {}, null);
+	const [isPending, setIsPending] = useState(false);
+	const [message, setMessage] = useState<{
+		type: 'success' | 'error';
+		text: string;
+	} | null>(null);
+
+	const onSubmit = useCallback(
+		async (ev: FormEvent<HTMLFormElement>) => {
+			ev.preventDefault();
+			setIsPending(true);
+			setMessage(null);
+
+			try {
+				const res = await fetch(`/api/departments`, {
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(selectedDepartments),
+				});
+
+				const data = await res.json();
+
+				if (data.success) {
+					setMessage({
+						type: 'success',
+						text: 'Départements mis à jour avec succès.',
+					});
+				} else {
+					setMessage({
+						type: 'error',
+						text: data.message || 'Une erreur est survenue.',
+					});
+				}
+			} catch (error) {
+				console.error(error);
+				setMessage({
+					type: 'error',
+					text: 'Une erreur est survenue lors de la mise à jour.',
+				});
+			} finally {
+				setIsPending(false);
+			}
+		},
+		[selectedDepartments]
+	);
 
 	return (
 		<form
-			action={action}
+			onSubmit={onSubmit}
 			className='space-y-6'
 		>
 			{/* Info */}
@@ -61,17 +106,6 @@ export default function DepartmentsContent({
 						</p>
 					</div>
 				</div>
-			</div>
-
-			{/* Search */}
-			<div className='relative'>
-				<Search className='absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400' />
-				<Input
-					value={searchTerm}
-					onChange={(e) => setSearchTerm(e.target.value)}
-					placeholder='Rechercher un département...'
-					className='pl-12 h-12 border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20'
-				/>
 			</div>
 
 			{/* Selected departments */}
@@ -141,6 +175,18 @@ export default function DepartmentsContent({
 				</AnimatePresence>
 			</div>
 
+			{/* Search */}
+			<div className='relative'>
+				<Search className='absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400' />
+				<Input
+					value={searchTerm}
+					onChange={(e) => setSearchTerm(e.target.value)}
+					placeholder='Rechercher un département...'
+					disabled={isPending}
+					className='pl-12 h-12 border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20'
+				/>
+			</div>
+
 			{/* Departments grid */}
 			<div className='bg-white rounded-2xl border border-gray-200 overflow-hidden'>
 				<div className='p-4 bg-gray-50 border-b border-gray-200'>
@@ -179,11 +225,27 @@ export default function DepartmentsContent({
 			</div>
 
 			<div className='pt-4 border-t border-gray-200'>
+				{message && (
+					<p
+						className={`text-sm mb-4 ${message.type === 'error' ? 'text-red-600' : 'text-green-600'}`}
+					>
+						{message.text}
+					</p>
+				)}
+
 				<Button
 					type='submit'
+					disabled={isPending}
 					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'
 				>
-					Enregistrer les modifications
+					{isPending ? (
+						<>
+							<LoaderCircle className='animate-spin' />
+							Enregistrement...
+						</>
+					) : (
+						'Enregistrer les modifications'
+					)}
 				</Button>
 			</div>
 		</form>

@@ -24,7 +24,7 @@ const fields = [
 	},
 	{
 		id: 'address',
-		label: 'Ville',
+		label: 'Adresse',
 		icon: MapPin,
 		type: 'text',
 		autComplete: 'street-address',
@@ -75,7 +75,9 @@ export default function ContactContent({
 				body: JSON.stringify(body),
 			});
 
-			if (res.ok) {
+			const data = await res.json();
+
+			if (data.success) {
 				setMessage({
 					type: 'success',
 					text: 'Informations mises à jour avec succès',
@@ -128,6 +130,7 @@ export default function ContactContent({
 								type={field.type ?? 'text'}
 								placeholder={field.placeholder}
 								disabled={isPending}
+								required
 								autoComplete={field.autComplete ?? 'off'}
 								className='pl-4 transition-all duration-200 border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20'
 							/>

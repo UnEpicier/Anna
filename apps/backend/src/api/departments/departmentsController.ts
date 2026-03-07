@@ -23,10 +23,7 @@ class DepartmentsController {
 		req: Request,
 		res: Response
 	) => {
-		const serviceResponse = await departmentsService.update(
-			<string>req.params.id,
-			req.body
-		);
+		const serviceResponse = await departmentsService.update(req.body);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 }

@@ -7,4 +7,4 @@ departmentsRouter.get('/', departmentsController.getDepartments);
 
 departmentsRouter.get('/actives', departmentsController.getActiveDepartments);
 
-departmentsRouter.put('/:id', departmentsController.updateDepartment);
+departmentsRouter.put('/', departmentsController.updateDepartment);

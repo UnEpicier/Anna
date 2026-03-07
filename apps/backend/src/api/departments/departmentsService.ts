@@ -1,7 +1,7 @@
-import type { Department } from '@repo/app-types';
-import { StatusCodes } from 'http-status-codes';
 import { DepartmentsRepository } from '@/api/departments/departmentsRepository';
 import { ServiceResponse } from '@/commons/models/serviceResponse';
+import type { Department } from '@repo/app-types';
+import { StatusCodes } from 'http-status-codes';
 
 export class DepartmentsService {
 	private departmentsRepository: DepartmentsRepository;
@@ -64,11 +64,10 @@ export class DepartmentsService {
 	}
 
 	async update(
-		code: string,
-		body: Partial<Department>
-	): Promise<ServiceResponse<Department | null>> {
+		body: string[]
+	): Promise<ServiceResponse<Department[] | null>> {
 		try {
-			if (!body || typeof body.active !== 'boolean') {
+			if (!body || !Array.isArray(body)) {
 				return ServiceResponse.failure(
 					'Invalid request body',
 					null,
@@ -77,7 +76,7 @@ export class DepartmentsService {
 			}
 
 			const updatedDepartment =
-				await this.departmentsRepository.updateAsync(code, body.active);
+				await this.departmentsRepository.updateAsync(body);
 			if (!updatedDepartment) {
 				return ServiceResponse.failure(
 					'Department not found',
@@ -85,7 +84,7 @@ export class DepartmentsService {
 					StatusCodes.NOT_FOUND
 				);
 			}
-			return ServiceResponse.success<Department>(
+			return ServiceResponse.success<Department[]>(
 				'Department updated successfully',
 				updatedDepartment
 			);

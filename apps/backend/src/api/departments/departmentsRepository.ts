@@ -1,5 +1,5 @@
-import { type Department, GeoJsonSchema } from '@repo/app-types';
 import prisma from '@/libs/prisma';
+import { type Department, GeoJsonSchema } from '@repo/app-types';
 
 export const department: Department = {
 	code: '33',
@@ -39,15 +39,30 @@ export class DepartmentsRepository {
 		})) as Department[];
 	}
 
-	async updateAsync(code: string, active: boolean): Promise<Department> {
-		const updatedDepartment = await prisma.departments.update({
-			where: { code: code },
-			data: { active },
+	async updateAsync(codes: string[]): Promise<Department[]> {
+		await prisma.departments.updateMany({
+			where: {
+				code: {
+					notIn: codes,
+				},
+				active: true,
+			},
+			data: { active: false },
 		});
 
-		return {
-			...updatedDepartment,
-			geojson: GeoJsonSchema.parse(updatedDepartment.geojson),
-		} as Department;
+		await prisma.departments.updateMany({
+			where: {
+				code: {
+					in: codes,
+				},
+			},
+			data: { active: true },
+		});
+
+		const updatedDepartments = await prisma.departments.findMany();
+		return updatedDepartments.map((dept) => ({
+			...dept,
+			geojson: GeoJsonSchema.parse(dept.geojson),
+		})) as Department[];
 	}
 }
