@@ -1,5 +1,5 @@
+import ContactContent from '@/app/informations/content';
 import type { Informations, ResponseObject } from '@repo/app-types';
-import ContactContent from '@/app/contact/content';
 
 async function getData() {
 	const res = await fetch(`${process.env.API_URL}/informations`);

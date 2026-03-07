@@ -1,5 +1,6 @@
 'use client';
 
+import { useMediaQuery } from '@repo/ui';
 import {
 	Briefcase,
 	Clock,
@@ -20,7 +21,7 @@ import { type ReactNode, useCallback, useState } from 'react';
 
 type Section =
 	| 'overview'
-	| 'contact'
+	| 'informations'
 	| 'departments'
 	| 'schedule'
 	| 'social'
@@ -36,10 +37,10 @@ const navItems = [
 		path: '/',
 	},
 	{
-		id: 'contact' as Section,
-		label: 'Contact',
+		id: 'informations' as Section,
+		label: 'Informations',
 		icon: Settings,
-		path: '/contact',
+		path: '/informations',
 	},
 	{
 		id: 'departments' as Section,
@@ -89,6 +90,8 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 		return;
 	}, []);
 
+	const isDesktop = useMediaQuery('(min-width: 1024px)');
+
 	return (
 		<div className='min-h-screen bg-gray-50'>
 			{/* Mobile header */}
@@ -119,7 +122,7 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 			<div className='flex'>
 				{/* Sidebar */}
 				<AnimatePresence>
-					{(sidebarOpen || window.innerWidth >= 1024) && (
+					{(sidebarOpen || isDesktop) && (
 						<motion.aside
 							initial={{ x: -280 }}
 							animate={{ x: 0 }}

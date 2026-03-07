@@ -2,8 +2,8 @@
 
 import type { Informations } from '@repo/app-types';
 import { Button, Input, Label } from '@repo/ui';
-import { Mail, MapPin, Phone, Radius } from 'lucide-react';
-import { useActionState } from 'react';
+import { LoaderCircle, Mail, MapPin, Phone, Radius } from 'lucide-react';
+import { type FormEvent, useCallback, useState } from 'react';
 
 const fields = [
 	{
@@ -45,11 +45,62 @@ export default function ContactContent({
 }: {
 	data: Informations | null;
 }) {
-	const [_error, action, pending] = useActionState(() => {}, null);
+	const [isPending, setIsPending] = useState<boolean>(false);
+	const [message, setMessage] = useState<{
+		type: 'success' | 'error';
+		text: string;
+	} | null>(null);
+
+	const onSubmit = useCallback(async (ev: FormEvent<HTMLFormElement>) => {
+		ev.preventDefault();
+		const formData = new FormData(ev.currentTarget);
+
+		setIsPending(true);
+		setMessage(null);
+
+		try {
+			const body: Record<string, any> = {};
+
+			for (const [key, value] of formData.entries()) {
+				if (key === 'actionRadius') {
+					body[key] = Number(value);
+					continue;
+				}
+
+				body[key] = value;
+			}
+
+			const res = await fetch('/api/informations', {
+				method: 'PUT',
+				body: JSON.stringify(body),
+			});
+
+			if (res.ok) {
+				setMessage({
+					type: 'success',
+					text: 'Informations mises à jour avec succès',
+				});
+				return;
+			}
+
+			setMessage({
+				type: 'error',
+				text: 'Impossible de sauvegarder les modifications',
+			});
+		} catch (error) {
+			console.error(error);
+			setMessage({
+				type: 'error',
+				text: 'Impossible de sauvegarder les modifications',
+			});
+		} finally {
+			setIsPending(false);
+		}
+	}, []);
 
 	return (
 		<form
-			action={action}
+			onSubmit={onSubmit}
 			className='space-y-6'
 		>
 			<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
@@ -76,7 +127,7 @@ export default function ContactContent({
 								}`}
 								type={field.type ?? 'text'}
 								placeholder={field.placeholder}
-								disabled={pending}
+								disabled={isPending}
 								autoComplete={field.autComplete ?? 'off'}
 								className='pl-4 transition-all duration-200 border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20'
 							/>
@@ -86,13 +137,30 @@ export default function ContactContent({
 			</div>
 
 			<div className='pt-4 border-t border-gray-200'>
+				{message && (
+					<p
+						className={`text-sm mb-4 ${message.type === 'error' ? 'text-red-600' : 'text-green-600'}`}
+					>
+						{message.text}
+					</p>
+				)}
+
 				<Button
 					type='submit'
+					disabled={isPending}
 					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'
 				>
-					Enregistrer les modifications
+					{isPending ? (
+						<>
+							<LoaderCircle className='animate-spin' />
+							Enregistrement...
+						</>
+					) : (
+						'Enregistrer les modifications'
+					)}
 				</Button>
 			</div>
 		</form>
 	);
+	// TODO: Add /leave management here
 }
