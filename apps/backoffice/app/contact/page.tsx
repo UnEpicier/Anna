@@ -1,4 +1,4 @@
-import { Informations, ResponseObject } from '@repo/app-types';
+import type { Informations, ResponseObject } from '@repo/app-types';
 import ContactContent from '@/app/contact/content';
 
 async function getData() {

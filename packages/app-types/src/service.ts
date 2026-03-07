@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export type Service = z.infer<typeof ServiceSchema>;
 export const ServiceSchema = z.object({

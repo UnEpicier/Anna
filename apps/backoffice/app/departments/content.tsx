@@ -1,10 +1,10 @@
 'use client';
 
-import { Department } from '@repo/app-types';
-import { useActionState, useCallback, useMemo, useState } from 'react';
-import { MapPin, Search, X } from 'lucide-react';
+import type { Department } from '@repo/app-types';
 import { Badge, Button, Input } from '@repo/ui';
+import { MapPin, Search, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
+import { useActionState, useCallback, useMemo, useState } from 'react';
 
 export default function DepartmentsContent({
 	departments,
@@ -12,7 +12,7 @@ export default function DepartmentsContent({
 	departments: Department[];
 }) {
 	const [selectedDepartments, setSelectedDepartments] = useState<string[]>(
-		departments.filter((x) => x.active).map((x) => x.code),
+		departments.filter((x) => x.active).map((x) => x.code)
 	);
 
 	// Search
@@ -22,7 +22,7 @@ export default function DepartmentsContent({
 		return departments.filter(
 			(dept) =>
 				dept.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				dept.code.includes(searchTerm),
+				dept.code.includes(searchTerm)
 		);
 	}, [departments, searchTerm]);
 
@@ -30,21 +30,22 @@ export default function DepartmentsContent({
 		(code: string) => {
 			if (selectedDepartments.includes(code)) {
 				setSelectedDepartments(
-					selectedDepartments.filter((d) => d !== code),
+					selectedDepartments.filter((d) => d !== code)
 				);
 			} else {
 				setSelectedDepartments([...selectedDepartments, code]);
 			}
 		},
-		[selectedDepartments],
+		[selectedDepartments]
 	);
 
-	const [error, action, pending] = useActionState(() => {}, null);
+	const [_error, action, _pending] = useActionState(() => {}, null);
 
 	return (
 		<form
 			action={action}
-			className='space-y-6'>
+			className='space-y-6'
+		>
 			{/* Info */}
 			<div className='bg-blue-50 border border-blue-200 rounded-xl p-4'>
 				<div className='flex gap-3'>
@@ -85,7 +86,8 @@ export default function DepartmentsContent({
 							variant='ghost'
 							size='sm'
 							onClick={() => setSelectedDepartments([])}
-							className='text-red-600 hover:text-red-700 hover:bg-red-50'>
+							className='text-red-600 hover:text-red-700 hover:bg-red-50'
+						>
 							<X className='w-4 h-4 mr-2' />
 							Tout effacer
 						</Button>
@@ -106,7 +108,7 @@ export default function DepartmentsContent({
 						<div className='flex flex-wrap gap-2'>
 							{selectedDepartments.map((code) => {
 								const dept = departments.find(
-									(d) => d.code === code,
+									(d) => d.code === code
 								);
 
 								if (!dept) return null;
@@ -116,7 +118,8 @@ export default function DepartmentsContent({
 										key={code}
 										initial={{ opacity: 0, scale: 0.8 }}
 										animate={{ opacity: 1, scale: 1 }}
-										exit={{ opacity: 0, scale: 0.8 }}>
+										exit={{ opacity: 0, scale: 0.8 }}
+									>
 										<Badge className='px-3 py-2 bg-linear-to-r from-[#7f5539] to-[#5a3a26] text-white border-0 hover:shadow-lg transition-all duration-200'>
 											<MapPin className='w-3 h-3 mr-2' />
 											{dept.code} - {dept.name}
@@ -125,7 +128,8 @@ export default function DepartmentsContent({
 												onClick={() =>
 													toggleDepartment(dept.code)
 												}
-												className='ml-2 hover:text-red-200'>
+												className='ml-2 hover:text-red-200'
+											>
 												<X className='h-3 w-3' />
 											</button>
 										</Badge>
@@ -151,7 +155,7 @@ export default function DepartmentsContent({
 					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-h-96 overflow-y-auto'>
 						{filteredDepartments.map((dept) => {
 							const isSelected = selectedDepartments.includes(
-								dept.code,
+								dept.code
 							);
 							return (
 								<button
@@ -162,7 +166,8 @@ export default function DepartmentsContent({
 										isSelected
 											? 'bg-linear-to-r from-[#7f5539] to-[#5a3a26] text-white shadow-md'
 											: 'bg-gray-50 hover:bg-gray-100 text-gray-700 hover:shadow-sm'
-									}`}>
+									}`}
+								>
 									<span className='text-sm font-medium'>
 										{dept.code} - {dept.name}
 									</span>
@@ -176,7 +181,8 @@ export default function DepartmentsContent({
 			<div className='pt-4 border-t border-gray-200'>
 				<Button
 					type='submit'
-					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'>
+					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'
+				>
 					Enregistrer les modifications
 				</Button>
 			</div>

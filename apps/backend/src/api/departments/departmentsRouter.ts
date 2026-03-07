@@ -1,10 +1,10 @@
-import { Router } from "express";
-import { departmentsController } from "./departmentsController";
+import { Router } from 'express';
+import { departmentsController } from './departmentsController';
 
 export const departmentsRouter: Router = Router();
 
-departmentsRouter.get("/", departmentsController.getDepartments);
+departmentsRouter.get('/', departmentsController.getDepartments);
 
-departmentsRouter.get("/actives", departmentsController.getActiveDepartments);
+departmentsRouter.get('/actives', departmentsController.getActiveDepartments);
 
-departmentsRouter.put("/:id", departmentsController.updateDepartment);
+departmentsRouter.put('/:id', departmentsController.updateDepartment);

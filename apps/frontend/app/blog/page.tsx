@@ -1,5 +1,5 @@
+import type { BlogCategory, BlogPost, ResponseObject } from '@repo/app-types';
 import BlogContent from '@/app/blog/content';
-import type { ResponseObject, BlogCategory, BlogPost } from '@repo/app-types';
 
 async function getData() {
 	const result: {
@@ -16,7 +16,7 @@ async function getData() {
 		`${process.env.API_URL}/blog/categories`,
 		{
 			next: { revalidate: 60 },
-		},
+		}
 	);
 	const categoriesResponseData: ResponseObject<BlogCategory[]> =
 		await categoriesRes.json();
@@ -27,7 +27,7 @@ async function getData() {
 				...category,
 				createdAt: new Date(category.createdAt),
 				updatedAt: new Date(category.updatedAt),
-			}),
+			})
 		);
 	}
 
@@ -37,7 +37,7 @@ async function getData() {
 		`${process.env.API_URL}/blog/posts?include-categories=true`,
 		{
 			next: { revalidate: 60 },
-		},
+		}
 	);
 	const postsResponseData: ResponseObject<BlogPost[]> = await postsRes.json();
 

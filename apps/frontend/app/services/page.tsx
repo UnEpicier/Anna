@@ -1,7 +1,7 @@
+import type { Informations, ResponseObject, Service } from '@repo/app-types';
 import ContentService from '@/app/services/content';
-import { Informations, ResponseObject, Service } from '@repo/app-types';
 
-const serviceDetails: Record<string, string[]> = {
+const _serviceDetails: Record<string, string[]> = {
 	Chiens: [
 		'Bilan ostéopathique complet',
 		'Traitement des troubles locomoteurs',

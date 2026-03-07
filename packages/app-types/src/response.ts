@@ -10,14 +10,14 @@ export const ResponseSchema = <T extends z.ZodTypeAny>(dataSchema: T) =>
 
 export type ResponseObject<T> =
 	| {
-	success: true;
-	message: string;
-	responseObject: T;
-	statusCode: number;
-}
+			success: true;
+			message: string;
+			responseObject: T;
+			statusCode: number;
+	  }
 	| {
-	success: false;
-	message: string;
-	responseObject?: never;
-	statusCode: number;
-};
+			success: false;
+			message: string;
+			responseObject?: never;
+			statusCode: number;
+	  };

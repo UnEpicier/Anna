@@ -1,4 +1,4 @@
-import { ResponseObject, Service } from '@repo/app-types';
+import type { ResponseObject, Service } from '@repo/app-types';
 import ServicesContent from '@/app/services/content';
 
 async function getData() {

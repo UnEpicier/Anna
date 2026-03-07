@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import './globals.css';
 import Sidebar from '@/ui/sidebar';
 
@@ -10,7 +10,8 @@ export default async function RootLayout({
 	return (
 		<html
 			lang='fr'
-			data-scroll-behavior='smooth'>
+			data-scroll-behavior='smooth'
+		>
 			<body>
 				<Sidebar>{children}</Sidebar>
 			</body>

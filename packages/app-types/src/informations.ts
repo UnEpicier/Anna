@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export type Informations = z.infer<typeof InformationSchema>;
 export const InformationSchema = z.object({

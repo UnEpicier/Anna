@@ -1,12 +1,12 @@
-import { ArrowLeft, Calendar } from 'lucide-react';
+import type { BlogPost, ResponseObject } from '@repo/app-types';
 import { Button, ImageWithFallback } from '@repo/ui';
-import { notFound } from 'next/navigation';
+import { ArrowLeft, Calendar } from 'lucide-react';
 import Link from 'next/link';
-import { BlogPost, ResponseObject } from '@repo/app-types';
+import { notFound } from 'next/navigation';
 
 async function getData(uri: string) {
 	const res = await fetch(
-		`${process.env.API_URL}/blog/posts/${uri}?include-categories=true`,
+		`${process.env.API_URL}/blog/posts/${uri}?include-categories=true`
 	);
 
 	const data: ResponseObject<BlogPost> = await res.json();
@@ -41,7 +41,8 @@ export default async function BlogPostPage(props: PageProps<'/blog/[uri]'>) {
 					<Button
 						variant='ghost'
 						className='mb-6 text-primary hover:text-primary/80'
-						asChild>
+						asChild
+					>
 						<Link href='/blog'>
 							<ArrowLeft className='mr-2 h-4 w-4' />
 							Retour au Blog
@@ -54,7 +55,8 @@ export default async function BlogPostPage(props: PageProps<'/blog/[uri]'>) {
 			<article
 				className='max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-8'
 				itemScope
-				itemType='https://schema.org/BlogPosting'>
+				itemType='https://schema.org/BlogPosting'
+			>
 				<header>
 					{post.categories && (
 						<div className='mb-6'>
@@ -66,7 +68,8 @@ export default async function BlogPostPage(props: PageProps<'/blog/[uri]'>) {
 
 					<h1
 						className='text-4xl text-primary mb-4'
-						itemProp='headline'>
+						itemProp='headline'
+					>
 						{post.title}
 					</h1>
 
@@ -74,7 +77,8 @@ export default async function BlogPostPage(props: PageProps<'/blog/[uri]'>) {
 						<Calendar className='h-4 w-4' />
 						<time
 							dateTime={post.createdAt.toISOString()}
-							itemProp='datePublished'>
+							itemProp='datePublished'
+						>
 							{post.createdAt.toLocaleDateString('fr-FR', {
 								year: 'numeric',
 								month: 'long',
@@ -86,7 +90,8 @@ export default async function BlogPostPage(props: PageProps<'/blog/[uri]'>) {
 							<time
 								dateTime={post.updatedAt.toISOString()}
 								itemProp='dateModified'
-								className='sr-only'>
+								className='sr-only'
+							>
 								Mis à jour le{' '}
 								{post.updatedAt.toLocaleDateString('fr-FR', {
 									year: 'numeric',
@@ -100,7 +105,8 @@ export default async function BlogPostPage(props: PageProps<'/blog/[uri]'>) {
 							className='sr-only'
 							itemProp='author'
 							itemScope
-							itemType='https://schema.org/Person'>
+							itemType='https://schema.org/Person'
+						>
 							Par <span itemProp='name'>Anna Nischwitz</span>
 						</address>
 					</div>
@@ -116,7 +122,8 @@ export default async function BlogPostPage(props: PageProps<'/blog/[uri]'>) {
 
 				<div
 					className='prose prose-lg max-w-none'
-					itemProp='articleBody'>
+					itemProp='articleBody'
+				>
 					{post.content.length === 0 ? (
 						<p className='text-gray-600'>{post.excerpt}</p>
 					) : (
@@ -125,7 +132,8 @@ export default async function BlogPostPage(props: PageProps<'/blog/[uri]'>) {
 								return (
 									<p
 										key={index}
-										className='mb-6 text-gray-700 leading-relaxed'>
+										className='mb-6 text-gray-700 leading-relaxed'
+									>
 										{block.text}
 									</p>
 								);
@@ -134,7 +142,8 @@ export default async function BlogPostPage(props: PageProps<'/blog/[uri]'>) {
 								return (
 									<h2
 										key={index}
-										className='text-2xl text-primary mt-8 mb-4'>
+										className='text-2xl text-primary mt-8 mb-4'
+									>
 										{block.text}
 									</h2>
 								);
@@ -155,7 +164,8 @@ export default async function BlogPostPage(props: PageProps<'/blog/[uri]'>) {
 					</p>
 					<Button
 						className='bg-primary hover:bg-primary/90'
-						asChild>
+						asChild
+					>
 						<Link href='/contact'>Prendre Rendez-vous</Link>
 					</Button>
 				</div>

@@ -1,5 +1,5 @@
-import type { Request, RequestHandler, Response } from "express";
-import { authService } from "@/api/auth/authService";
+import type { Request, RequestHandler, Response } from 'express';
+import { authService } from '@/api/auth/authService';
 
 class AuthController {
 	public login: RequestHandler = async (req: Request, res: Response) => {
@@ -12,7 +12,10 @@ class AuthController {
 	public verifyCode: RequestHandler = async (req: Request, res: Response) => {
 		const { sessionToken, code } = req.body;
 
-		const serviceResponse = await authService.verifyCode(sessionToken, code);
+		const serviceResponse = await authService.verifyCode(
+			sessionToken,
+			code
+		);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 }

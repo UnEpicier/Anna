@@ -9,12 +9,13 @@ export default function SocialContent({
 }: {
 	socials: { facebook: string; instagram: string };
 }) {
-	const [error, action, pending] = useActionState(() => {}, null);
+	const [_error, action, pending] = useActionState(() => {}, null);
 
 	return (
 		<form
 			action={action}
-			className='space-y-6'>
+			className='space-y-6'
+		>
 			<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 				<div className='relative overflow-hidden bg-linear-to-br from-white to-gray-50 rounded-2xl border border-gray-200 p-6 group hover:shadow-md transition-all duration-300'>
 					<div className='absolute top-0 right-0 w-20 h-20 bg-linear-to-br from-blue-500 to-blue-600 opacity-5 rounded-bl-full' />
@@ -22,7 +23,8 @@ export default function SocialContent({
 					<div className='relative'>
 						<Label
 							htmlFor='instagram'
-							className='flex items-center gap-3 mb-4 cursor-pointer'>
+							className='flex items-center gap-3 mb-4 cursor-pointer'
+						>
 							<div className='p-3 rounded-xl bg-linear-to-br from-blue-500 to-blue-600 text-white shadow-lg'>
 								<Facebook className='w-5 h-5' />
 							</div>
@@ -47,7 +49,8 @@ export default function SocialContent({
 					<div className='relative'>
 						<Label
 							htmlFor='instagram'
-							className='flex items-center gap-3 mb-4 cursor-pointer'>
+							className='flex items-center gap-3 mb-4 cursor-pointer'
+						>
 							<div className='p-3 rounded-xl bg-linear-to-br from-pink-500 to-purple-600 text-white shadow-lg'>
 								<Instagram className='w-5 h-5' />
 							</div>
@@ -79,7 +82,8 @@ export default function SocialContent({
 			<div className='pt-4 border-t border-gray-200'>
 				<Button
 					type='submit'
-					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'>
+					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'
+				>
 					Enregistrer les modifications
 				</Button>
 			</div>

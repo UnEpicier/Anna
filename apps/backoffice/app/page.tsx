@@ -1,10 +1,10 @@
-import HomeContent from '@/app/content';
-import {
+import type {
 	BlogCategory,
 	BlogPost,
 	ResponseObject,
 	Service,
 } from '@repo/app-types';
+import HomeContent from '@/app/content';
 
 async function getData() {
 	const servicesRes = await fetch(`${process.env.API_URL}/services`);
@@ -18,7 +18,7 @@ async function getData() {
 	const posts: ResponseObject<BlogPost[]> = await postsRes.json();
 
 	const departmentsRes = await fetch(
-		`${process.env.API_URL}/departments/actives`,
+		`${process.env.API_URL}/departments/actives`
 	);
 	const departments: ResponseObject<{ id: string; name: string }[]> =
 		await departmentsRes.json();

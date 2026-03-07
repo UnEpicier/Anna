@@ -1,19 +1,19 @@
 'use client';
 
-import { useActionState } from 'react';
 import {
-	Input,
-	Label,
 	Button,
 	Card,
 	CardContent,
 	CardHeader,
 	CardTitle,
+	Input,
+	Label,
 } from '@repo/ui';
 import { Lock } from 'lucide-react';
+import { useActionState } from 'react';
 
 export default function Page() {
-	const [error, action, pending] = useActionState(() => {}, null);
+	const [_error, action, _pending] = useActionState(() => {}, null);
 
 	return (
 		<div className='min-h-screen flex items-center justify-center bg-gray-50 px-4'>
@@ -30,7 +30,8 @@ export default function Page() {
 				<CardContent>
 					<form
 						action={action}
-						className='space-y-4'>
+						className='space-y-4'
+					>
 						<div>
 							<Label htmlFor='password'>Mot de passe</Label>
 							<Input
@@ -44,7 +45,8 @@ export default function Page() {
 						</div>
 						<Button
 							type='submit'
-							className='w-full bg-primary hover:bg-primary/90'>
+							className='w-full bg-primary hover:bg-primary/90'
+						>
 							Se connecter
 						</Button>
 						<p className='text-sm text-gray-500 text-center mt-4'>

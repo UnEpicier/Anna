@@ -1,8 +1,8 @@
-import { Router } from "express";
-import { informationsController } from "./informationsController";
+import { Router } from 'express';
+import { informationsController } from './informationsController';
 
 export const informationsRouter: Router = Router();
 
-informationsRouter.get("/", informationsController.getInformations);
+informationsRouter.get('/', informationsController.getInformations);
 
-informationsRouter.put("/", informationsController.updateInformations);
+informationsRouter.put('/', informationsController.updateInformations);

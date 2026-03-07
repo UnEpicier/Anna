@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { Button } from '@repo/ui';
+import Link from 'next/link';
 
 export default function NotFound() {
 	return (
@@ -16,7 +16,8 @@ export default function NotFound() {
 				<Button
 					size='lg'
 					className='mt-5 bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all group'
-					asChild>
+					asChild
+				>
 					<Link href='/'>Retour à l&apos;accueil</Link>
 				</Button>
 			</div>

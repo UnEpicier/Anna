@@ -1,14 +1,14 @@
-import { Router } from "express";
-import { servicesController } from "./servicesController";
+import { Router } from 'express';
+import { servicesController } from './servicesController';
 
 export const servicesRouter: Router = Router();
 
-servicesRouter.get("/", servicesController.getServices);
+servicesRouter.get('/', servicesController.getServices);
 
-servicesRouter.get("/:id", servicesController.getServiceById);
+servicesRouter.get('/:id', servicesController.getServiceById);
 
-servicesRouter.post("/", servicesController.createService);
+servicesRouter.post('/', servicesController.createService);
 
-servicesRouter.put("/:id", servicesController.updateService);
+servicesRouter.put('/:id', servicesController.updateService);
 
-servicesRouter.delete("/:id", servicesController.deleteService);
+servicesRouter.delete('/:id', servicesController.deleteService);

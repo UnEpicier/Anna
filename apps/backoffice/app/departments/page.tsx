@@ -1,5 +1,5 @@
+import type { Department, ResponseObject } from '@repo/app-types';
 import DepartmentsContent from '@/app/departments/content';
-import { Department, ResponseObject } from '@repo/app-types';
 
 async function getData() {
 	const res = await fetch(`${process.env.API_URL}/departments`);
@@ -10,7 +10,7 @@ async function getData() {
 	}
 
 	return data.responseObject.toSorted(
-		(a, b) => parseInt(a.code) - parseInt(b.code),
+		(a, b) => parseInt(a.code) - parseInt(b.code)
 	);
 }
 

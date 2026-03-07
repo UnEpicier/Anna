@@ -1,5 +1,5 @@
-import { z } from "zod";
-import {GeoJsonSchema} from "./geojson.js";
+import { z } from 'zod';
+import { GeoJsonSchema } from './geojson.js';
 
 export type Department = z.infer<typeof DepartmentSchema>;
 export const DepartmentSchema = z.object({

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import type { BlogCategory, BlogPost } from '@repo/app-types';
 import {
 	Badge,
 	Card,
@@ -11,7 +11,7 @@ import {
 import { ArrowRight, Calendar } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useRouter } from 'next/navigation';
-import type { BlogCategory, BlogPost } from '@repo/app-types';
+import { useMemo, useState } from 'react';
 
 const containerVariants = {
 	hidden: { opacity: 0 },
@@ -44,7 +44,7 @@ export default function BlogContent({
 	const router = useRouter();
 
 	const [selectedCategory, setSelectedCategory] = useState<number | null>(
-		null,
+		null
 	);
 
 	const filteredPosts = useMemo(() => {
@@ -75,7 +75,8 @@ export default function BlogContent({
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.6 }}
-					className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+					className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'
+				>
 					<h1 className='text-5xl md:text-6xl text-primary mb-6'>
 						Blog
 					</h1>
@@ -93,14 +94,16 @@ export default function BlogContent({
 					<div className='flex flex-wrap gap-3 justify-center'>
 						<motion.div
 							whileHover={{ scale: 1.05 }}
-							whileTap={{ scale: 0.95 }}>
+							whileTap={{ scale: 0.95 }}
+						>
 							<Badge
 								onClick={() => void setSelectedCategory(null)}
 								className={`cursor-pointer px-6 py-2.5 rounded-full transition-all shadow-sm ${
 									selectedCategory === null
 										? 'bg-primary text-white shadow-lg scale-105'
 										: 'bg-white border-2 border-primary/20 text-primary hover:bg-primary/5 hover:border-primary/40'
-								}`}>
+								}`}
+							>
 								Tous
 							</Badge>
 						</motion.div>
@@ -108,7 +111,8 @@ export default function BlogContent({
 							<motion.div
 								key={category.id}
 								whileHover={{ scale: 1.05 }}
-								whileTap={{ scale: 0.95 }}>
+								whileTap={{ scale: 0.95 }}
+							>
 								<Badge
 									onClick={() =>
 										setSelectedCategory(category.id)
@@ -117,7 +121,8 @@ export default function BlogContent({
 										selectedCategory === category.id
 											? 'bg-primary text-white shadow-lg scale-105'
 											: 'bg-white border-2 border-primary/20 text-primary hover:bg-primary/5 hover:border-primary/40'
-									}`}>
+									}`}
+								>
 									{category.name}
 								</Badge>
 							</motion.div>
@@ -133,7 +138,8 @@ export default function BlogContent({
 						<motion.div
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
-							className='text-center text-gray-500 py-20'>
+							className='text-center text-gray-500 py-20'
+						>
 							<p className='text-lg'>
 								Aucun article dans cette catégorie.
 							</p>
@@ -144,18 +150,21 @@ export default function BlogContent({
 							variants={containerVariants}
 							initial='hidden'
 							animate='visible'
-							className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+							className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'
+						>
 							{filteredPosts.map((post) => (
 								<motion.article
 									key={post.id}
 									variants={itemVariants}
 									itemScope
-									itemType='https://schema.org/BlogPosting'>
+									itemType='https://schema.org/BlogPosting'
+								>
 									<Card
 										className='overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-300 group cursor-pointer h-full bg-white'
 										onClick={() =>
 											router.push(`/blog/${post.uri}`)
-										}>
+										}
+									>
 										<div className='relative h-56 overflow-hidden'>
 											<ImageWithFallback
 												src={post.illustrationUrl}
@@ -180,32 +189,36 @@ export default function BlogContent({
 												</div>
 												<time
 													dateTime={post.createdAt.toISOString()}
-													itemProp='datePublished'>
+													itemProp='datePublished'
+												>
 													{post.createdAt.toLocaleDateString(
 														'fr-FR',
 														{
 															year: 'numeric',
 															month: 'long',
 															day: 'numeric',
-														},
+														}
 													)}
 												</time>
 											</div>
 											<h2
 												className='text-xl text-primary group-hover:text-primary/80 transition-colors line-clamp-2 leading-none'
-												itemProp='headline'>
+												itemProp='headline'
+											>
 												{post.title}
 											</h2>
 										</CardHeader>
 										<CardContent>
 											<p
 												itemProp='description'
-												className='text-gray-600 mb-6 line-clamp-3 leading-relaxed'>
+												className='text-gray-600 mb-6 line-clamp-3 leading-relaxed'
+											>
 												{post.excerpt}
 											</p>
 											<div
 												className='flex items-center text-primary group-hover:text-primary/80 transition-colors'
-												aria-label={`Lire l'article complet : ${post.title}`}>
+												aria-label={`Lire l'article complet : ${post.title}`}
+											>
 												<span className='mr-2'>
 													Lire la suite
 												</span>
@@ -232,7 +245,8 @@ export default function BlogContent({
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.6 }}
-					className='relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+					className='relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center'
+				>
 					<h2 className='text-4xl md:text-5xl text-primary mb-6'>
 						Restez Informé
 					</h2>

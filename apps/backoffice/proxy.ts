@@ -1,11 +1,10 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 
-export async function proxy(request: Request) {
-	const requestHeaders = new Headers(request.headers);
-	const url = new URL(request.url);
+export async function proxy(_request: Request) {
+	// const requestHeaders = new Headers(request.headers);
+	// const url = new URL(request.url);
 
-	const cookieStore = await cookies();
+	// const cookieStore = await cookies();
 
 	// if (url.pathname !== '/auth/login') {
 	// 	if (!cookieStore.has('token')) {

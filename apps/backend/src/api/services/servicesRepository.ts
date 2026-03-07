@@ -1,13 +1,13 @@
-import prisma from "@/libs/prisma";
-import type { Service } from "@repo/app-types";
+import type { Service } from '@repo/app-types';
+import prisma from '@/libs/prisma';
 
 export const service: Service = {
 	id: 1,
-	title: "Chat",
-	icon: "cat",
+	title: 'Chat',
+	icon: 'cat',
 	price: 60,
-	duration: "1h",
-	description: "",
+	duration: '1h',
+	description: '',
 	enabled: true,
 	createdAt: new Date(),
 	updatedAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days later
@@ -40,7 +40,9 @@ export class ServicesRepository {
 		};
 	}
 
-	async create(data: Omit<Service, "id" | "enabled" | "createdAt" | "updatedAt">): Promise<Service> {
+	async create(
+		data: Omit<Service, 'id' | 'enabled' | 'createdAt' | 'updatedAt'>
+	): Promise<Service> {
 		const service = await prisma.services.create({
 			data: {
 				...data,

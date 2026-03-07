@@ -1,10 +1,10 @@
-import ContactContent from '@/app/contact/content';
-import {
-	ResponseObject,
-	Informations,
+import type {
 	Department,
+	Informations,
+	ResponseObject,
 	Schedule,
 } from '@repo/app-types';
+import ContactContent from '@/app/contact/content';
 
 async function getData() {
 	const result: {
@@ -23,14 +23,14 @@ async function getData() {
 		`${process.env.API_URL}/departments/actives`,
 		{
 			next: { revalidate: 60 },
-		},
+		}
 	);
 	const departmentsResponseData: ResponseObject<Department[]> =
 		await departmentsRes.json();
 
 	if (departmentsResponseData.success) {
 		result.departments = departmentsResponseData.responseObject.filter(
-			(x) => x.active,
+			(x) => x.active
 		);
 	}
 
@@ -71,7 +71,7 @@ async function getData() {
 					daysOfWeek.indexOf(a.day.toLowerCase()) -
 					daysOfWeek.indexOf(b.day.toLowerCase())
 				);
-			},
+			}
 		);
 	}
 

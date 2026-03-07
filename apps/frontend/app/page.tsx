@@ -1,8 +1,8 @@
 'use client';
 
+import { Button, Card, CardContent, ImageWithFallback } from '@repo/ui';
 import { ArrowRight, Award, CheckCircle, Clock, Heart } from 'lucide-react';
 import { motion } from 'motion/react';
-import { Button, Card, CardContent, ImageWithFallback } from '@repo/ui';
 import Link from 'next/link';
 
 // Content
@@ -79,12 +79,14 @@ export default function Home() {
 						<motion.div
 							initial={{ opacity: 0, x: -30 }}
 							animate={{ opacity: 1, x: 0 }}
-							transition={{ duration: 0.7 }}>
+							transition={{ duration: 0.7 }}
+						>
 							<motion.div
 								initial={{ opacity: 0, y: 20 }}
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ delay: 0.2 }}
-								className='inline-block px-4 py-2 bg-primary/10 rounded-full mb-6'>
+								className='inline-block px-4 py-2 bg-primary/10 rounded-full mb-6'
+							>
 								<span className='text-primary'>
 									Ostéopathie Animalière Professionnelle
 								</span>
@@ -106,7 +108,8 @@ export default function Home() {
 								<Button
 									size='lg'
 									className='bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all group'
-									asChild>
+									asChild
+								>
 									<Link href='/contact'>
 										Prendre Rendez-vous
 										<ArrowRight className='ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform' />
@@ -116,7 +119,8 @@ export default function Home() {
 									variant='outline'
 									size='lg'
 									className='border-2 border-primary/20 text-primary hover:bg-primary/5 hover:border-primary/40'
-									asChild>
+									asChild
+								>
 									<Link href='/services'>
 										Découvrir les Services
 									</Link>
@@ -127,7 +131,8 @@ export default function Home() {
 							initial={{ opacity: 0, scale: 0.95 }}
 							animate={{ opacity: 1, scale: 1 }}
 							transition={{ duration: 0.7, delay: 0.3 }}
-							className='relative'>
+							className='relative'
+						>
 							<div className='absolute inset-0 bg-linear-to-br from-primary/20 to-transparent rounded-3xl blur-2xl' />
 
 							<div className='relative rounded-3xl overflow-hidden shadow-2xl'>
@@ -150,7 +155,8 @@ export default function Home() {
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6 }}
-						className='text-center mb-16'>
+						className='text-center mb-16'
+					>
 						<h2 className='text-4xl md:text-5xl text-primary mb-4'>
 							Pourquoi Choisir l&apos;Ostéopathie Animalière ?
 						</h2>
@@ -165,11 +171,13 @@ export default function Home() {
 						initial='hidden'
 						whileInView='visible'
 						viewport={{ once: true }}
-						className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+						className='grid grid-cols-1 md:grid-cols-3 gap-8'
+					>
 						{benefits.map((benefit, index) => (
 							<motion.div
 								key={index}
-								variants={itemVariants}>
+								variants={itemVariants}
+							>
 								<Card className='border-0 shadow-lg hover:shadow-2xl transition-all duration-300 h-full group bg-linear-to-br from-white to-gray-50/50'>
 									<CardContent className='pt-8 pb-8'>
 										<div className='bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors'>
@@ -197,7 +205,8 @@ export default function Home() {
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6 }}
-						className='text-center mb-16'>
+						className='text-center mb-16'
+					>
 						<h2 className='text-4xl md:text-5xl text-primary mb-4'>
 							Tous Vos Compagnons Sont les Bienvenus
 						</h2>
@@ -213,11 +222,13 @@ export default function Home() {
 						initial='hidden'
 						whileInView='visible'
 						viewport={{ once: true }}
-						className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
+						className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'
+					>
 						{animals.map((animal, index) => (
 							<motion.div
 								key={index}
-								variants={itemVariants}>
+								variants={itemVariants}
+							>
 								<Card className='border-0 shadow-md hover:shadow-xl transition-all duration-300 h-full group cursor-pointer bg-white'>
 									<CardContent className='pt-8 pb-8'>
 										<div className='bg-linear-to-br from-primary to-primary/80 w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg'>
@@ -248,7 +259,8 @@ export default function Home() {
 							whileInView={{ opacity: 1, x: 0 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.7 }}
-							className='relative'>
+							className='relative'
+						>
 							<div className='absolute -inset-4 bg-linear-to-br from-primary/20 to-transparent rounded-3xl blur-2xl'></div>
 							<div className='relative rounded-3xl overflow-hidden shadow-2xl'>
 								<ImageWithFallback
@@ -263,7 +275,8 @@ export default function Home() {
 							initial={{ opacity: 0, x: 30 }}
 							whileInView={{ opacity: 1, x: 0 }}
 							viewport={{ once: true }}
-							transition={{ duration: 0.7 }}>
+							transition={{ duration: 0.7 }}
+						>
 							<h2 className='text-4xl md:text-5xl text-primary mb-8'>
 								À Propos de Moi
 							</h2>
@@ -291,7 +304,8 @@ export default function Home() {
 							<Button
 								className='mt-8 bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all group'
 								size='lg'
-								asChild>
+								asChild
+							>
 								<Link href='/contact'>
 									Me Contacter
 									<ArrowRight className='ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform' />
@@ -314,7 +328,8 @@ export default function Home() {
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.6 }}
-					className='relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+					className='relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center'
+				>
 					<h2 className='text-4xl md:text-5xl mb-8'>
 						Prêt à Améliorer le Bien-être de Votre Animal ?
 					</h2>
@@ -326,7 +341,8 @@ export default function Home() {
 						size='lg'
 						variant='secondary'
 						className='bg-white text-primary hover:bg-gray-100 shadow-2xl hover:shadow-xl transition-all hover:scale-105'
-						asChild>
+						asChild
+					>
 						<Link href='/contact'>
 							Prendre Rendez-vous
 							<ArrowRight className='ml-2 h-5 w-5' />

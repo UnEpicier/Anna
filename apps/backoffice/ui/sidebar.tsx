@@ -1,22 +1,22 @@
 'use client';
 
-import { ReactNode, useCallback, useState } from 'react';
 import {
-	LogOut,
-	Home,
-	MapPin,
-	Clock,
-	Share2,
 	Briefcase,
-	FolderTree,
+	Clock,
 	FileText,
-	Settings,
+	FolderTree,
+	Home,
+	LogOut,
+	MapPin,
 	Menu,
+	Settings,
+	Share2,
 	X,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
-import { usePathname } from 'next/navigation';
+import { AnimatePresence, motion } from 'motion/react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { type ReactNode, useCallback, useState } from 'react';
 
 type Section =
 	| 'overview'
@@ -96,7 +96,8 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 				<div className='flex items-center gap-3'>
 					<button
 						onClick={() => void setSidebarOpen((prev) => !prev)}
-						className='p-2 hover:bg-gray-100 rounded-lg transition-colors'>
+						className='p-2 hover:bg-gray-100 rounded-lg transition-colors'
+					>
 						{sidebarOpen ? (
 							<X className='w-6 h-6' />
 						) : (
@@ -109,7 +110,8 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 				</div>
 				<button
 					onClick={onLogout}
-					className='p-2 hover:bg-gray-100 rounded-lg transition-colors'>
+					className='p-2 hover:bg-gray-100 rounded-lg transition-colors'
+				>
 					<LogOut className='w-5 h-5 text-gray-600' />
 				</button>
 			</div>
@@ -127,7 +129,8 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 								damping: 25,
 								stiffness: 200,
 							}}
-							className='fixed lg:sticky top-0 left-0 h-screen w-70 bg-white border-r border-gray-200 z-50 lg:z-0'>
+							className='fixed lg:sticky top-0 left-0 h-screen w-70 bg-white border-r border-gray-200 z-50 lg:z-0'
+						>
 							<div className='flex flex-col h-full'>
 								{/* Logo */}
 								<div className='hidden lg:flex items-center gap-3 px-6 py-6 border-b border-gray-200'>
@@ -157,7 +160,8 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 												currentSection === item.path
 													? 'bg-linear-to-r from-[#7f5539] to-[#5a3a26] text-white shadow-lg shadow-[#7f5539]/20'
 													: 'text-gray-700 hover:bg-gray-100'
-											}`}>
+											}`}
+										>
 											<item.icon className='w-5 h-5 shrink-0' />
 											<span className='font-medium'>
 												{item.label}
@@ -170,7 +174,8 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 								<div className='p-4 border-t border-gray-200'>
 									<button
 										onClick={onLogout}
-										className='w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200'>
+										className='w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200'
+									>
 										<LogOut className='w-5 h-5' />
 										<span className='font-medium'>
 											Déconnexion
@@ -197,7 +202,8 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 							key={currentSection}
 							initial={{ opacity: 0, y: 20 }}
 							animate={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.3 }}>
+							transition={{ duration: 0.3 }}
+						>
 							{/* Page header (except for overview) */}
 							{currentSection !== 'overview' && (
 								<div className='mb-8'>
@@ -205,8 +211,7 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 										{
 											navItems.find(
 												(item) =>
-													item.path ===
-													currentSection,
+													item.path === currentSection
 											)?.label
 										}
 									</h1>

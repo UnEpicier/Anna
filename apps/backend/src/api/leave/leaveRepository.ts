@@ -1,5 +1,5 @@
-import prisma from "@/libs/prisma";
-import type { Leave } from "@repo/app-types";
+import type { Leave } from '@repo/app-types';
+import prisma from '@/libs/prisma';
 
 export const leave: Leave = {
 	id: 1,
@@ -18,7 +18,9 @@ export class LeaveRepository {
 		});
 	}
 
-	async createAsync(data: Omit<Leave, "id" | "createdAt" | "updatedAt">): Promise<Leave> {
+	async createAsync(
+		data: Omit<Leave, 'id' | 'createdAt' | 'updatedAt'>
+	): Promise<Leave> {
 		return prisma.leave.create({
 			data: {
 				...data,

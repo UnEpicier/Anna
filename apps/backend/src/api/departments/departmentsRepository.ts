@@ -1,16 +1,16 @@
-import prisma from "@/libs/prisma";
-import { type Department, GeoJsonSchema } from "@repo/app-types";
+import { type Department, GeoJsonSchema } from '@repo/app-types';
+import prisma from '@/libs/prisma';
 
 export const department: Department = {
-	code: "33",
-	name: "Gironde",
+	code: '33',
+	name: 'Gironde',
 	geojson: {
 		type: 'Feature',
 		geometry: {
 			type: 'Polygon',
 			coordinates: [],
 		},
-		properties: {}
+		properties: {},
 	},
 	active: false,
 	createdAt: new Date(),

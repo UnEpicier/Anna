@@ -1,8 +1,9 @@
+/** biome-ignore-all lint/style/noNonNullAssertion: we known what we are doing with this "days" array */
+import type { Informations, Schedule } from '@repo/app-types';
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui';
 import { capitalize, formatPhoneNumber, formatTime } from '@repo/utils';
 import { AlertCircle, Clock, Mail, MapPin, Phone } from 'lucide-react';
 import { motion } from 'motion/react';
-import { Informations, Schedule } from '@repo/app-types';
 
 interface Props {
 	informations: Informations;
@@ -19,7 +20,8 @@ export default function ContactInformations({
 			whileInView={{ opacity: 1, x: 0 }}
 			viewport={{ once: true }}
 			transition={{ duration: 0.6 }}
-			className='space-y-6'>
+			className='space-y-6'
+		>
 			<Card className='border-0 shadow-lg bg-linear-to-br from-white to-gray-50/50'>
 				<CardHeader>
 					<CardTitle className='text-primary text-2xl'>
@@ -29,7 +31,8 @@ export default function ContactInformations({
 				<CardContent className='space-y-6'>
 					<a
 						href={`tel:${formatPhoneNumber(informations.phone)}`}
-						className='flex items-start gap-4 group'>
+						className='flex items-start gap-4 group'
+					>
 						<div className='bg-primary/10 p-3 rounded-xl group-hover:bg-primary/20 transition-colors'>
 							<Phone className='h-5 w-5 text-primary' />
 						</div>
@@ -43,7 +46,8 @@ export default function ContactInformations({
 
 					<a
 						href={`mailto:${informations.email}`}
-						className='flex items-start gap-4 group'>
+						className='flex items-start gap-4 group'
+					>
 						<div className='bg-primary/10 p-3 rounded-xl group-hover:bg-primary/20 transition-colors'>
 							<Mail className='h-5 w-5 text-primary' />
 						</div>
@@ -184,7 +188,8 @@ function SchedulesList({ schedules }: { schedules: Schedule[] }) {
 					differDays.map((day) => (
 						<p
 							key={day.day}
-							className='text-gray-600'>
+							className='text-gray-600'
+						>
 							{day.open
 								? `Le ${capitalize(days[day.day]!)} de ${formatTime(day.startTime)} à ${formatTime(day.endTime)}`
 								: `Fermé le ${capitalize(days[day.day]!)}`}
@@ -200,7 +205,8 @@ function SchedulesList({ schedules }: { schedules: Schedule[] }) {
 			{schedules.map((schedule) => (
 				<p
 					key={schedule.day}
-					className='text-gray-600'>
+					className='text-gray-600'
+				>
 					{capitalize(days[schedule.day]!)}&nbsp;:{' '}
 					{schedule.open
 						? `de ${formatTime(schedule.startTime)} à ${formatTime(schedule.endTime)}`

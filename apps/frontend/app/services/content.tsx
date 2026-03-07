@@ -1,6 +1,7 @@
 'use client';
 
-import { motion } from 'motion/react';
+import type { Informations, Service } from '@repo/app-types';
+import { Button, Card, CardContent, CardHeader, CardTitle } from '@repo/ui';
 import {
 	ArrowRight,
 	Cat,
@@ -11,8 +12,7 @@ import {
 	Rabbit,
 	Sparkles,
 } from 'lucide-react';
-import { Button, Card, CardContent, CardHeader, CardTitle } from '@repo/ui';
-import { Service, Informations } from '@repo/app-types';
+import { motion } from 'motion/react';
 import Link from 'next/link';
 
 const containerVariants = {
@@ -71,7 +71,8 @@ export default function ContentService({
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.6 }}
-					className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+					className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'
+				>
 					<h1 className='text-5xl md:text-6xl text-primary mb-6'>
 						Services & Tarifs
 					</h1>
@@ -91,14 +92,16 @@ export default function ContentService({
 						initial='hidden'
 						whileInView='visible'
 						viewport={{ once: true }}
-						className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+						className='grid grid-cols-1 md:grid-cols-2 gap-8'
+					>
 						{services.map((service, index) => {
 							const IconComponent = iconMap[service.icon] || Dog;
 
 							return (
 								<motion.div
 									key={index}
-									variants={itemVariants}>
+									variants={itemVariants}
+								>
 									<Card className='border-0 shadow-lg hover:shadow-2xl transition-all duration-300 h-full group bg-linear-to-br from-white to-gray-50/50'>
 										<CardHeader>
 											<div className='flex items-start justify-between'>
@@ -156,7 +159,8 @@ export default function ContentService({
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6 }}
-						className='text-center mb-12'>
+						className='text-center mb-12'
+					>
 						<h2 className='text-4xl md:text-5xl text-primary mb-4'>
 							Quand Consulter un Ostéopathe Animalier ?
 						</h2>
@@ -170,14 +174,16 @@ export default function ContentService({
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
-						transition={{ duration: 0.6, delay: 0.2 }}>
+						transition={{ duration: 0.6, delay: 0.2 }}
+					>
 						<Card className='border-0 shadow-xl bg-white'>
 							<CardContent className='pt-8 pb-8'>
 								<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 									{indications.map((indication, index) => (
 										<div
 											key={index}
-											className='flex items-start gap-4 group'>
+											className='flex items-start gap-4 group'
+										>
 											<div className='bg-primary/10 rounded-xl p-2 group-hover:bg-primary/20 transition-colors'>
 												<div className='w-2 h-2 bg-primary rounded-full'></div>
 											</div>
@@ -201,7 +207,8 @@ export default function ContentService({
 							initial={{ opacity: 0, x: -20 }}
 							whileInView={{ opacity: 1, x: 0 }}
 							viewport={{ once: true }}
-							transition={{ duration: 0.6 }}>
+							transition={{ duration: 0.6 }}
+						>
 							<Card className='border-0 shadow-lg h-full bg-linear-to-br from-secondary to-white'>
 								<CardContent className='pt-8 pb-8'>
 									<div className='bg-primary/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-6'>
@@ -238,7 +245,8 @@ export default function ContentService({
 							initial={{ opacity: 0, x: 20 }}
 							whileInView={{ opacity: 1, x: 0 }}
 							viewport={{ once: true }}
-							transition={{ duration: 0.6 }}>
+							transition={{ duration: 0.6 }}
+						>
 							<Card className='border-0 shadow-lg h-full bg-linear-to-br from-secondary to-white'>
 								<CardContent className='pt-8 pb-8'>
 									<div className='bg-primary/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-6'>
@@ -296,7 +304,8 @@ export default function ContentService({
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.6 }}
-					className='relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+					className='relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center'
+				>
 					<h2 className='text-4xl md:text-5xl mb-6'>
 						Des Questions sur les Tarifs ?
 					</h2>
@@ -308,7 +317,8 @@ export default function ContentService({
 						size='lg'
 						variant='secondary'
 						asChild
-						className='bg-white text-primary hover:bg-gray-100 shadow-2xl hover:shadow-xl transition-all hover:scale-105'>
+						className='bg-white text-primary hover:bg-gray-100 shadow-2xl hover:shadow-xl transition-all hover:scale-105'
+					>
 						<Link href='/contact'>
 							Me Contacter
 							<ArrowRight className='ml-2 h-5 w-5' />

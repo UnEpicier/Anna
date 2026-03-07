@@ -153,7 +153,8 @@ export default function SeanceTypePage() {
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.6 }}
-					className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+					className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'
+				>
 					<h1 className='text-5xl md:text-6xl text-primary mb-6'>
 						Déroulement d&apos;une Séance
 					</h1>
@@ -172,7 +173,8 @@ export default function SeanceTypePage() {
 							initial={{ opacity: 0, x: -20 }}
 							whileInView={{ opacity: 1, x: 0 }}
 							viewport={{ once: true }}
-							transition={{ duration: 0.6 }}>
+							transition={{ duration: 0.6 }}
+						>
 							<h2 className='text-4xl text-primary mb-6'>
 								Une Approche Globale et Personnalisée
 							</h2>
@@ -195,7 +197,8 @@ export default function SeanceTypePage() {
 							whileInView={{ opacity: 1, scale: 1 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.6 }}
-							className='relative'>
+							className='relative'
+						>
 							<div className='absolute inset-0 bg-linear-to-br from-primary/20 to-transparent rounded-3xl blur-2xl'></div>
 							<div className='relative rounded-3xl overflow-hidden shadow-2xl'>
 								<ImageWithFallback
@@ -217,7 +220,8 @@ export default function SeanceTypePage() {
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6 }}
-						className='text-center mb-16'>
+						className='text-center mb-16'
+					>
 						<h2 className='text-4xl md:text-5xl text-primary mb-4'>
 							Les Étapes de la Séance
 						</h2>
@@ -231,11 +235,13 @@ export default function SeanceTypePage() {
 						initial='hidden'
 						whileInView='visible'
 						viewport={{ once: true }}
-						className='space-y-6'>
+						className='space-y-6'
+					>
 						{steps.map((step, index) => (
 							<motion.div
 								key={index}
-								variants={itemVariants}>
+								variants={itemVariants}
+							>
 								<Card className='border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group bg-white'>
 									<CardContent className='p-8'>
 										<div className='grid grid-cols-1 lg:grid-cols-12 gap-6'>
@@ -262,13 +268,14 @@ export default function SeanceTypePage() {
 														(detail, idx) => (
 															<li
 																key={idx}
-																className='flex items-start gap-3 text-gray-600'>
+																className='flex items-start gap-3 text-gray-600'
+															>
 																<CheckCircle className='h-5 w-5 text-primary mt-0.5 shrink-0' />
 																<span>
 																	{detail}
 																</span>
 															</li>
-														),
+														)
 													)}
 												</ul>
 											</div>
@@ -289,7 +296,8 @@ export default function SeanceTypePage() {
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6 }}
-						className='text-center mb-16'>
+						className='text-center mb-16'
+					>
 						<h2 className='text-4xl md:text-5xl text-primary mb-4'>
 							Points Importants
 						</h2>
@@ -303,11 +311,13 @@ export default function SeanceTypePage() {
 						initial='hidden'
 						whileInView='visible'
 						viewport={{ once: true }}
-						className='grid grid-cols-1 md:grid-cols-3 gap-8'>
+						className='grid grid-cols-1 md:grid-cols-3 gap-8'
+					>
 						{importantPoints.map((point, index) => (
 							<motion.div
 								key={index}
-								variants={itemVariants}>
+								variants={itemVariants}
+							>
 								<Card className='text-center border-0 shadow-lg hover:shadow-xl transition-all duration-300 h-full bg-linear-to-br from-white to-gray-50/50'>
 									<CardContent className='pt-10 pb-10'>
 										<div className='inline-flex items-center justify-center w-20 h-20 bg-linear-to-br from-primary to-primary/80 rounded-2xl shadow-lg mb-6'>
@@ -335,7 +345,8 @@ export default function SeanceTypePage() {
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6 }}
-						className='text-center mb-12'>
+						className='text-center mb-12'
+					>
 						<h2 className='text-4xl md:text-5xl text-primary mb-4'>
 							Comment Préparer la Séance ?
 						</h2>
@@ -349,7 +360,8 @@ export default function SeanceTypePage() {
 							initial={{ opacity: 0, x: -20 }}
 							whileInView={{ opacity: 1, x: 0 }}
 							viewport={{ once: true }}
-							transition={{ duration: 0.6 }}>
+							transition={{ duration: 0.6 }}
+						>
 							<Card className='border-0 shadow-lg h-full bg-white'>
 								<CardContent className='pt-8 pb-8'>
 									<h3 className='text-2xl text-primary mb-6'>
@@ -394,7 +406,8 @@ export default function SeanceTypePage() {
 							initial={{ opacity: 0, x: 20 }}
 							whileInView={{ opacity: 1, x: 0 }}
 							viewport={{ once: true }}
-							transition={{ duration: 0.6 }}>
+							transition={{ duration: 0.6 }}
+						>
 							<Card className='border-0 shadow-lg h-full bg-white'>
 								<CardContent className='pt-8 pb-8'>
 									<h3 className='text-2xl text-primary mb-6'>
@@ -445,7 +458,8 @@ export default function SeanceTypePage() {
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6 }}
-						className='text-center mb-12'>
+						className='text-center mb-12'
+					>
 						<h2 className='text-4xl md:text-5xl text-primary mb-4'>
 							Questions Fréquentes
 						</h2>
@@ -459,7 +473,8 @@ export default function SeanceTypePage() {
 						initial='hidden'
 						whileInView='visible'
 						viewport={{ once: true }}
-						className='space-y-6'>
+						className='space-y-6'
+					>
 						{[
 							{
 								q: 'Mon animal va-t-il avoir mal pendant la séance ?',
@@ -476,7 +491,8 @@ export default function SeanceTypePage() {
 						].map((faq, index) => (
 							<motion.div
 								key={index}
-								variants={itemVariants}>
+								variants={itemVariants}
+							>
 								<Card className='border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white'>
 									<CardContent className='pt-6 pb-6'>
 										<h3 className='text-lg text-primary mb-3'>
@@ -505,7 +521,8 @@ export default function SeanceTypePage() {
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.6 }}
-					className='relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+					className='relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center'
+				>
 					<h2 className='text-4xl md:text-5xl mb-6'>
 						Prêt à Réserver une Séance ?
 					</h2>
@@ -517,7 +534,8 @@ export default function SeanceTypePage() {
 						size='lg'
 						variant='secondary'
 						className='bg-white text-primary hover:bg-gray-100 shadow-2xl hover:shadow-xl transition-all hover:scale-105'
-						asChild>
+						asChild
+					>
 						<Link href='/contact'>
 							Prendre Rendez-vous
 							<ArrowRight className='ml-2 h-5 w-5' />

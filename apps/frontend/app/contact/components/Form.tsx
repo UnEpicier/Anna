@@ -1,4 +1,3 @@
-import { useActionState } from 'react';
 import {
 	Button,
 	Card,
@@ -11,9 +10,10 @@ import {
 } from '@repo/ui';
 import { Send } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useActionState } from 'react';
 
 export default function Form() {
-	const [error, action, pending] = useActionState(() => {}, null);
+	const [_error, action, _pending] = useActionState(() => {}, null);
 
 	return (
 		<motion.div
@@ -21,7 +21,8 @@ export default function Form() {
 			whileInView={{ opacity: 1, x: 0 }}
 			viewport={{ once: true }}
 			transition={{ duration: 0.6 }}
-			className='lg:col-span-2'>
+			className='lg:col-span-2'
+		>
 			<Card className='border-0 shadow-lg bg-white'>
 				<CardHeader>
 					<CardTitle className='text-primary text-2xl'>
@@ -35,12 +36,14 @@ export default function Form() {
 				<CardContent>
 					<form
 						action={action}
-						className='space-y-6'>
+						className='space-y-6'
+					>
 						<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 							<div>
 								<Label
 									htmlFor='name'
-									className='text-gray-700'>
+									className='text-gray-700'
+								>
 									Nom *
 								</Label>
 								<Input
@@ -55,7 +58,8 @@ export default function Form() {
 							<div>
 								<Label
 									htmlFor='email'
-									className='text-gray-700'>
+									className='text-gray-700'
+								>
 									Email *
 								</Label>
 								<Input
@@ -72,7 +76,8 @@ export default function Form() {
 							<div>
 								<Label
 									htmlFor='phone'
-									className='text-gray-700'>
+									className='text-gray-700'
+								>
 									Téléphone *
 								</Label>
 								<Input
@@ -88,7 +93,8 @@ export default function Form() {
 							<div>
 								<Label
 									htmlFor='animal'
-									className='text-gray-700'>
+									className='text-gray-700'
+								>
 									Type d&apos;Animal *
 								</Label>
 								<Input
@@ -104,7 +110,8 @@ export default function Form() {
 						<div>
 							<Label
 								htmlFor='message'
-								className='text-gray-700'>
+								className='text-gray-700'
+							>
 								Message *
 							</Label>
 							<Textarea
@@ -129,7 +136,8 @@ export default function Form() {
 						<Button
 							type='submit'
 							className='w-full bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all group'
-							size='lg'>
+							size='lg'
+						>
 							Envoyer le Message
 							<Send className='ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform' />
 						</Button>

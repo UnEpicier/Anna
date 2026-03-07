@@ -1,15 +1,15 @@
-import type { Request } from "express";
-import { ipKeyGenerator, rateLimit } from "express-rate-limit";
+import type { Request } from 'express';
+import { ipKeyGenerator, rateLimit } from 'express-rate-limit';
 
-import { env } from "@/commons/utils/envConfig";
+import { env } from '@/commons/utils/envConfig';
 
 const rateLimiter = rateLimit({
 	legacyHeaders: true,
 	limit: env.COMMON_RATE_LIMIT_MAX_REQUESTS,
-	message: "Too many requests, please try again later.",
+	message: 'Too many requests, please try again later.',
 	standardHeaders: true,
 	windowMs: 15 * 60 * env.COMMON_RATE_LIMIT_WINDOW_MS,
-	keyGenerator: (req: Request) => ipKeyGenerator(req.ip ?? ""),
+	keyGenerator: (req: Request) => ipKeyGenerator(req.ip ?? ''),
 	skip: () => env.isTest || env.isDevelopment,
 });
 

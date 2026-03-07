@@ -1,9 +1,9 @@
 'use client';
 
-import { Schedule } from '@repo/app-types';
-import { useActionState } from 'react';
+import type { Schedule } from '@repo/app-types';
 import { Button, Input, Switch } from '@repo/ui';
 import { Calendar, Check, Clock } from 'lucide-react';
+import { useActionState } from 'react';
 
 const frenchDays: Record<string, string> = {
 	monday: 'Lundi',
@@ -20,12 +20,13 @@ export default function ScheduleContent({
 }: {
 	schedules: Schedule[];
 }) {
-	const [error, action, pending] = useActionState(() => {}, null);
+	const [_error, action, _pending] = useActionState(() => {}, null);
 
 	return (
 		<form
 			action={action}
-			className='space-y-6'>
+			className='space-y-6'
+		>
 			<div className='grid grid-cols-4 gap-6 mb-2'>
 				<div className='flex gap-2 items-center'>
 					<Calendar className='w-4 h-4 text-gray-500' />
@@ -51,7 +52,8 @@ export default function ScheduleContent({
 			{schedules.map((schedule) => (
 				<div
 					key={schedule.day}
-					className='grid grid-cols-4 gap-6'>
+					className='grid grid-cols-4 gap-6'
+				>
 					<p>{frenchDays[schedule.day]}</p>
 
 					<Input
@@ -93,7 +95,8 @@ export default function ScheduleContent({
 			<div className='pt-4 border-t border-gray-200'>
 				<Button
 					type='submit'
-					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'>
+					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'
+				>
 					Enregistrer les modifications
 				</Button>
 			</div>

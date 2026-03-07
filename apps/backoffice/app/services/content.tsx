@@ -1,8 +1,7 @@
 'use client';
 
-import { Service } from '@repo/app-types';
-import { FormEvent, useCallback, useState } from 'react';
-import { motion } from 'motion/react';
+import type { Service } from '@repo/app-types';
+import { Button, Input, Label, Switch, Textarea } from '@repo/ui';
 import {
 	AlignLeft,
 	Cat,
@@ -12,7 +11,8 @@ import {
 	Rabbit,
 	Sparkles,
 } from 'lucide-react';
-import { Button, Input, Label, Switch, Textarea } from '@repo/ui';
+import { motion } from 'motion/react';
+import { type FormEvent, useCallback, useState } from 'react';
 
 const animalIcons: Record<string, any> = {
 	Chiens: Dog,
@@ -43,13 +43,14 @@ export default function ServicesContent({
 			} as Service;
 			setServices(newServices);
 		},
-		[services],
+		[services]
 	);
 
 	return (
 		<form
 			onSubmit={onSubmit}
-			className='space-y-6'>
+			className='space-y-6'
+		>
 			<div className='grid gap-6'>
 				{services.map((service, index) => {
 					const Icon = animalIcons[service.icon] || Dog;
@@ -61,7 +62,8 @@ export default function ServicesContent({
 							transition={{ delay: index * 0.1 }}
 							className={`relative overflow-hidden bg-linear-to-br from-white to-gray-50 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 ${
 								!service.enabled ? 'opacity-60' : ''
-							}`}>
+							}`}
+						>
 							<div className='p-6 space-y-6'>
 								{/* Header */}
 								<div className='flex items-center justify-between'>
@@ -76,7 +78,8 @@ export default function ServicesContent({
 									<div className='flex items-center gap-3'>
 										<Label
 											htmlFor={`enabled-${service.id}`}
-											className='text-sm text-gray-600 cursor-pointer'>
+											className='text-sm text-gray-600 cursor-pointer'
+										>
 											{service.enabled
 												? 'Activé'
 												: 'Désactivé'}
@@ -88,7 +91,7 @@ export default function ServicesContent({
 												updateService(
 													index,
 													'enabled',
-													checked,
+													checked
 												)
 											}
 											className='data-[state=checked]:bg-[#7f5539]'
@@ -101,7 +104,8 @@ export default function ServicesContent({
 									<div>
 										<Label
 											htmlFor={`price-${index}`}
-											className='flex items-center gap-2 mb-2'>
+											className='flex items-center gap-2 mb-2'
+										>
 											<DollarSign className='w-4 h-4 text-gray-500' />
 											Prix
 										</Label>
@@ -112,7 +116,7 @@ export default function ServicesContent({
 												updateService(
 													index,
 													'price',
-													e.target.value,
+													e.target.value
 												)
 											}
 											placeholder='60€'
@@ -123,7 +127,8 @@ export default function ServicesContent({
 									<div>
 										<Label
 											htmlFor={`duration-${index}`}
-											className='flex items-center gap-2 mb-2'>
+											className='flex items-center gap-2 mb-2'
+										>
 											<Clock className='w-4 h-4 text-gray-500' />
 											Durée
 										</Label>
@@ -134,7 +139,7 @@ export default function ServicesContent({
 												updateService(
 													index,
 													'duration',
-													e.target.value,
+													e.target.value
 												)
 											}
 											placeholder='45-60 min'
@@ -146,7 +151,8 @@ export default function ServicesContent({
 								<div>
 									<Label
 										htmlFor={`description-${index}`}
-										className='flex items-center gap-2 mb-2'>
+										className='flex items-center gap-2 mb-2'
+									>
 										<AlignLeft className='w-4 h-4 text-gray-500' />
 										Description
 									</Label>
@@ -157,7 +163,7 @@ export default function ServicesContent({
 											updateService(
 												index,
 												'description',
-												e.target.value,
+												e.target.value
 											)
 										}
 										rows={3}
@@ -174,7 +180,8 @@ export default function ServicesContent({
 			<div className='pt-4 border-t border-gray-200'>
 				<Button
 					type='submit'
-					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'>
+					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'
+				>
 					Enregistrer les modifications
 				</Button>
 			</div>

@@ -1,24 +1,24 @@
 'use client';
 
-import Map, {
+import useLayers from '@/app/contact/components/Map/hooks/useLayers';
+import type { DeckProps } from '@deck.gl/core';
+import { MapboxOverlay } from '@deck.gl/mapbox';
+import '@maptiler/sdk/dist/maptiler-sdk.css';
+import type { Department } from '@repo/app-types';
+import { bbox, circle, feature, featureCollection } from '@turf/turf';
+import { useCallback, useRef } from 'react';
+import MapLibre, {
 	FullscreenControl,
 	GeolocateControl,
-	MapRef,
+	type MapRef,
 	NavigationControl,
 	ScaleControl,
 	useControl,
 } from 'react-map-gl/maplibre';
-import useLayers from '@/app/contact/components/Map/hooks/useLayers';
-import type { Department } from '@repo/app-types';
-import type { DeckProps } from '@deck.gl/core';
-import { MapboxOverlay } from '@deck.gl/mapbox';
-import '@maptiler/sdk/dist/maptiler-sdk.css';
-import { useCallback, useRef } from 'react';
-import { circle, bbox, feature, featureCollection } from '@turf/turf';
 
 function DeckGLOverlay(props: DeckProps) {
 	const overlay = useControl<MapboxOverlay>(
-		() => new MapboxOverlay({ interleaved: false, ...props }),
+		() => new MapboxOverlay({ interleaved: false, ...props })
 	);
 	overlay.setProps(props);
 	return null;
@@ -48,7 +48,7 @@ export default function MapComponent({
 		if (departments.length > 0) {
 			// bbox englobant tous les départements
 			const collection = featureCollection(
-				departments.map((d) => feature(d.geojson.geometry as never)), // adapte selon ta structure
+				departments.map((d) => feature(d.geojson.geometry as never)) // adapte selon ta structure
 			);
 			bboxResult = bbox(collection) as [number, number, number, number];
 		} else {
@@ -65,7 +65,7 @@ export default function MapComponent({
 	const layer = useLayers(departments, radius, longitude, latitude);
 
 	return (
-		<Map
+		<MapLibre
 			ref={mapRef}
 			reuseMaps
 			onLoad={onMapLoad}
@@ -77,7 +77,8 @@ export default function MapComponent({
 			maxBounds={[
 				-20.2696443271, 35.691171142, 25.8949064542, 58.5957166429,
 			]}
-			mapStyle={`https://api.maptiler.com/maps/019c900c-33c6-7117-9201-72b30eef182b/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}&language=fr`}>
+			mapStyle={`https://api.maptiler.com/maps/019c900c-33c6-7117-9201-72b30eef182b/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}&language=fr`}
+		>
 			<DeckGLOverlay
 				controller={false}
 				layers={[layer]}
@@ -88,6 +89,6 @@ export default function MapComponent({
 			<FullscreenControl />
 
 			<ScaleControl position='bottom-right' />
-		</Map>
+		</MapLibre>
 	);
 }

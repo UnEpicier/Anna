@@ -1,9 +1,10 @@
+import type { Department } from '@repo/app-types';
 import { motion } from 'motion/react';
+import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import MapLoader from '@/app/contact/components/Map/MapLoader';
-import dynamic from 'next/dynamic';
-import { Department } from '@repo/app-types';
-const Map = dynamic(() => import('@/app/contact/components/Map/Map'));
+
+const MapComponent = dynamic(() => import('@/app/contact/components/Map/Map'));
 
 interface Props {
 	departments: Department[];
@@ -26,7 +27,8 @@ export default function ContactMap({
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.6 }}
-					className='text-center mb-12'>
+					className='text-center mb-12'
+				>
 					<h2 className='text-4xl md:text-5xl text-primary mb-4'>
 						Zone d&apos;Intervention
 					</h2>
@@ -40,9 +42,10 @@ export default function ContactMap({
 					whileInView={{ opacity: 1, scale: 1 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.6 }}
-					className='relative h-150 rounded-xl shadow-lg overflow-hidden'>
+					className='relative h-150 rounded-xl shadow-lg overflow-hidden'
+				>
 					<Suspense fallback={<MapLoader />}>
-						<Map
+						<MapComponent
 							departments={departments}
 							longitude={actionLong}
 							latitude={actionLat}

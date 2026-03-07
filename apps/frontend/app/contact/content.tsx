@@ -1,10 +1,10 @@
 'use client';
 
+import type { Department, Informations, Schedule } from '@repo/app-types';
 import { motion } from 'motion/react';
-import { Department, Informations, Schedule } from '@repo/app-types';
 import Form from '@/app/contact/components/Form';
-import ContactMap from '@/app/contact/components/Map';
 import ContactInformations from '@/app/contact/components/Informations';
+import ContactMap from '@/app/contact/components/Map';
 
 export default function ContactContent({
 	informations,
@@ -26,7 +26,8 @@ export default function ContactContent({
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.6 }}
-					className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'>
+					className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'
+				>
 					<h1 className='text-5xl md:text-6xl text-primary mb-6'>
 						Contact
 					</h1>

@@ -1,6 +1,6 @@
-import type { Request, RequestHandler, Response } from "express";
+import type { Request, RequestHandler, Response } from 'express';
 
-import { leaveService } from "@/api/leave/leaveService";
+import { leaveService } from '@/api/leave/leaveService';
 
 class LeaveController {
 	public getLeave: RequestHandler = async (_req: Request, res: Response) => {
@@ -8,17 +8,26 @@ class LeaveController {
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 
-	public createLeave: RequestHandler = async (req: Request, res: Response) => {
+	public createLeave: RequestHandler = async (
+		req: Request,
+		res: Response
+	) => {
 		const serviceResponse = await leaveService.create(req.body);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 
-	public updateInformations: RequestHandler = async (req: Request, res: Response) => {
+	public updateInformations: RequestHandler = async (
+		req: Request,
+		res: Response
+	) => {
 		const serviceResponse = await leaveService.update(req.body);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 
-	public deleteLeave: RequestHandler = async (_req: Request, res: Response) => {
+	public deleteLeave: RequestHandler = async (
+		_req: Request,
+		res: Response
+	) => {
 		const serviceResponse = await leaveService.delete();
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};

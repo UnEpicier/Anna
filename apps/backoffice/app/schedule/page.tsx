@@ -1,5 +1,5 @@
+import type { ResponseObject, Schedule } from '@repo/app-types';
 import ScheduleContent from '@/app/schedule/content';
-import { ResponseObject, Schedule } from '@repo/app-types';
 
 async function getData() {
 	const res = await fetch(`${process.env.API_URL}/schedules`);

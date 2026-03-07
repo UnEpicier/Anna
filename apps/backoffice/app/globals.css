@@ -1,6 +1,6 @@
 @import 'tailwindcss';
-@source "./**/*.{js,ts,jsx,tsx}";
-@source "../node_modules/@repo/ui/src/**/*.{js,ts,jsx,tsx}";
+@source './**/*.{js,ts,jsx,tsx}';
+@source '../node_modules/@repo/ui/src/**/*.{js,ts,jsx,tsx}';
 
 :root {
 	--font-size: 16px;

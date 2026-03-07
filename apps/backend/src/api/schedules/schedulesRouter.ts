@@ -1,8 +1,8 @@
-import { Router } from "express";
-import { schedulesController } from "./schedulesController";
+import { Router } from 'express';
+import { schedulesController } from './schedulesController';
 
 export const schedulesRouter: Router = Router();
 
-schedulesRouter.get("/", schedulesController.getSchedules);
+schedulesRouter.get('/', schedulesController.getSchedules);
 
-schedulesRouter.put("/:day", schedulesController.updateSchedule);
+schedulesRouter.put('/:day', schedulesController.updateSchedule);

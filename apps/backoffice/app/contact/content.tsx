@@ -1,9 +1,9 @@
 'use client';
 
+import type { Informations } from '@repo/app-types';
+import { Button, Input, Label } from '@repo/ui';
 import { Mail, MapPin, Phone, Radius } from 'lucide-react';
 import { useActionState } from 'react';
-import { Button, Input, Label } from '@repo/ui';
-import { Informations } from '@repo/app-types';
 
 const fields = [
 	{
@@ -45,20 +45,23 @@ export default function ContactContent({
 }: {
 	data: Informations | null;
 }) {
-	const [error, action, pending] = useActionState(() => {}, null);
+	const [_error, action, pending] = useActionState(() => {}, null);
 
 	return (
 		<form
 			action={action}
-			className='space-y-6'>
+			className='space-y-6'
+		>
 			<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 				{fields.map((field) => (
 					<div
 						key={field.id}
-						className='group'>
+						className='group'
+					>
 						<Label
 							htmlFor={field.id}
-							className='flex items-center gap-2 text-gray-700 mb-2'>
+							className='flex items-center gap-2 text-gray-700 mb-2'
+						>
 							<field.icon className='w-4 h-4 text-gray-500' />
 							{field.label}
 						</Label>
@@ -85,7 +88,8 @@ export default function ContactContent({
 			<div className='pt-4 border-t border-gray-200'>
 				<Button
 					type='submit'
-					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'>
+					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'
+				>
 					Enregistrer les modifications
 				</Button>
 			</div>

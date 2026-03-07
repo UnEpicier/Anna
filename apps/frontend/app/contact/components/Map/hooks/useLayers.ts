@@ -1,17 +1,17 @@
-import { useMemo } from 'react';
 import { GeoJsonLayer, ScatterplotLayer } from '@deck.gl/layers';
-import { Department } from '@repo/app-types';
+import type { Department } from '@repo/app-types';
+import { useMemo } from 'react';
 
 export default function useLayers(
 	departments: Department[] = [],
 	radius?: number,
 	longitude?: number,
-	latitude?: number,
+	latitude?: number
 ) {
 	return useMemo(() => {
 		if (departments.length > 0) {
 			const formattedDepartments = departments.map(
-				(dept) => dept.geojson,
+				(dept) => dept.geojson
 			);
 
 			return new GeoJsonLayer({

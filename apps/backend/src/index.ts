@@ -1,19 +1,21 @@
-import { env } from "@/commons/utils/envConfig";
-import app from "@/server";
+import { env } from '@/commons/utils/envConfig';
+import app from '@/server';
 
 const server = app.listen(env.PORT, () => {
 	const { NODE_ENV, PORT } = env;
-	console.info(`Server (${NODE_ENV}) running on port http://localhost:${PORT}`);
+	console.info(
+		`Server (${NODE_ENV}) running on port http://localhost:${PORT}`
+	);
 });
 
 const onCloseSignal = () => {
-	console.info("sigint received, shutting down");
+	console.info('sigint received, shutting down');
 	server.close(() => {
-		console.info("server closed");
+		console.info('server closed');
 		process.exit();
 	});
 	setTimeout(() => process.exit(1), 10000).unref(); // Force shutdown after 10s
 };
 
-process.on("SIGINT", onCloseSignal);
-process.on("SIGTERM", onCloseSignal);
+process.on('SIGINT', onCloseSignal);
+process.on('SIGTERM', onCloseSignal);

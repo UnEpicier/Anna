@@ -1,12 +1,12 @@
-import { Router } from "express";
-import { leaveController } from "./leaveController";
+import { Router } from 'express';
+import { leaveController } from './leaveController';
 
 export const leaveRouter: Router = Router();
 
-leaveRouter.get("/", leaveController.getLeave);
+leaveRouter.get('/', leaveController.getLeave);
 
-leaveRouter.post("/", leaveController.createLeave);
+leaveRouter.post('/', leaveController.createLeave);
 
-leaveRouter.put("/", leaveController.updateInformations);
+leaveRouter.put('/', leaveController.updateInformations);
 
-leaveRouter.delete("/", leaveController.deleteLeave);
+leaveRouter.delete('/', leaveController.deleteLeave);

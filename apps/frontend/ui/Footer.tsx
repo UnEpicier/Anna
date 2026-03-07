@@ -1,8 +1,8 @@
-import { Heart, Mail, Phone } from 'lucide-react';
 import { SiFacebook, SiInstagram } from '@icons-pack/react-simple-icons';
-import Link from 'next/link';
 import type { Informations, ResponseObject } from '@repo/app-types';
 import { formatPhoneNumber } from '@repo/utils';
+import { Heart, Mail, Phone } from 'lucide-react';
+import Link from 'next/link';
 
 async function getData() {
 	const infoRes = await fetch(`${process.env.API_URL}/informations`, {
@@ -23,7 +23,8 @@ export default async function Footer() {
 	return (
 		<footer
 			data-landmark-index='2'
-			className='relative bg-linear-to-b from-gray-50 to-white border-t border-border'>
+			className='relative bg-linear-to-b from-gray-50 to-white border-t border-border'
+		>
 			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16'>
 				<div className='grid grid-cols-1 md:grid-cols-3 gap-12'>
 					<div>
@@ -50,28 +51,32 @@ export default async function Footer() {
 							<li>
 								<Link
 									href='/services'
-									className='text-gray-600 hover:text-primary transition-colors hover:translate-x-1 inline-block'>
+									className='text-gray-600 hover:text-primary transition-colors hover:translate-x-1 inline-block'
+								>
 									Services & Tarifs
 								</Link>
 							</li>
 							<li>
 								<Link
 									href='/seance'
-									className='text-gray-600 hover:text-primary transition-colors hover:translate-x-1 inline-block'>
+									className='text-gray-600 hover:text-primary transition-colors hover:translate-x-1 inline-block'
+								>
 									Déroulement d&apos;une Séance
 								</Link>
 							</li>
 							<li>
 								<Link
 									href='/blog'
-									className='text-gray-600 hover:text-primary transition-colors hover:translate-x-1 inline-block'>
+									className='text-gray-600 hover:text-primary transition-colors hover:translate-x-1 inline-block'
+								>
 									Blog
 								</Link>
 							</li>
 							<li>
 								<Link
 									href='/contact'
-									className='text-gray-600 hover:text-primary transition-colors hover:translate-x-1 inline-block'>
+									className='text-gray-600 hover:text-primary transition-colors hover:translate-x-1 inline-block'
+								>
 									Contact
 								</Link>
 							</li>
@@ -84,7 +89,8 @@ export default async function Footer() {
 							<div className='space-y-4 text-gray-600'>
 								<Link
 									href={`tel:${formatPhoneNumber(data.phone)}`}
-									className='flex items-center gap-3 hover:text-primary transition-colors group'>
+									className='flex items-center gap-3 hover:text-primary transition-colors group'
+								>
 									<div className='bg-primary/10 p-2 rounded-xl group-hover:bg-primary/20 transition-colors'>
 										<Phone className='h-4 w-4 text-primary' />
 									</div>
@@ -92,7 +98,8 @@ export default async function Footer() {
 								</Link>
 								<Link
 									href={`mailto:${data.email}`}
-									className='flex items-center gap-3 hover:text-primary transition-colors group'>
+									className='flex items-center gap-3 hover:text-primary transition-colors group'
+								>
 									<div className='bg-primary/10 p-2 rounded-xl group-hover:bg-primary/20 transition-colors'>
 										<Mail className='h-4 w-4 text-primary' />
 									</div>
@@ -105,7 +112,8 @@ export default async function Footer() {
 												href={data.facebook}
 												target='_blank'
 												rel='noopener noreferrer'
-												className='bg-primary/10 p-3 rounded-xl text-primary hover:bg-primary hover:text-white transition-all hover:scale-110 shadow-sm'>
+												className='bg-primary/10 p-3 rounded-xl text-primary hover:bg-primary hover:text-white transition-all hover:scale-110 shadow-sm'
+											>
 												<SiFacebook className='h-5 w-5' />
 											</Link>
 										)}
@@ -114,7 +122,8 @@ export default async function Footer() {
 												href={data.instagram}
 												target='_blank'
 												rel='noopener noreferrer'
-												className='bg-primary/10 p-3 rounded-xl text-primary hover:bg-primary hover:text-white transition-all hover:scale-110 shadow-sm'>
+												className='bg-primary/10 p-3 rounded-xl text-primary hover:bg-primary hover:text-white transition-all hover:scale-110 shadow-sm'
+											>
 												<SiInstagram className='h-5 w-5' />
 											</Link>
 										)}
@@ -137,17 +146,20 @@ export default async function Footer() {
 						<div className='flex flex-wrap gap-6 text-sm'>
 							<Link
 								href='/legal/mentions-legales'
-								className='text-gray-600 hover:text-primary transition-colors'>
+								className='text-gray-600 hover:text-primary transition-colors'
+							>
 								Mentions Légales
 							</Link>
 							<Link
 								href='/legal/confidentialite'
-								className='text-gray-600 hover:text-primary transition-colors'>
+								className='text-gray-600 hover:text-primary transition-colors'
+							>
 								Politique de Confidentialité
 							</Link>
 							<Link
 								href='/legal/cgv'
-								className='text-gray-600 hover:text-primary transition-colors'>
+								className='text-gray-600 hover:text-primary transition-colors'
+							>
 								CGV
 							</Link>
 						</div>
