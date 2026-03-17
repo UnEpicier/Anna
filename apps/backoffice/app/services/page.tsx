@@ -1,5 +1,6 @@
 import ServicesContent from '@/app/services/content';
 import type { ResponseObject, Service } from '@repo/app-types';
+import type { Metadata } from 'next';
 
 async function getData() {
 	const res = await fetch(`${process.env.API_URL}/services`);
@@ -11,6 +12,10 @@ async function getData() {
 
 	return data.responseObject;
 }
+
+export const metadata: Metadata = {
+	title: 'Services',
+};
 
 export default async function ServicesPage() {
 	const data = await getData();

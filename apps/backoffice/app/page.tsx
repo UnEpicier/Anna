@@ -1,21 +1,14 @@
+import HomeContent from '@/app/content';
 import type {
-	BlogCategory,
-	BlogPost,
+	Informations,
 	ResponseObject,
+	Schedule,
 	Service,
 } from '@repo/app-types';
-import HomeContent from '@/app/content';
 
 async function getData() {
 	const servicesRes = await fetch(`${process.env.API_URL}/services`);
 	const services: ResponseObject<Service[]> = await servicesRes.json();
-
-	const categoriesRes = await fetch(`${process.env.API_URL}/blog/categories`);
-	const categories: ResponseObject<BlogCategory[]> =
-		await categoriesRes.json();
-
-	const postsRes = await fetch(`${process.env.API_URL}/blog/posts`);
-	const posts: ResponseObject<BlogPost[]> = await postsRes.json();
 
 	const departmentsRes = await fetch(
 		`${process.env.API_URL}/departments/actives`
@@ -23,28 +16,27 @@ async function getData() {
 	const departments: ResponseObject<{ id: string; name: string }[]> =
 		await departmentsRes.json();
 
+	const informationsRes = await fetch(`${process.env.API_URL}/informations`);
+	const informations: ResponseObject<Informations> =
+		await informationsRes.json();
+
+	const schedulesRes = await fetch(`${process.env.API_URL}/schedules`);
+	const schedules: ResponseObject<Schedule[]> = await schedulesRes.json();
+
 	return {
-		stats: {
-			services: services.success ? services.responseObject.length : 0,
-			categories: categories.success
-				? categories.responseObject.length
-				: 0,
-			posts: posts.success ? posts.responseObject.length : 0,
-			departments: departments.success
-				? departments.responseObject.length
-				: 0,
-		},
-		posts: posts.success ? posts.responseObject.slice(0, 5) : [],
+		services: services.success ? services.responseObject.length : 0,
+		departments: departments.success
+			? departments.responseObject.length
+			: 0,
+		actionRadius: informations.responseObject?.actionRadius ?? undefined,
+		openDays: schedules.success
+			? schedules.responseObject.filter((x) => x.open).length
+			: undefined,
 	};
 }
 
 export default async function Home() {
 	const data = await getData();
 
-	return (
-		<HomeContent
-			stats={data.stats}
-			posts={data.posts}
-		/>
-	);
+	return <HomeContent stats={data} />;
 }

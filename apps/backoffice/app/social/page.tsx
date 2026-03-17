@@ -1,5 +1,6 @@
-import type { Informations, ResponseObject } from '@repo/app-types';
 import SocialContent from '@/app/social/content';
+import type { Informations, ResponseObject } from '@repo/app-types';
+import type { Metadata } from 'next';
 
 async function getData() {
 	const res = await fetch(`${process.env.API_URL}/informations`);
@@ -10,6 +11,10 @@ async function getData() {
 		instagram: data.responseObject?.instagram ?? '',
 	};
 }
+
+export const metadata: Metadata = {
+	title: 'Réseaux sociaux',
+};
 
 export default async function SocialPage() {
 	const data = await getData();

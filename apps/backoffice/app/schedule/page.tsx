@@ -1,5 +1,6 @@
-import type { ResponseObject, Schedule } from '@repo/app-types';
 import ScheduleContent from '@/app/schedule/content';
+import type { ResponseObject, Schedule } from '@repo/app-types';
+import type { Metadata } from 'next';
 
 async function getData() {
 	const res = await fetch(`${process.env.API_URL}/schedules`);
@@ -15,6 +16,10 @@ async function getData() {
 		endTime: new Date(schedule.endTime),
 	}));
 }
+
+export const metadata: Metadata = {
+	title: 'Horaires',
+};
 
 export default async function SchedulePage() {
 	const data = await getData();

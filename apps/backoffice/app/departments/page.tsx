@@ -1,5 +1,6 @@
-import type { Department, ResponseObject } from '@repo/app-types';
 import DepartmentsContent from '@/app/departments/content';
+import type { Department, ResponseObject } from '@repo/app-types';
+import type { Metadata } from 'next';
 
 async function getData() {
 	const res = await fetch(`${process.env.API_URL}/departments`);
@@ -13,6 +14,10 @@ async function getData() {
 		(a, b) => parseInt(a.code) - parseInt(b.code)
 	);
 }
+
+export const metadata: Metadata = {
+	title: 'Départements',
+};
 
 export default async function DepartmentsPage() {
 	const data = await getData();
