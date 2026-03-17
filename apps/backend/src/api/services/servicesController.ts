@@ -25,7 +25,7 @@ class ServicesController {
 		req: Request,
 		res: Response
 	) => {
-		const serviceResponse = await servicesService.create(req.body);
+		const serviceResponse = await servicesService.createMany(req.body);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 
@@ -33,10 +33,7 @@ class ServicesController {
 		req: Request,
 		res: Response
 	) => {
-		const serviceResponse = await servicesService.update(
-			<string>req.params.id,
-			req.body
-		);
+		const serviceResponse = await servicesService.updateMany(req.body);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 

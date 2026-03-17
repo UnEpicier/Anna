@@ -1,5 +1,5 @@
-import type { ResponseObject, Service } from '@repo/app-types';
 import ServicesContent from '@/app/services/content';
+import type { ResponseObject, Service } from '@repo/app-types';
 
 async function getData() {
 	const res = await fetch(`${process.env.API_URL}/services`);

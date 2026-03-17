@@ -1,7 +1,8 @@
-import { type Service, ServiceSchema } from '@repo/app-types';
-import { StatusCodes } from 'http-status-codes';
 import { ServicesRepository } from '@/api/services/servicesRepository';
 import { ServiceResponse } from '@/commons/models/serviceResponse';
+import { type Service, ServiceSchema } from '@repo/app-types';
+import { StatusCodes } from 'http-status-codes';
+import z from 'zod';
 
 export class ServicesService {
 	private servicesRepository: ServicesRepository;
@@ -67,15 +68,17 @@ export class ServicesService {
 		}
 	}
 
-	async create(
-		data: Omit<Service, 'id' | 'enabled' | 'createdAt' | 'updatedAt'>
-	): Promise<ServiceResponse<Service | null>> {
-		const dataSchema = ServiceSchema.omit({
-			id: true,
-			enabled: true,
-			createdAt: true,
-			updatedAt: true,
-		});
+	async createMany(
+		data: Omit<Service, 'id' | 'enabled' | 'createdAt' | 'updatedAt'>[]
+	): Promise<ServiceResponse<Service[] | null>> {
+		const dataSchema = z.array(
+			ServiceSchema.omit({
+				id: true,
+				enabled: true,
+				createdAt: true,
+				updatedAt: true,
+			})
+		);
 
 		const validationResult = dataSchema.safeParse(data);
 		if (!validationResult.success) {
@@ -87,50 +90,57 @@ export class ServicesService {
 		}
 
 		try {
-			const newService = await this.servicesRepository.create(data);
-			return ServiceResponse.success<Service>(
-				'Service created successfully',
-				newService,
+			const newServices = await this.servicesRepository.createMany(data);
+			return ServiceResponse.success<Service[]>(
+				'Services created successfully',
+				newServices,
 				StatusCodes.CREATED
 			);
 		} catch (error) {
-			const errorMessage = `Error creating service: ${(error as Error).message}`;
+			const errorMessage = `Error creating services: ${(error as Error).message}`;
 			console.error(errorMessage);
 			return ServiceResponse.failure(
-				'An error occurred while creating service.',
+				'An error occurred while creating services.',
 				null,
 				StatusCodes.INTERNAL_SERVER_ERROR
 			);
 		}
 	}
 
-	async update(
-		id: string,
-		data: Partial<Service>
-	): Promise<ServiceResponse<Service | null>> {
+	async updateMany(
+		data: Partial<Service>[]
+	): Promise<ServiceResponse<Service[] | null>> {
 		try {
-			const parsedId = parseInt(id, 10);
-			if (!parsedId || parsedId <= 0) {
-				return ServiceResponse.failure(
-					'Invalid ID provided',
-					null,
-					StatusCodes.BAD_REQUEST
-				);
+			for (const service of data) {
+				if (!service.id) {
+					return ServiceResponse.failure(
+						'Missing service ID',
+						null,
+						StatusCodes.BAD_REQUEST
+					);
+				}
+
+				const parsedId = parseInt(`${service.id}`, 10);
+				if (!parsedId || parsedId <= 0) {
+					return ServiceResponse.failure(
+						'Invalid ID provided',
+						null,
+						StatusCodes.BAD_REQUEST
+					);
+				}
 			}
 
-			const updatedInformations = await this.servicesRepository.update(
-				parsedId,
-				data
-			);
-			return ServiceResponse.success<Service>(
-				'Service updated successfully',
-				updatedInformations
+			const updatedServices =
+				await this.servicesRepository.updateMany(data);
+			return ServiceResponse.success<Service[]>(
+				'Services updated successfully',
+				updatedServices
 			);
 		} catch (error) {
-			const errorMessage = `Error updating service: ${(error as Error).message}`;
+			const errorMessage = `Error updating services: ${(error as Error).message}`;
 			console.error(errorMessage);
 			return ServiceResponse.failure(
-				'An error occurred while updating service.',
+				'An error occurred while updating services.',
 				null,
 				StatusCodes.INTERNAL_SERVER_ERROR
 			);

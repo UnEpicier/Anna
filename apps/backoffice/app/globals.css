@@ -98,6 +98,10 @@
  * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
  */
 @layer base {
+	svg {
+		@apply stroke-[1.5];
+	}
+
 	:where(:not(:has([class*=' text-']), :not(:has([class^='text-'])))) {
 		h1 {
 			font-size: var(--text-2xl);

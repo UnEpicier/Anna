@@ -1,44 +1,167 @@
 'use client';
 
 import type { Service } from '@repo/app-types';
-import { Button, Input, Label, Switch, Textarea } from '@repo/ui';
-import * as icons from 'lucide-react';
-import { motion } from 'motion/react';
+import { Button } from '@repo/ui';
+import { Plus } from 'lucide-react';
+import { AnimatePresence } from 'motion/react';
 import { type FormEvent, useCallback, useState } from 'react';
-
-const availableIcons = Object.entries(icons)
-	.filter(
-		([key, value]) => key.endsWith('Icon') && 'displayName' in value // les composants lucide ont tous un displayName
-	)
-	.map(([key, Icon]) => ({
-		name: key.replace('Icon', ''),
-		Icon: Icon as React.FC<icons.LucideProps>,
-	}));
+import { toast } from 'sonner';
+import ServiceCard from './components/ServiceCard';
 
 export default function ServicesContent({
 	services: dbServices,
 }: {
 	services: Service[];
 }) {
-	const [services, setServices] = useState<Service[]>(dbServices);
+	const [services, setServices] = useState<Service[]>(dbServices ?? []);
 
-	const onSubmit = useCallback((e: FormEvent) => {
-		e.preventDefault();
+	const onSubmit = useCallback(
+		async (ev: FormEvent<HTMLFormElement>) => {
+			ev.preventDefault();
+			if (!ev.currentTarget.reportValidity()) return;
 
-		// Call API
-	}, []);
+			const servicesToUpdate = services
+				.filter((s) => 'toUpdate' in s)
+				.map((x) => {
+					const {
+						createdAt: _,
+						updatedAt: __,
+						toUpdate: ___,
+						...serviceData
+					} = x;
+					return serviceData;
+				});
 
-	const updateService = useCallback(
-		(index: number, field: keyof Service, value: any) => {
-			const newServices = structuredClone(services);
-			newServices[index] = {
-				...newServices[index],
-				[field]: value,
-			} as Service;
-			setServices(newServices);
+			const servicesToCreate = services
+				.filter((s) => 'toCreate' in s)
+				.map((x) => {
+					const {
+						id: ___,
+						createdAt: ____,
+						updatedAt: _____,
+						...serviceData
+					} = x;
+					return serviceData;
+				});
+
+			if (
+				servicesToUpdate.length === 0 &&
+				servicesToCreate.length === 0
+			) {
+				toast.warning('Aucun changement à enregistrer.', {
+					icon: '⚠️',
+				});
+				return;
+			}
+
+			const promises = [];
+
+			if (servicesToCreate.length > 0) {
+				const createRequest = fetch('/api/services', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(servicesToCreate),
+				});
+
+				promises.push(createRequest);
+				toast.promise(createRequest, {
+					loading: 'Création des services...',
+					success: 'Services créés avec succès !',
+					error: 'Erreur lors de la création des services.',
+				});
+			}
+
+			if (servicesToUpdate.length > 0) {
+				const updateRequest = fetch('/api/services', {
+					method: 'PUT',
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify(servicesToUpdate),
+				});
+
+				promises.push(updateRequest);
+				toast.promise(updateRequest, {
+					loading: 'Mise à jour des services...',
+					success: 'Services mis à jour avec succès !',
+					error: 'Erreur lors de la mise à jour des services.',
+				});
+			}
+
+			await Promise.all(promises);
+
+			const newServicesRequest = await fetch('/api/services');
+			const newServicesData = await newServicesRequest.json();
+
+			if (newServicesData.success) {
+				setServices(newServicesData.responseObject);
+			} else {
+				toast.error('Erreur lors du rafraîchissement des services.');
+			}
 		},
 		[services]
 	);
+
+	const updateService = useCallback(
+		(id: number, field: keyof Service, value: any) => {
+			setServices((prev) => {
+				const serviceIndex = prev.findIndex((s) => s.id === id);
+				if (serviceIndex === -1) return prev;
+
+				const updatedServices = [...prev];
+				updatedServices[serviceIndex] = {
+					...updatedServices[serviceIndex],
+					[field]: value,
+				} as Service;
+
+				const dbService = dbServices.find((s) => s.id === id);
+				if (!('new' in updatedServices[serviceIndex])) {
+					if (dbService && dbService[field] === value) {
+						// If the updated value is the same as the original, remove the toUpdate flag
+						delete (
+							updatedServices[serviceIndex] as Service & {
+								toUpdate?: boolean;
+							}
+						).toUpdate;
+					} else {
+						(
+							updatedServices[serviceIndex] as Service & {
+								toUpdate?: boolean;
+							}
+						).toUpdate = true;
+					}
+				}
+
+				return updatedServices;
+			});
+		},
+		[dbServices]
+	);
+
+	const deleteService = useCallback((id: number) => {
+		setServices((prev) => prev.filter((s) => s.id !== id));
+	}, []);
+
+	const addService = useCallback(() => {
+		const newService: Service & {
+			toCreate: boolean;
+		} = {
+			id: Date.now(), // Temporary ID, replace with real one from backend
+			title: '',
+			icon: 'Paw',
+			description: '',
+			duration: '',
+			price: 0,
+			enabled: true,
+			toCreate: true,
+			createdAt: new Date(),
+			updatedAt: new Date(),
+		};
+
+		setServices((prev) => [...prev, newService as Service]);
+	}, []);
 
 	return (
 		<form
@@ -46,138 +169,32 @@ export default function ServicesContent({
 			className='space-y-6'
 		>
 			<div className='grid gap-6'>
-				{services.map((service, index) => {
-					const Icon =
-						availableIcons.find((x) => x.name === service.icon)
-							?.Icon || icons.Dog;
-
-					return (
-						<motion.div
+				<AnimatePresence>
+					{services.map((service, index) => (
+						<ServiceCard
 							key={service.id}
-							initial={{ opacity: 0, y: 20 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ delay: index * 0.1 }}
-							className={`relative overflow-hidden bg-linear-to-br from-white to-gray-50 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 ${
-								!service.enabled ? 'opacity-60' : ''
-							}`}
-						>
-							<div className='p-6 space-y-6'>
-								{/* Header */}
-								<div className='flex items-center justify-between'>
-									<div className='flex items-center gap-3'>
-										<div className='p-3 rounded-xl bg-linear-to-br from-[#7f5539] to-[#5a3a26] text-white'>
-											<Icon className='w-5 h-5' />
-										</div>
-										<h3 className='text-xl font-bold text-gray-900'>
-											{service.title}
-										</h3>
-									</div>
-									<div className='flex items-center gap-3'>
-										<Label
-											htmlFor={`enabled-${service.id}`}
-											className='text-sm text-gray-600 cursor-pointer'
-										>
-											{service.enabled
-												? 'Activé'
-												: 'Désactivé'}
-										</Label>
-										<Switch
-											id={`enabled-${service.id}`}
-											checked={service.enabled}
-											onCheckedChange={(checked) =>
-												updateService(
-													index,
-													'enabled',
-													checked
-												)
-											}
-											className='data-[state=checked]:bg-[#7f5539]'
-										/>
-									</div>
-								</div>
+							index={index}
+							service={service}
+							updateService={updateService}
+							deleteService={deleteService}
+						/>
+					))}
+				</AnimatePresence>
 
-								{/* Form fields */}
-								<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-									<div>
-										<Label
-											htmlFor={`price-${index}`}
-											className='flex items-center gap-2 mb-2'
-										>
-											<icons.DollarSign className='w-4 h-4 text-gray-500' />
-											Prix
-										</Label>
-										<Input
-											id={`price-${index}`}
-											value={service.price}
-											onChange={(e) =>
-												updateService(
-													index,
-													'price',
-													e.target.value
-												)
-											}
-											placeholder='60€'
-											className='border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20'
-										/>
-									</div>
-
-									<div>
-										<Label
-											htmlFor={`duration-${index}`}
-											className='flex items-center gap-2 mb-2'
-										>
-											<icons.Clock className='w-4 h-4 text-gray-500' />
-											Durée
-										</Label>
-										<Input
-											id={`duration-${index}`}
-											value={service.duration}
-											onChange={(e) =>
-												updateService(
-													index,
-													'duration',
-													e.target.value
-												)
-											}
-											placeholder='45-60 min'
-											className='border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20'
-										/>
-									</div>
-								</div>
-
-								<div>
-									<Label
-										htmlFor={`description-${index}`}
-										className='flex items-center gap-2 mb-2'
-									>
-										<icons.AlignLeft className='w-4 h-4 text-gray-500' />
-										Description
-									</Label>
-									<Textarea
-										id={`description-${index}`}
-										value={service.description}
-										onChange={(e) =>
-											updateService(
-												index,
-												'description',
-												e.target.value
-											)
-										}
-										rows={3}
-										placeholder='Description du service...'
-										className='border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20 resize-none'
-									/>
-								</div>
-							</div>
-						</motion.div>
-					);
-				})}
+				<button
+					type='button'
+					className='flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 rounded-md bg-gray-100/50 hover:bg-gray-100 text-gray-500 transition-colors cursor-pointer'
+					onClick={addService}
+				>
+					<Plus />
+					Ajouter un service
+				</button>
 			</div>
 
 			<div className='pt-4 border-t border-gray-200'>
 				<Button
 					type='submit'
-					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'
+					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200 cursor-pointer'
 				>
 					Enregistrer les modifications
 				</Button>

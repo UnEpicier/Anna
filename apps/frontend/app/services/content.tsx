@@ -4,16 +4,35 @@ import type { Informations, Service } from '@repo/app-types';
 import { Button, Card, CardContent, CardHeader, CardTitle } from '@repo/ui';
 import {
 	ArrowRight,
+	Bird,
+	Bone,
 	Cat,
 	CheckCircle2,
 	Clock,
 	Dog,
+	Egg,
 	Euro,
+	Fish,
+	PawPrint,
 	Rabbit,
-	Sparkles,
+	Rat,
+	Squirrel,
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
+
+const availableIcons = Object.entries({
+	Bird,
+	Bone,
+	Cat,
+	Dog,
+	Egg,
+	Fish,
+	PawPrint,
+	Rabbit,
+	Rat,
+	Squirrel,
+}).map(([key, icon]) => ({ name: key, Icon: icon }));
 
 const containerVariants = {
 	hidden: { opacity: 0 },
@@ -34,13 +53,6 @@ const itemVariants = {
 			duration: 0.5,
 		},
 	},
-};
-
-const iconMap: Record<string, any> = {
-	Chiens: Dog,
-	Chats: Cat,
-	NAC: Rabbit,
-	Chevaux: Sparkles,
 };
 
 const indications = [
@@ -95,7 +107,10 @@ export default function ContentService({
 						className='grid grid-cols-1 md:grid-cols-2 gap-8'
 					>
 						{services.map((service, index) => {
-							const IconComponent = iconMap[service.icon] || Dog;
+							const IconComponent =
+								availableIcons.find(
+									(x) => x.name === service.icon
+								)?.Icon || PawPrint;
 
 							return (
 								<motion.div

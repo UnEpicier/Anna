@@ -13,6 +13,10 @@
 		"generate:component": "turbo gen react-component",
 		"check-types": "tsc --noEmit"
 	},
+	"peerDependencies": {
+		"react": "*",
+		"react-dom": "*"
+	},
 	"devDependencies": {
 		"@biomejs/biome": "2.4.6",
 		"@repo/typescript-config": "workspace:*",
@@ -27,8 +31,6 @@
 		"@radix-ui/react-switch": "^1.2.6",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
-		"react": "^19.2.4",
-		"react-dom": "^19.2.4",
 		"tailwind-merge": "^3.5.0",
 		"tailwindcss": "^4.2.1"
 	}

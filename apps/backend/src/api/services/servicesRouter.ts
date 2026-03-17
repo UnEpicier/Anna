@@ -9,6 +9,6 @@ servicesRouter.get('/:id', servicesController.getServiceById);
 
 servicesRouter.post('/', servicesController.createService);
 
-servicesRouter.put('/:id', servicesController.updateService);
+servicesRouter.put('/', servicesController.updateService);
 
 servicesRouter.delete('/:id', servicesController.deleteService);

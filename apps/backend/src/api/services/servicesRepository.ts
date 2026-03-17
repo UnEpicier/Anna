@@ -1,5 +1,5 @@
-import type { Service } from '@repo/app-types';
 import prisma from '@/libs/prisma';
+import type { Service } from '@repo/app-types';
 
 export const service: Service = {
 	id: 1,
@@ -40,32 +40,35 @@ export class ServicesRepository {
 		};
 	}
 
-	async create(
-		data: Omit<Service, 'id' | 'enabled' | 'createdAt' | 'updatedAt'>
-	): Promise<Service> {
-		const service = await prisma.services.create({
-			data: {
-				...data,
-			},
+	async createMany(
+		data: Omit<Service, 'id' | 'enabled' | 'createdAt' | 'updatedAt'>[]
+	): Promise<Service[]> {
+		const services = await prisma.services.createManyAndReturn({
+			data: data,
 		});
 
-		return { ...service, price: service.price.toNumber() };
-	}
-
-	async update(id: number, data: Partial<Service>): Promise<Service> {
-		const service = await prisma.services.update({
-			where: {
-				id: id,
-			},
-			data: {
-				...data,
-			},
-		});
-
-		return {
+		return services.map((service) => ({
 			...service,
 			price: service.price.toNumber(),
-		};
+		}));
+	}
+
+	async updateMany(data: Partial<Service>[]): Promise<Service[]> {
+		const services = await prisma.$transaction(
+			data.map((service) =>
+				prisma.services.update({
+					where: {
+						id: service.id,
+					},
+					data: service,
+				})
+			)
+		);
+
+		return services.map((service) => ({
+			...service,
+			price: service.price.toNumber(),
+		}));
 	}
 
 	async delete(id: number): Promise<void> {
