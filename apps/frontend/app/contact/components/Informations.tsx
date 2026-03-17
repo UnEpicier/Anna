@@ -1,7 +1,7 @@
 /** biome-ignore-all lint/style/noNonNullAssertion: we known what we are doing with this "days" array */
 import type { Informations, Schedule } from '@repo/app-types';
 import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui';
-import { capitalize, formatPhoneNumber, formatTime } from '@repo/utils';
+import { capitalize, formatPhoneNumber } from '@repo/utils';
 import { AlertCircle, Clock, Mail, MapPin, Phone } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -124,37 +124,35 @@ function SchedulesList({ schedules }: { schedules: Schedule[] }) {
 		return <p className='text-gray-600'>Aucun horaire disponible.</p>;
 	}
 
-	let sameHoursDays = 1;
+	let sameScheduleCount = 1;
 	for (let i = 1; i < schedules.length; i++) {
 		if (
-			formatTime(schedules[i]!.startTime) ===
-				formatTime(schedules[0]!.startTime) &&
-			formatTime(schedules[i]!.endTime) ===
-				formatTime(schedules[0]!.endTime) &&
+			schedules[i]!.time === schedules[0]!.time &&
+			schedules[i]!.location === schedules[0]!.location &&
 			schedules[i]!.open
 		) {
-			sameHoursDays++;
+			sameScheduleCount++;
 			continue;
 		}
 
 		break;
 	}
 
-	if (sameHoursDays === 7) {
+	if (sameScheduleCount === 7) {
 		return (
 			<p className='text-gray-600'>
-				Ouvert tous les jours de {formatTime(schedules[0]!.startTime)} à{' '}
-				{formatTime(schedules[0]!.endTime)}
+				Ouvert tous les jours {formatTime(schedules[0]!.time)}{' '}
+				{formatLocation(schedules[0]!.location)}
 			</p>
 		);
 	}
 
-	if (sameHoursDays === 6) {
+	if (sameScheduleCount === 6) {
 		return (
 			<>
 				<p className='text-gray-600'>
-					Du lundi au samedi de {formatTime(schedules[0]!.startTime)}{' '}
-					à {formatTime(schedules[0]!.endTime)}
+					Du lundi au samedi {formatTime(schedules[0]!.time)}{' '}
+					{formatLocation(schedules[0]!.location)}
 				</p>
 
 				{schedules.at(6) &&
@@ -162,24 +160,22 @@ function SchedulesList({ schedules }: { schedules: Schedule[] }) {
 						<p className='text-gray-600'>Fermé le dimanche.</p>
 					) : (
 						<p className='text-gray-600'>
-							Le dimanche de{' '}
-							{formatTime(schedules.at(6)!.startTime)} à{' '}
-							{formatTime(schedules.at(6)!.endTime)}
+							Le dimanche {formatTime(schedules.at(6)!.time)}{' '}
+							{formatLocation(schedules.at(6)!.location)}
 						</p>
 					))}
 			</>
 		);
 	}
 
-	if (sameHoursDays === 5) {
+	if (sameScheduleCount === 5) {
 		const differDays = schedules.slice(5);
 
 		return (
 			<>
 				<p className='text-gray-600'>
-					Du lundi au vendredi de{' '}
-					{formatTime(schedules[0]!.startTime)} à{' '}
-					{formatTime(schedules[0]!.endTime)}
+					Du lundi au vendredi {formatTime(schedules[0]!.time)}{' '}
+					{formatLocation(schedules[0]!.location)}
 				</p>
 
 				{differDays.every((x) => !x.open) ? (
@@ -191,7 +187,7 @@ function SchedulesList({ schedules }: { schedules: Schedule[] }) {
 							className='text-gray-600'
 						>
 							{day.open
-								? `Le ${capitalize(days[day.day]!)} de ${formatTime(day.startTime)} à ${formatTime(day.endTime)}`
+								? `Le ${capitalize(days[day.day]!)} ${formatTime(day.time)} ${formatLocation(day.location)}`
 								: `Fermé le ${capitalize(days[day.day]!)}`}
 						</p>
 					))
@@ -209,10 +205,36 @@ function SchedulesList({ schedules }: { schedules: Schedule[] }) {
 				>
 					{capitalize(days[schedule.day]!)}&nbsp;:{' '}
 					{schedule.open
-						? `de ${formatTime(schedule.startTime)} à ${formatTime(schedule.endTime)}`
+						? `${formatTime(schedule.time)} ${formatLocation(schedule.location)}`
 						: 'Fermé'}
 				</p>
 			))}
 		</div>
 	);
+}
+
+function formatTime(time: string) {
+	if (time.toLowerCase().match(/^(de|du)/i)) {
+		return time.replace(/^(de|du)/i, (match) => {
+			if (match.toLowerCase() === 'du') {
+				return 'du';
+			}
+			return 'de';
+		});
+	}
+
+	return time;
+}
+
+function formatLocation(location: string) {
+	if (location.toLowerCase().match(/^(à|au)/i)) {
+		return location.replace(/^(à|À|au)/i, (match) => {
+			if (match.toLowerCase() === 'au') {
+				return 'au';
+			}
+			return 'à';
+		});
+	}
+
+	return `à ${location}`;
 }

@@ -10,11 +10,7 @@ async function getData() {
 		return [];
 	}
 
-	return data.responseObject.map((schedule) => ({
-		...schedule,
-		startTime: new Date(schedule.startTime),
-		endTime: new Date(schedule.endTime),
-	}));
+	return data.responseObject;
 }
 
 export const metadata: Metadata = {

@@ -3,7 +3,7 @@
 import { SiFacebook, SiInstagram } from '@icons-pack/react-simple-icons';
 import { Button, Input, Label } from '@repo/ui';
 import { LoaderCircle } from 'lucide-react';
-import { type SubmitEvent, useCallback, useState } from 'react';
+import { type FormEvent, useCallback, useState } from 'react';
 import { toast } from 'sonner';
 
 export default function SocialContent({
@@ -13,7 +13,7 @@ export default function SocialContent({
 }) {
 	const [isPending, setIsPending] = useState(false);
 
-	const onSubmit = useCallback(async (ev: SubmitEvent<HTMLFormElement>) => {
+	const onSubmit = useCallback(async (ev: FormEvent<HTMLFormElement>) => {
 		ev.preventDefault();
 		const formData = new FormData(ev.currentTarget);
 		const body = {

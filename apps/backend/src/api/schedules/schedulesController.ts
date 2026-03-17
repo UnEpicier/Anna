@@ -11,11 +11,11 @@ class SchedulesController {
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 
-	public updateSchedule: RequestHandler = async (
+	public updateSchedules: RequestHandler = async (
 		req: Request,
 		res: Response
 	) => {
-		const serviceResponse = await schedulesService.update(req.body);
+		const serviceResponse = await schedulesService.updateMany(req.body);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 }

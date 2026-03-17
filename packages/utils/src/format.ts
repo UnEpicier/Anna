@@ -42,11 +42,3 @@ export function capitalize(text: string): string {
 	if (text.length === 0) return text;
 	return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
 }
-
-export function formatTime(date: Date | string): string {
-	const dateObj = new Date(date);
-
-	const hours = dateObj.getHours().toString().padStart(2, '0');
-	const minutes = dateObj.getMinutes().toString().padStart(2, '0');
-	return `${hours}:${minutes}`;
-}

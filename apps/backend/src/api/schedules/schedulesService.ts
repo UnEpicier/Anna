@@ -22,7 +22,7 @@ export class SchedulesService {
 
 	async findAll(): Promise<ServiceResponse<Schedule[] | null>> {
 		try {
-			const schedules = await this.schedulesRepository.findAllAsync();
+			const schedules = await this.schedulesRepository.findAll();
 			if (!schedules) {
 				return ServiceResponse.failure(
 					'No schedules found',
@@ -45,18 +45,23 @@ export class SchedulesService {
 		}
 	}
 
-	async update(data: Schedule[]): Promise<ServiceResponse<Schedule | null>> {
+	async updateMany(
+		data: Schedule[]
+	): Promise<ServiceResponse<Schedule[] | null>> {
 		try {
 			for (const schedule of data) {
-				if (!days.includes(schedule.day)) continue;
-
-				await this.schedulesRepository.updateAsync(
-					schedule.day,
-					schedule
-				);
+				if (!days.includes(schedule.day)) {
+					return ServiceResponse.failure(
+						'Unknown day provided',
+						null,
+						StatusCodes.BAD_REQUEST
+					);
+				}
 			}
 
-			const newSchedules = await this.schedulesRepository.findAllAsync();
+			await this.schedulesRepository.updateMany(data);
+
+			const newSchedules = await this.schedulesRepository.findAll();
 			return ServiceResponse.success<Schedule[]>(
 				'Schedule updated successfully',
 				newSchedules

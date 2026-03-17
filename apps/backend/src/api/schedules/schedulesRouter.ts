@@ -5,4 +5,4 @@ export const schedulesRouter: Router = Router();
 
 schedulesRouter.get('/', schedulesController.getSchedules);
 
-schedulesRouter.put('/', schedulesController.updateSchedule);
+schedulesRouter.put('/', schedulesController.updateSchedules);

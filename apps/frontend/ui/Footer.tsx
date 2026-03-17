@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 async function getData() {
 	const infoRes = await fetch(`${process.env.API_URL}/informations`, {
-		next: { revalidate: 60 },
+		cache: 'no-cache',
 	});
 	const infoResponseData: ResponseObject<Informations> = await infoRes.json();
 
