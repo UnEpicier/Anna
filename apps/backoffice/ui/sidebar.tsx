@@ -4,8 +4,6 @@ import { useMediaQuery } from '@repo/ui';
 import {
 	Briefcase,
 	Clock,
-	FileText,
-	FolderTree,
 	Home,
 	LogOut,
 	MapPin,
@@ -65,18 +63,6 @@ const navItems = [
 		label: 'Services',
 		icon: Briefcase,
 		path: '/services',
-	},
-	{
-		id: 'categories' as Section,
-		label: 'Catégories',
-		icon: FolderTree,
-		path: '/categories',
-	},
-	{
-		id: 'articles' as Section,
-		label: 'Articles',
-		icon: FileText,
-		path: '/articles',
 	},
 ];
 

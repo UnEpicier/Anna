@@ -116,28 +116,18 @@ export default function ServicesContent({
 					[field]: value,
 				} as Service;
 
-				const dbService = dbServices.find((s) => s.id === id);
 				if (!('new' in updatedServices[serviceIndex])) {
-					if (dbService && dbService[field] === value) {
-						// If the updated value is the same as the original, remove the toUpdate flag
-						delete (
-							updatedServices[serviceIndex] as Service & {
-								toUpdate?: boolean;
-							}
-						).toUpdate;
-					} else {
-						(
-							updatedServices[serviceIndex] as Service & {
-								toUpdate?: boolean;
-							}
-						).toUpdate = true;
-					}
+					(
+						updatedServices[serviceIndex] as Service & {
+							toUpdate?: boolean;
+						}
+					).toUpdate = true;
 				}
 
 				return updatedServices;
 			});
 		},
-		[dbServices]
+		[]
 	);
 
 	const deleteService = useCallback((id: number) => {

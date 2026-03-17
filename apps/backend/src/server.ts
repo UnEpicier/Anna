@@ -1,9 +1,4 @@
-import cors from 'cors';
-import express, { type Express } from 'express';
-import helmet from 'helmet';
-import morgan from 'morgan';
 import { authRouter } from '@/api/auth/authRouter';
-import { blogRouter } from '@/api/blog/blogRouter';
 import { departmentsRouter } from '@/api/departments/departmentsRouter';
 import { healthCheckRouter } from '@/api/healthCheck/healthCheckRouter';
 import { informationsRouter } from '@/api/informations/informationsRouter';
@@ -16,6 +11,10 @@ import { env } from '@/commons/utils/envConfig';
 import { initBucket } from '@/libs/bucket';
 import { testDBConnection } from '@/libs/prisma';
 import { testRedisConnection } from '@/libs/redis';
+import cors from 'cors';
+import express, { type Express } from 'express';
+import helmet from 'helmet';
+import morgan from 'morgan';
 
 await testDBConnection();
 await testRedisConnection();
@@ -36,7 +35,6 @@ app.use(morgan(env.isProduction ? 'combined' : 'dev'));
 
 // Routes
 app.use('/auth', authRouter);
-app.use('/blog', blogRouter);
 app.use('/departments', departmentsRouter);
 app.use('/health-check', healthCheckRouter);
 app.use('/informations', informationsRouter);

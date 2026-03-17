@@ -1,7 +1,6 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { exit } from 'node:process';
 import prisma from '../src/libs/prisma.js';
-import { categories, posts } from './data/blog.js';
 import { informations } from './data/informations.js';
 import { leave } from './data/leave.js';
 import { schedules } from './data/schedules.js';
@@ -60,34 +59,6 @@ async function main() {
 		update: {},
 		create: restLeave,
 	});
-
-	for (const category of categories) {
-		const { id: categoryId, ...restCategory } = category;
-		await prisma.blogCategories.upsert({
-			where: { id: categoryId },
-			update: {},
-			create: {
-				...restCategory,
-				posts: undefined,
-			},
-		});
-	}
-
-	for (const post of posts) {
-		const { id: postId, categories, ...restPost } = post;
-		await prisma.blogPosts.upsert({
-			where: { id: postId },
-			update: {},
-			create: {
-				...restPost,
-				categories: {
-					connect: (categories ?? []).map((category) => ({
-						id: category.id,
-					})),
-				},
-			},
-		});
-	}
 }
 
 (async () => {
