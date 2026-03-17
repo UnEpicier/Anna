@@ -4,6 +4,7 @@ import type { Informations } from '@repo/app-types';
 import { Button, Input, Label } from '@repo/ui';
 import { LoaderCircle, Mail, MapPin, Phone, Radius } from 'lucide-react';
 import { type FormEvent, useCallback, useState } from 'react';
+import { toast } from 'sonner';
 
 const fields = [
 	{
@@ -46,58 +47,38 @@ export default function ContactContent({
 	data: Informations | null;
 }) {
 	const [isPending, setIsPending] = useState<boolean>(false);
-	const [message, setMessage] = useState<{
-		type: 'success' | 'error';
-		text: string;
-	} | null>(null);
 
 	const onSubmit = useCallback(async (ev: FormEvent<HTMLFormElement>) => {
 		ev.preventDefault();
 		const formData = new FormData(ev.currentTarget);
 
 		setIsPending(true);
-		setMessage(null);
 
-		try {
-			const body: Record<string, any> = {};
+		const body: Record<string, any> = {};
 
-			for (const [key, value] of formData.entries()) {
-				if (key === 'actionRadius') {
-					body[key] = Number(value);
-					continue;
-				}
-
-				body[key] = value;
+		for (const [key, value] of formData.entries()) {
+			if (key === 'actionRadius') {
+				body[key] = Number(value);
+				continue;
 			}
 
-			const res = await fetch('/api/informations', {
-				method: 'PUT',
-				body: JSON.stringify(body),
-			});
-
-			const data = await res.json();
-
-			if (data.success) {
-				setMessage({
-					type: 'success',
-					text: 'Informations mises à jour avec succès',
-				});
-				return;
-			}
-
-			setMessage({
-				type: 'error',
-				text: 'Impossible de sauvegarder les modifications',
-			});
-		} catch (error) {
-			console.error(error);
-			setMessage({
-				type: 'error',
-				text: 'Impossible de sauvegarder les modifications',
-			});
-		} finally {
-			setIsPending(false);
+			body[key] = value;
 		}
+
+		const promise = fetch('/api/informations', {
+			method: 'PUT',
+			body: JSON.stringify(body),
+		});
+
+		await toast
+			.promise(promise, {
+				loading: 'Enregistrement en cours...',
+				success: 'Informations mises à jour avec succès',
+				error: 'Impossible de sauvegarder les modifications',
+			})
+			.unwrap();
+
+		setIsPending(false);
 	}, []);
 
 	return (
@@ -140,14 +121,6 @@ export default function ContactContent({
 			</div>
 
 			<div className='pt-4 border-t border-gray-200'>
-				{message && (
-					<p
-						className={`text-sm mb-4 ${message.type === 'error' ? 'text-red-600' : 'text-green-600'}`}
-					>
-						{message.text}
-					</p>
-				)}
-
 				<Button
 					type='submit'
 					disabled={isPending}

@@ -1,8 +1,10 @@
 'use client';
 
+import { SiFacebook, SiInstagram } from '@icons-pack/react-simple-icons';
 import { Button, Input, Label } from '@repo/ui';
-import { Facebook, Instagram, LoaderCircle } from 'lucide-react';
-import { type FormEvent, useCallback, useState } from 'react';
+import { LoaderCircle } from 'lucide-react';
+import { type SubmitEvent, useCallback, useState } from 'react';
+import { toast } from 'sonner';
 
 export default function SocialContent({
 	socials,
@@ -10,12 +12,8 @@ export default function SocialContent({
 	socials: { facebook: string; instagram: string };
 }) {
 	const [isPending, setIsPending] = useState(false);
-	const [message, setMessage] = useState<{
-		type: 'success' | 'error';
-		text: string;
-	} | null>(null);
 
-	const onSubmit = useCallback(async (ev: FormEvent<HTMLFormElement>) => {
+	const onSubmit = useCallback(async (ev: SubmitEvent<HTMLFormElement>) => {
 		ev.preventDefault();
 		const formData = new FormData(ev.currentTarget);
 		const body = {
@@ -24,34 +22,24 @@ export default function SocialContent({
 		};
 
 		setIsPending(true);
-		setMessage(null);
 
-		try {
-			const res = await fetch(`/api/informations`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(body),
-			});
+		const promise = fetch(`/api/informations`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(body),
+		});
 
-			if (!res.ok) {
-				throw new Error('Failed to update socials');
-			}
+		await toast
+			.promise(promise, {
+				loading: 'Enregistrement en cours...',
+				success: 'Informations mises à jour avec succès !',
+				error: 'Une erreur est survenue lors de la mise à jour.',
+			})
+			.unwrap();
 
-			setMessage({
-				type: 'success',
-				text: 'Les modifications ont été enregistrées avec succès.',
-			});
-		} catch (error) {
-			console.error(error);
-			setMessage({
-				type: 'error',
-				text: "Une erreur est survenue lors de l'enregistrement des modifications.",
-			});
-		} finally {
-			setIsPending(false);
-		}
+		setIsPending(false);
 	}, []);
 
 	return (
@@ -69,7 +57,7 @@ export default function SocialContent({
 							className='flex items-center gap-3 mb-4 cursor-pointer'
 						>
 							<div className='p-3 rounded-xl bg-linear-to-br from-blue-500 to-blue-600 text-white shadow-lg'>
-								<Facebook className='w-5 h-5' />
+								<SiFacebook className='w-5 h-5' />
 							</div>
 							<span className='text-lg font-semibold text-gray-900'>
 								Facebook
@@ -97,7 +85,7 @@ export default function SocialContent({
 							className='flex items-center gap-3 mb-4 cursor-pointer'
 						>
 							<div className='p-3 rounded-xl bg-linear-to-br from-pink-500 to-purple-600 text-white shadow-lg'>
-								<Instagram className='w-5 h-5' />
+								<SiInstagram className='w-5 h-5' />
 							</div>
 							<span className='text-lg font-semibold text-gray-900'>
 								Instagram
@@ -127,14 +115,6 @@ export default function SocialContent({
 			</div>
 
 			<div className='pt-4 border-t border-gray-200'>
-				{message && (
-					<p
-						className={`text-sm mb-4 ${message.type === 'error' ? 'text-red-600' : 'text-green-600'}`}
-					>
-						{message.text}
-					</p>
-				)}
-
 				<Button
 					type='submit'
 					disabled={isPending}

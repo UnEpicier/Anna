@@ -5,6 +5,7 @@ import { Badge, Button, Input } from '@repo/ui';
 import { LoaderCircle, MapPin, Search, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { type FormEvent, useCallback, useMemo, useState } from 'react';
+import { toast } from 'sonner';
 
 export default function DepartmentsContent({
 	departments,
@@ -40,48 +41,29 @@ export default function DepartmentsContent({
 	);
 
 	const [isPending, setIsPending] = useState(false);
-	const [message, setMessage] = useState<{
-		type: 'success' | 'error';
-		text: string;
-	} | null>(null);
 
 	const onSubmit = useCallback(
 		async (ev: FormEvent<HTMLFormElement>) => {
 			ev.preventDefault();
 			setIsPending(true);
-			setMessage(null);
 
-			try {
-				const res = await fetch(`/api/departments`, {
-					method: 'PUT',
-					headers: {
-						'Content-Type': 'application/json',
-					},
-					body: JSON.stringify(selectedDepartments),
-				});
+			const promise = fetch(`/api/departments`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(selectedDepartments),
+			});
 
-				const data = await res.json();
+			await toast
+				.promise(promise, {
+					loading: 'Enregistrement en cours...',
+					success: 'Départements mis à jour avec succès.',
+					error: 'Une erreur est survenue lors de la mise à jour.',
+				})
+				.unwrap();
 
-				if (data.success) {
-					setMessage({
-						type: 'success',
-						text: 'Départements mis à jour avec succès.',
-					});
-				} else {
-					setMessage({
-						type: 'error',
-						text: data.message || 'Une erreur est survenue.',
-					});
-				}
-			} catch (error) {
-				console.error(error);
-				setMessage({
-					type: 'error',
-					text: 'Une erreur est survenue lors de la mise à jour.',
-				});
-			} finally {
-				setIsPending(false);
-			}
+			setIsPending(false);
 		},
 		[selectedDepartments]
 	);
@@ -225,14 +207,6 @@ export default function DepartmentsContent({
 			</div>
 
 			<div className='pt-4 border-t border-gray-200'>
-				{message && (
-					<p
-						className={`text-sm mb-4 ${message.type === 'error' ? 'text-red-600' : 'text-green-600'}`}
-					>
-						{message.text}
-					</p>
-				)}
-
 				<Button
 					type='submit'
 					disabled={isPending}
