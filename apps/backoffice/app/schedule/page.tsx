@@ -2,6 +2,8 @@ import ScheduleContent from '@/app/schedule/content';
 import type { ResponseObject, Schedule } from '@repo/app-types';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+
 async function getData() {
 	const res = await fetch(`${process.env.API_URL}/schedules`);
 	const data: ResponseObject<Schedule[]> = await res.json();

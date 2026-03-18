@@ -22,6 +22,39 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis:8-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/db
+      REDIS_HOST: localhost
+      REDIS_PORT: "6379"
+      NODE_ENV: production
+      PORT: "8080"
+      CORS_ORIGIN: http://localhost:3000
+      COMMON_RATE_LIMIT_WINDOW_MS: "900000"
+      COMMON_RATE_LIMIT_MAX_REQUESTS: "10000"
+      API_URL: http://localhost:8080
     steps:
       - uses: actions/checkout@v4
 
@@ -35,19 +68,40 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Build internal packages
+        run: pnpm turbo run build --filter=@repo/app-types --filter=@repo/utils
+
+      - name: Generate Prisma client
+        working-directory: apps/backend
+        run: pnpm exec prisma generate
+
+      - name: Build backend
+        working-directory: apps/backend
+        run: pnpm run build
+
+      - name: Apply migrations
+        working-directory: apps/backend
+        run: pnpm exec prisma migrate deploy
+
+      - name: Seed database
+        working-directory: apps/backend
+        run: pnpm exec prisma db seed
+
       - name: Build frontend
         working-directory: apps/frontend
         run: pnpm build
         env:
           NEXT_PUBLIC_MAPTILER_API_KEY: ${{ secrets.NEXT_PUBLIC_MAPTILER_API_KEY }}
-          API_URL: http://localhost:8080
 
       - name: Build backoffice
         working-directory: apps/backoffice
         run: pnpm build
         env:
           NEXT_PUBLIC_MAPTILER_API_KEY: ${{ secrets.NEXT_PUBLIC_MAPTILER_API_KEY }}
-          API_URL: http://localhost:8080
+
+      - name: Start backend
+        working-directory: apps/backend
+        run: node dist/index.js &
 
       - name: Start frontend server
         working-directory: apps/frontend
@@ -59,8 +113,9 @@ jobs:
 
       - name: Wait for servers to be ready
         run: |
-          timeout 60 bash -c 'until curl -sf http://localhost:3000 > /dev/null; do sleep 2; done'
-          timeout 60 bash -c 'until curl -sf http://localhost:3001 > /dev/null; do sleep 2; done'
+          timeout 60 bash -c 'until curl -s http://localhost:8080/health-check > /dev/null; do sleep 2; done'
+          timeout 60 bash -c 'until curl -s http://localhost:3000 > /dev/null; do sleep 2; done'
+          timeout 60 bash -c 'until curl -s http://localhost:3001 > /dev/null; do sleep 2; done'
 
       - name: Create reports directory
         run: mkdir -p lighthouse-reports

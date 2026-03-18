@@ -1,4 +1,7 @@
 import HomeContent from '@/app/content';
+
+export const dynamic = 'force-dynamic';
+
 import type {
 	Informations,
 	ResponseObject,

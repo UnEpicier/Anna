@@ -2,6 +2,8 @@ import DepartmentsContent from '@/app/departments/content';
 import type { Department, ResponseObject } from '@repo/app-types';
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+
 async function getData() {
 	const res = await fetch(`${process.env.API_URL}/departments`);
 	const data: ResponseObject<Department[]> = await res.json();

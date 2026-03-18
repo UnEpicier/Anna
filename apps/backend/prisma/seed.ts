@@ -60,6 +60,10 @@ async function main() {
 		update: restLeave,
 		create: { id: leaveId, ...restLeave },
 	});
+
+	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Services"', 'id'), (SELECT MAX(id) FROM "Services"))`;
+	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Informations"', 'id'), (SELECT MAX(id) FROM "Informations"))`;
+	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Leave"', 'id'), (SELECT MAX(id) FROM "Leave"))`;
 }
 
 (async () => {
