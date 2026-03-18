@@ -20,5 +20,15 @@ export const metadata: Metadata = {
 export default async function ContactPage() {
 	const data = await getData();
 
+	if (!data) {
+		return (
+			<div className='flex items-center justify-center h-screen'>
+				<p className='text-gray-600 text-lg'>
+					Impossible de charger les informations
+				</p>
+			</div>
+		);
+	}
+
 	return <ContactContent data={data} />;
 }

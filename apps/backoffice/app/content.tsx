@@ -1,7 +1,8 @@
 'use client';
 
-import { Briefcase, FileText, MapPin, Radius } from 'lucide-react';
+import { Briefcase, Clock, MapPin, Radius } from 'lucide-react';
 import { motion } from 'motion/react';
+import Link from 'next/link';
 
 type HomeContentProps = {
 	stats: {
@@ -48,7 +49,7 @@ export default function HomeContent({ stats }: HomeContentProps) {
 					<div className='relative'>
 						<div className='flex items-center justify-between mb-4'>
 							<div className='p-3 rounded-xl bg-linear-to-br from-purple-500 to-pink-500'>
-								<FileText className='w-6 h-6 text-white' />
+								<Clock className='w-6 h-6 text-white' />
 							</div>
 						</div>
 						<div className='text-3xl font-bold text-gray-900 mb-1'>
@@ -104,6 +105,54 @@ export default function HomeContent({ stats }: HomeContentProps) {
 							Départements
 						</div>
 					</div>
+				</motion.div>
+			</div>
+
+			<div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+				<motion.div
+					initial={{ opacity: 0, y: 20 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ delay: 0.2 }}
+				>
+					<Link
+						href='/services'
+						className='flex items-center gap-4 p-4 rounded-xl bg-linear-to-br from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100 transition-colors duration-300 group'
+					>
+						<div className='p-3 rounded-lg bg-linear-to-br from-blue-500 to-cyan-500 text-white'>
+							<Briefcase />
+						</div>
+						<div className='text-left'>
+							<div className='font-semibold text-gray-900 group-hover:text-blue-600 transition-colors'>
+								Gérer les services
+							</div>
+							<div className='text-sm text-gray-600'>
+								Modifier les tarifs et descriptions
+							</div>
+						</div>
+					</Link>
+				</motion.div>
+
+				<motion.div
+					initial={{ opacity: 0, y: 20 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ delay: 0.4 }}
+				>
+					<Link
+						href='/schedule'
+						className='flex items-center gap-4 p-4 rounded-xl bg-linear-to-br from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 transition-colors duration-300 group'
+					>
+						<div className='p-3 rounded-lg bg-linear-to-br from-purple-500 to-pink-500 text-white'>
+							<Clock />
+						</div>
+						<div className='text-left'>
+							<div className='font-semibold text-gray-900 group-hover:text-purple-600 transition-colors'>
+								Gérer les horaires
+							</div>
+							<div className='text-sm text-gray-600'>
+								Modifier les jours et heures d&apos;ouverture
+							</div>
+						</div>
+					</Link>
 				</motion.div>
 			</div>
 

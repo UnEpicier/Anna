@@ -1,8 +1,8 @@
+import { InformationsRepository } from '@/api/informations/informationsRepository';
+import { InformationsService } from '@/api/informations/informationsService';
 import type { Informations } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 import type { Mock } from 'vitest';
-import { InformationsRepository } from '@/api/informations/informationsRepository';
-import { InformationsService } from '@/api/informations/informationsService';
 
 vi.mock('@/api/informations/informationsRepository');
 
