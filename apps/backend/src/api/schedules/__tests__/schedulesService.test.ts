@@ -23,7 +23,7 @@ describe('schedulesService', () => {
 	describe('findAll', () => {
 		it('return schedules', async () => {
 			// Arrange
-			(schedulesRepositoryInstance.findAllAsync as Mock).mockReturnValue([
+			(schedulesRepositoryInstance.findAll as Mock).mockReturnValue([
 				mockSchedule,
 			]);
 
@@ -39,9 +39,7 @@ describe('schedulesService', () => {
 
 		it('returns a not found error for no schedules found', async () => {
 			// Arrange
-			(schedulesRepositoryInstance.findAllAsync as Mock).mockReturnValue(
-				null
-			);
+			(schedulesRepositoryInstance.findAll as Mock).mockReturnValue(null);
 
 			// Act
 			const result = await schedulesServiceInstance.findAll();
@@ -53,11 +51,11 @@ describe('schedulesService', () => {
 			expect(result.responseObject).toBeNull();
 		});
 
-		it('handles errors for findAllAsync', async () => {
+		it('handles errors for findAll', async () => {
 			// Arrange
-			(
-				schedulesRepositoryInstance.findAllAsync as Mock
-			).mockRejectedValue(new Error('Database error'));
+			(schedulesRepositoryInstance.findAll as Mock).mockRejectedValue(
+				new Error('Database error')
+			);
 
 			// Act
 			const result = await schedulesServiceInstance.findAll();
@@ -74,42 +72,57 @@ describe('schedulesService', () => {
 		});
 	});
 
-	describe('update', () => {
-		it('updates and returns the schedule', async () => {
+	describe('updateMany', () => {
+		it('updates and returns all schedules', async () => {
 			// Arrange
-			const updateData: Partial<Schedule> = { open: false };
-			const updatedInformations: Schedule = {
-				...mockSchedule,
-				...updateData,
-			};
-			(schedulesRepositoryInstance.updateAsync as Mock).mockReturnValue(
-				updatedInformations
+			const updateData: Schedule = { ...mockSchedule, open: false };
+			const updatedSchedules: Schedule[] = [
+				updateData,
+				...mockSchedules.slice(1),
+			];
+			(
+				schedulesRepositoryInstance.updateMany as Mock
+			).mockResolvedValue(undefined);
+			(schedulesRepositoryInstance.findAll as Mock).mockReturnValue(
+				updatedSchedules
 			);
 
 			// Act
-			const result = await schedulesServiceInstance.update([
-				updatedInformations,
+			const result = await schedulesServiceInstance.updateMany([
+				updateData,
 			]);
 
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.OK);
 			expect(result.success).toBeTruthy();
 			expect(result.message).toEqual('Schedule updated successfully');
-			expect(result.responseObject).toEqual(updatedInformations);
+			expect(result.responseObject).toEqual(updatedSchedules);
 		});
 
-		it('handles errors for updateAsync', async () => {
+		it('returns 400 for unknown day', async () => {
 			// Arrange
-			const updateData: Schedule = {
-				...mockSchedule,
-				open: false,
-			};
-			(schedulesRepositoryInstance.updateAsync as Mock).mockRejectedValue(
-				new Error('Database error')
-			);
+			const invalidSchedule = { ...mockSchedule, day: 'funday' };
 
 			// Act
-			const result = await schedulesServiceInstance.update([updateData]);
+			const result =
+				await schedulesServiceInstance.updateMany([invalidSchedule]);
+
+			// Assert
+			expect(result.statusCode).toEqual(StatusCodes.BAD_REQUEST);
+			expect(result.success).toBeFalsy();
+			expect(result.message).toEqual('Unknown day provided');
+			expect(result.responseObject).toBeNull();
+		});
+
+		it('handles errors for updateMany', async () => {
+			// Arrange
+			(
+				schedulesRepositoryInstance.updateMany as Mock
+			).mockRejectedValue(new Error('Database error'));
+
+			// Act
+			const result =
+				await schedulesServiceInstance.updateMany([mockSchedule]);
 
 			// Assert
 			expect(result.statusCode).toEqual(

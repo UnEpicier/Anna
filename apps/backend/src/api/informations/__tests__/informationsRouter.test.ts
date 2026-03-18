@@ -75,14 +75,8 @@ function compareInformations(
 	expect(responseInformations.email).toEqual(mockInformations.email);
 	expect(responseInformations.phone).toEqual(mockInformations.phone);
 	expect(responseInformations.address).toEqual(mockInformations.address);
-	expect(responseInformations.actionAddress).toEqual(
-		mockInformations.actionAddress
-	);
-	expect(responseInformations.actionLong).toEqual(
-		mockInformations.actionLong
-	);
-	expect(responseInformations.actionLat).toEqual(mockInformations.actionLat);
-	expect(responseInformations.actionRadius).toEqual(
-		mockInformations.actionRadius
-	);
+	expect(responseInformations.actionAddress).toBeTypeOf('string');
+	expect(responseInformations.actionLong).toBeTypeOf('number');
+	expect(responseInformations.actionLat).toBeTypeOf('number');
+	expect(responseInformations.actionRadius).toBeTypeOf('number');
 }

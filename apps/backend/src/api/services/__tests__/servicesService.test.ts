@@ -105,6 +105,17 @@ describe('servicesService', () => {
 			expect(result.responseObject).toBeNull();
 		});
 
+		it('returns 400 for invalid id', async () => {
+			// Act
+			const result = await servicesServiceInstance.find('invalid');
+
+			// Assert
+			expect(result.statusCode).toEqual(StatusCodes.BAD_REQUEST);
+			expect(result.success).toBeFalsy();
+			expect(result.message).toEqual('Invalid ID provided');
+			expect(result.responseObject).toBeNull();
+		});
+
 		it('handles errors for find', async () => {
 			// Arrange
 			(servicesRepositoryInstance.findById as Mock).mockRejectedValue(
@@ -126,55 +137,79 @@ describe('servicesService', () => {
 		});
 	});
 
-	describe('create', () => {
-		it('creates and returns the service', async () => {
+	describe('createMany', () => {
+		it('creates and returns services', async () => {
 			// Arrange
-			const serviceData: Omit<Service, 'id' | 'createdAt' | 'updatedAt'> =
-				{
-					title: 'New Service',
-					icon: 'new-icon',
-					price: 50,
-					duration: '30min',
-					description: 'A description for the new service',
-					enabled: true,
-				};
+			const serviceData: Omit<
+				Service,
+				'id' | 'enabled' | 'createdAt' | 'updatedAt'
+			> = {
+				title: 'New Service',
+				icon: 'new-icon',
+				price: 50,
+				duration: '30min',
+				description: 'A description for the new service',
+			};
 			const createdService: Service = {
 				id: 2,
 				...serviceData,
+				enabled: true,
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			};
-			(servicesRepositoryInstance.create as Mock).mockReturnValue(
-				createdService
-			);
+			(servicesRepositoryInstance.createMany as Mock).mockReturnValue([
+				createdService,
+			]);
 
 			// Act
-			const result = await servicesServiceInstance.create(serviceData);
+			const result = await servicesServiceInstance.createMany([
+				serviceData,
+			]);
 
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.CREATED);
 			expect(result.success).toBeTruthy();
-			expect(result.message).toEqual('Service created successfully');
-			expect(result.responseObject).toEqual(createdService);
+			expect(result.message).toEqual('Services created successfully');
+			expect(result.responseObject).toEqual([createdService]);
 		});
 
-		it('handles errors for create', async () => {
+		it('returns 400 for missing required fields', async () => {
 			// Arrange
-			const serviceData: Omit<Service, 'id' | 'createdAt' | 'updatedAt'> =
-				{
-					title: 'New Service',
-					icon: 'new-icon',
-					price: 50,
-					duration: '30min',
-					description: 'A description for the new service',
-					enabled: true,
-				};
-			(servicesRepositoryInstance.create as Mock).mockRejectedValue(
+			const invalidData = [{ icon: 'icon', price: 50 }] as unknown as Omit<
+				Service,
+				'id' | 'enabled' | 'createdAt' | 'updatedAt'
+			>[];
+
+			// Act
+			const result = await servicesServiceInstance.createMany(invalidData);
+
+			// Assert
+			expect(result.statusCode).toEqual(StatusCodes.BAD_REQUEST);
+			expect(result.success).toBeFalsy();
+			expect(result.message).toEqual('Missing required fields');
+			expect(result.responseObject).toBeNull();
+		});
+
+		it('handles errors for createMany', async () => {
+			// Arrange
+			const serviceData: Omit<
+				Service,
+				'id' | 'enabled' | 'createdAt' | 'updatedAt'
+			> = {
+				title: 'New Service',
+				icon: 'new-icon',
+				price: 50,
+				duration: '30min',
+				description: 'A description for the new service',
+			};
+			(servicesRepositoryInstance.createMany as Mock).mockRejectedValue(
 				new Error('Database error')
 			);
 
 			// Act
-			const result = await servicesServiceInstance.create(serviceData);
+			const result = await servicesServiceInstance.createMany([
+				serviceData,
+			]);
 
 			// Assert
 			expect(result.statusCode).toEqual(
@@ -182,46 +217,72 @@ describe('servicesService', () => {
 			);
 			expect(result.success).toBeFalsy();
 			expect(result.message).toEqual(
-				'An error occurred while creating service.'
+				'An error occurred while creating services.'
 			);
 			expect(result.responseObject).toBeNull();
 		});
 	});
 
-	describe('update', () => {
-		it('updates and returns the service', async () => {
+	describe('updateMany', () => {
+		it('updates and returns services', async () => {
 			// Arrange
-			const updateData: Partial<Service> = { enabled: false };
+			const updateData: Partial<Service> = {
+				id: mockService.id,
+				enabled: false,
+			};
 			const updatedService: Service = { ...mockService, ...updateData };
-			(servicesRepositoryInstance.update as Mock).mockReturnValue(
-				updatedService
-			);
+			(servicesRepositoryInstance.updateMany as Mock).mockReturnValue([
+				updatedService,
+			]);
 
 			// Act
-			const result = await servicesServiceInstance.update(
-				`${mockService.id}`,
-				updateData
-			);
+			const result = await servicesServiceInstance.updateMany([
+				updateData,
+			]);
 
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.OK);
 			expect(result.success).toBeTruthy();
-			expect(result.message).toEqual('Service updated successfully');
-			expect(result.responseObject).toEqual(updatedService);
+			expect(result.message).toEqual('Services updated successfully');
+			expect(result.responseObject).toEqual([updatedService]);
 		});
 
-		it('handles errors for update', async () => {
+		it('returns 400 for missing service ID', async () => {
+			// Act
+			const result = await servicesServiceInstance.updateMany([
+				{ title: 'No ID' },
+			]);
+
+			// Assert
+			expect(result.statusCode).toEqual(StatusCodes.BAD_REQUEST);
+			expect(result.success).toBeFalsy();
+			expect(result.message).toEqual('Missing service ID');
+			expect(result.responseObject).toBeNull();
+		});
+
+		it('returns 400 for invalid service ID', async () => {
+			// Act
+			const result = await servicesServiceInstance.updateMany([
+				{ id: 'invalid' as unknown as number },
+			]);
+
+			// Assert
+			expect(result.statusCode).toEqual(StatusCodes.BAD_REQUEST);
+			expect(result.success).toBeFalsy();
+			expect(result.message).toEqual('Invalid ID provided');
+			expect(result.responseObject).toBeNull();
+		});
+
+		it('handles errors for updateMany', async () => {
 			// Arrange
-			const updateData: Partial<Service> = { enabled: false };
-			(servicesRepositoryInstance.update as Mock).mockRejectedValue(
+			(servicesRepositoryInstance.updateMany as Mock).mockRejectedValue(
 				new Error('Database error')
 			);
 
 			// Act
-			const result = await servicesServiceInstance.update(
-				'1',
-				updateData
-			);
+			const result = await servicesServiceInstance.updateMany([
+				{ id: mockService.id },
+			]);
 
 			// Assert
 			expect(result.statusCode).toEqual(
@@ -229,7 +290,7 @@ describe('servicesService', () => {
 			);
 			expect(result.success).toBeFalsy();
 			expect(result.message).toEqual(
-				'An error occurred while updating service.'
+				'An error occurred while updating services.'
 			);
 			expect(result.responseObject).toBeNull();
 		});
@@ -251,6 +312,39 @@ describe('servicesService', () => {
 			expect(result.statusCode).toEqual(StatusCodes.OK);
 			expect(result.success).toBeTruthy();
 			expect(result.message).toEqual('Service deleted successfully');
+			expect(result.responseObject).toBeNull();
+		});
+
+		it('returns 400 for invalid id', async () => {
+			// Act
+			const result = await servicesServiceInstance.delete('invalid');
+
+			// Assert
+			expect(result.statusCode).toEqual(StatusCodes.BAD_REQUEST);
+			expect(result.success).toBeFalsy();
+			expect(result.message).toEqual('Invalid ID provided');
+			expect(result.responseObject).toBeNull();
+		});
+
+		it('handles errors for delete', async () => {
+			// Arrange
+			(servicesRepositoryInstance.delete as Mock).mockRejectedValue(
+				new Error('Database error')
+			);
+
+			// Act
+			const result = await servicesServiceInstance.delete(
+				`${mockService.id}`
+			);
+
+			// Assert
+			expect(result.statusCode).toEqual(
+				StatusCodes.INTERNAL_SERVER_ERROR
+			);
+			expect(result.success).toBeFalsy();
+			expect(result.message).toEqual(
+				'An error occurred while deleting service.'
+			);
 			expect(result.responseObject).toBeNull();
 		});
 	});

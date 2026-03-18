@@ -99,69 +99,31 @@ describe('departmentsService', () => {
 	});
 
 	describe('update', () => {
-		it('updates and returns the department', async () => {
+		it('updates and returns departments', async () => {
 			// Arrange
-			const updateData: Partial<Department> = { active: true };
-			const updatedInformations: Department = {
-				...mockDepartment,
-				...updateData,
-			};
+			const updatedDepartments: Department[] = [
+				{ ...mockDepartment, active: true },
+			];
 			(departmentsRepositoryInstance.updateAsync as Mock).mockReturnValue(
-				updatedInformations
+				updatedDepartments
 			);
 
 			// Act
-			const result = await departmentsServiceInstance.update(
+			const result = await departmentsServiceInstance.update([
 				mockDepartment.code,
-				updateData
-			);
+			]);
 
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.OK);
 			expect(result.success).toBeTruthy();
 			expect(result.message).toEqual('Department updated successfully');
-			expect(result.responseObject).toEqual(updatedInformations);
+			expect(result.responseObject).toEqual(updatedDepartments);
 		});
 
-		it('handle invalid id', async () => {
-			// Arrange
-			const updateData: Partial<Department> = { active: true };
-			const updatedInformations: Department = {
-				...mockDepartment,
-				...updateData,
-			};
-			(departmentsRepositoryInstance.updateAsync as Mock).mockReturnValue(
-				updatedInformations
-			);
-
+		it('returns 400 for null body', async () => {
 			// Act
 			const result = await departmentsServiceInstance.update(
-				'invalid id',
-				updateData
-			);
-
-			// Assert
-			expect(result.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-			expect(result.success).toBeFalsy();
-			expect(result.message).toEqual('Invalid ID provided');
-			expect(result.responseObject).toBeNull();
-		});
-
-		it('handle invalid body', async () => {
-			// Arrange
-			const updateData: Partial<Department> = { active: true };
-			const updatedInformations: Department = {
-				...mockDepartment,
-				...updateData,
-			};
-			(departmentsRepositoryInstance.updateAsync as Mock).mockReturnValue(
-				updatedInformations
-			);
-
-			// Act
-			const result = await departmentsServiceInstance.update(
-				mockDepartment.code,
-				{}
+				null as unknown as string[]
 			);
 
 			// Assert
@@ -171,18 +133,45 @@ describe('departmentsService', () => {
 			expect(result.responseObject).toBeNull();
 		});
 
+		it('returns 400 for non-array body', async () => {
+			// Act
+			const result = await departmentsServiceInstance.update(
+				'33' as unknown as string[]
+			);
+
+			// Assert
+			expect(result.statusCode).toEqual(StatusCodes.BAD_REQUEST);
+			expect(result.success).toBeFalsy();
+			expect(result.message).toEqual('Invalid request body');
+			expect(result.responseObject).toBeNull();
+		});
+
+		it('returns 404 when no department found', async () => {
+			// Arrange
+			(departmentsRepositoryInstance.updateAsync as Mock).mockReturnValue(
+				null
+			);
+
+			// Act
+			const result = await departmentsServiceInstance.update(['99999']);
+
+			// Assert
+			expect(result.statusCode).toEqual(StatusCodes.NOT_FOUND);
+			expect(result.success).toBeFalsy();
+			expect(result.message).toEqual('Department not found');
+			expect(result.responseObject).toBeNull();
+		});
+
 		it('handles errors for updateAsync', async () => {
 			// Arrange
-			const updateData: Partial<Department> = { active: true };
 			(
 				departmentsRepositoryInstance.updateAsync as Mock
 			).mockRejectedValue(new Error('Database error'));
 
 			// Act
-			const result = await departmentsServiceInstance.update(
+			const result = await departmentsServiceInstance.update([
 				mockDepartment.code,
-				updateData
-			);
+			]);
 
 			// Assert
 			expect(result.statusCode).toEqual(

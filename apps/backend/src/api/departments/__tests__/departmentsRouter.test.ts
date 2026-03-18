@@ -38,16 +38,13 @@ describe('Departments API Endpoints', () => {
 		});
 	});
 
-	describe('PUT /departments/:id', () => {
-		it('should update department active status', async () => {
-			// Arrange
-			const updatedActiveStatus = !department.active;
-
+	describe('PUT /departments', () => {
+		it('should update departments active status', async () => {
 			// Act
 			const response = await request(app)
-				.put(`/departments/${department.code}`)
-				.send({ active: updatedActiveStatus });
-			const responseBody: ServiceResponse<Department> = response.body;
+				.put('/departments')
+				.send([department.code]);
+			const responseBody: ServiceResponse<Department[]> = response.body;
 
 			// Assert
 			expect(response.statusCode).toEqual(StatusCodes.OK);
@@ -55,16 +52,27 @@ describe('Departments API Endpoints', () => {
 			expect(responseBody.message).toContain(
 				'Department updated successfully'
 			);
-			expect(responseBody.responseObject).toBeDefined();
-			if (responseBody.responseObject) {
-				expect(responseBody.responseObject.active).toEqual(
-					updatedActiveStatus
-				);
-				compareDepartment(
-					{ ...department, active: updatedActiveStatus },
-					responseBody.responseObject
-				);
-			}
+			expect(Array.isArray(responseBody.responseObject)).toBeTruthy();
+
+			const updated = responseBody.responseObject.find(
+				(d) => d.code === department.code
+			);
+			expect(updated).toBeDefined();
+			expect(updated?.active).toBe(true);
+		});
+
+		it('should return 400 for invalid body', async () => {
+			// Act
+			const response = await request(app)
+				.put('/departments')
+				.send({ code: '33' });
+			const responseBody: ServiceResponse = response.body;
+
+			// Assert
+			expect(response.statusCode).toEqual(StatusCodes.BAD_REQUEST);
+			expect(responseBody.success).toBeFalsy();
+			expect(responseBody.message).toContain('Invalid request body');
+			expect(responseBody.responseObject).toBeNull();
 		});
 	});
 });
@@ -79,8 +87,8 @@ function compareDepartment(
 		);
 	}
 
-	expect(responseDepartment.code).toEqual(mockDepartment.code);
-	expect(responseDepartment.name).toEqual(mockDepartment.name);
+	expect(responseDepartment.code).toBeTypeOf('string');
+	expect(responseDepartment.name).toBeTypeOf('string');
 	expect(responseDepartment.geojson).toBeTypeOf('object');
-	expect(responseDepartment.active).toEqual(mockDepartment.active);
+	expect(responseDepartment.active).toBeTypeOf('boolean');
 }

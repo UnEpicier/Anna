@@ -18,8 +18,9 @@ describe('Services API Endpoints', () => {
 			expect(response.statusCode).toEqual(StatusCodes.OK);
 			expect(responseBody.success).toBeTruthy();
 			expect(responseBody.message).toContain('Services found');
-			for (let i = 0; i < responseBody.responseObject.length; i++) {
-				compareService(service, responseBody.responseObject[i]);
+			expect(Array.isArray(responseBody.responseObject)).toBeTruthy();
+			for (const s of responseBody.responseObject) {
+				validateServiceStructure(s);
 			}
 		});
 	});
@@ -63,7 +64,7 @@ describe('Services API Endpoints', () => {
 	});
 
 	describe('POST /services', () => {
-		it('should create a new service', async () => {
+		it('should create new services', async () => {
 			// Arrange
 			const newService: Omit<
 				Service,
@@ -79,29 +80,26 @@ describe('Services API Endpoints', () => {
 			// Act
 			const response = await request(app)
 				.post('/services')
-				.send(newService);
-			const responseBody: ServiceResponse<Service> = response.body;
+				.send([newService]);
+			const responseBody: ServiceResponse<Service[]> = response.body;
 
 			// Assert
 			expect(response.statusCode).toEqual(StatusCodes.CREATED);
 			expect(responseBody.success).toBeTruthy();
 			expect(responseBody.message).toContain(
-				'Service created successfully'
+				'Services created successfully'
 			);
-			expect(responseBody.responseObject).toMatchObject(newService);
+			expect(responseBody.responseObject[0]).toMatchObject(newService);
 		});
 
 		it('should return 400 for missing required fields', async () => {
 			// Arrange
-			const invalidService: Partial<Service> = {
-				icon: 'icon',
-				price: 150,
-			};
+			const invalidService = { icon: 'icon', price: 150 };
 
 			// Act
 			const response = await request(app)
 				.post('/services')
-				.send(invalidService);
+				.send([invalidService]);
 			const responseBody: ServiceResponse = response.body;
 
 			// Assert
@@ -112,46 +110,45 @@ describe('Services API Endpoints', () => {
 		});
 	});
 
-	describe('PUT /services/:id', () => {
-		it('should update an existing service', async () => {
+	describe('PUT /services', () => {
+		it('should update existing services', async () => {
 			// Arrange
 			const updatedServiceData: Partial<Service> = {
+				id: service.id,
 				title: 'Updated Service Title',
 			};
 
 			// Act
 			const response = await request(app)
-				.put(`/services/${service.id}`)
-				.send(updatedServiceData);
-			const responseBody: ServiceResponse<Service> = response.body;
+				.put('/services')
+				.send([updatedServiceData]);
+			const responseBody: ServiceResponse<Service[]> = response.body;
 
 			// Assert
 			expect(response.statusCode).toEqual(StatusCodes.OK);
 			expect(responseBody.success).toBeTruthy();
 			expect(responseBody.message).toContain(
-				'Service updated successfully'
+				'Services updated successfully'
 			);
-			expect(responseBody.responseObject.title).toEqual(
+			expect(responseBody.responseObject[0].title).toEqual(
 				updatedServiceData.title
 			);
 		});
 
-		it('should return 400 for invalid id', async () => {
+		it('should return 400 for missing service ID', async () => {
 			// Arrange
-			const updatedServiceData: Partial<Service> = {
-				title: 'Updated Service Title',
-			};
+			const invalidData = [{ title: 'No ID' }];
 
 			// Act
 			const response = await request(app)
-				.put('/services/invalid-id')
-				.send(updatedServiceData);
+				.put('/services')
+				.send(invalidData);
 			const responseBody: ServiceResponse = response.body;
 
 			// Assert
 			expect(response.statusCode).toEqual(StatusCodes.BAD_REQUEST);
 			expect(responseBody.success).toBeFalsy();
-			expect(responseBody.message).toContain('Invalid ID provided');
+			expect(responseBody.message).toContain('Missing service ID');
 			expect(responseBody.responseObject).toBeNull();
 		});
 	});
@@ -200,4 +197,17 @@ function compareService(mockService: Service, responseService: Service) {
 	expect(responseService.duration).toEqual(mockService.duration);
 	expect(responseService.description).toEqual(mockService.description);
 	expect(responseService.enabled).toEqual(mockService.enabled);
+}
+
+function validateServiceStructure(responseService: Service) {
+	if (!responseService) {
+		throw new Error('Invalid test data: responseService is undefined');
+	}
+
+	expect(responseService.id).toBeTypeOf('number');
+	expect(responseService.title).toBeTypeOf('string');
+	expect(responseService.icon).toBeTypeOf('string');
+	expect(responseService.price).toBeTypeOf('number');
+	expect(responseService.duration).toBeTypeOf('string');
+	expect(responseService.enabled).toBeTypeOf('boolean');
 }

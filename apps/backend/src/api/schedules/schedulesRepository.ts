@@ -13,7 +13,7 @@ export class SchedulesRepository {
 					where: {
 						day: schedule.day,
 					},
-					data: data,
+					data: schedule,
 				})
 			)
 		);

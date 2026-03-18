@@ -10,23 +10,24 @@ async function main() {
 	const { id: informationsId, ...restInformations } = informations;
 	await prisma.informations.upsert({
 		where: { id: informationsId },
-		update: {},
-		create: restInformations,
+		update: restInformations,
+		create: { id: informationsId, ...restInformations },
 	});
 
 	for (const service of services) {
 		const { id: serviceId, ...restService } = service;
 		await prisma.services.upsert({
 			where: { id: serviceId },
-			update: {},
-			create: restService,
+			update: restService,
+			create: { id: serviceId, ...restService },
 		});
 	}
 
 	for (const schedule of schedules) {
+		const { day, ...restSchedule } = schedule;
 		await prisma.schedules.upsert({
-			where: { day: schedule.day },
-			update: {},
+			where: { day },
+			update: restSchedule,
 			create: schedule,
 		});
 	}
@@ -56,8 +57,8 @@ async function main() {
 	const { id: leaveId, ...restLeave } = leave;
 	await prisma.leave.upsert({
 		where: { id: leaveId },
-		update: {},
-		create: restLeave,
+		update: restLeave,
+		create: { id: leaveId, ...restLeave },
 	});
 }
 
