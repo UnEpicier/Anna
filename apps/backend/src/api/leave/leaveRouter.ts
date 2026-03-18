@@ -7,6 +7,6 @@ leaveRouter.get('/', leaveController.getLeave);
 
 leaveRouter.post('/', leaveController.createLeave);
 
-leaveRouter.put('/', leaveController.updateInformations);
+leaveRouter.put('/', leaveController.updateLeave);
 
 leaveRouter.delete('/', leaveController.deleteLeave);

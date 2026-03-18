@@ -11,11 +11,9 @@ export default prisma;
 
 export const testDBConnection = async () => {
 	try {
-		await prisma.$connect();
+		await prisma.$queryRaw`SELECT 1`;
 		console.info('Database connection successful');
 	} catch (error) {
 		console.error('Database connection failed', error);
-	} finally {
-		await prisma.$disconnect();
 	}
 };

@@ -16,7 +16,7 @@ class LeaveController {
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 
-	public updateInformations: RequestHandler = async (
+	public updateLeave: RequestHandler = async (
 		req: Request,
 		res: Response
 	) => {

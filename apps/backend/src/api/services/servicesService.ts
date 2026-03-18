@@ -16,7 +16,7 @@ export class ServicesService {
 			const services = await this.servicesRepository.findAll();
 			if (!services) {
 				return ServiceResponse.failure(
-					'Any services found',
+					'No services found',
 					null,
 					StatusCodes.NOT_FOUND
 				);

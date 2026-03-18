@@ -8,7 +8,6 @@ import { servicesRouter } from '@/api/services/servicesRouter';
 import errorHandler from '@/commons/middleware/errorHandler';
 import rateLimiter from '@/commons/middleware/rateLimiter';
 import { env } from '@/commons/utils/envConfig';
-import { initBucket } from '@/libs/bucket';
 import { testDBConnection } from '@/libs/prisma';
 import { testRedisConnection } from '@/libs/redis';
 import cors from 'cors';
@@ -18,16 +17,15 @@ import morgan from 'morgan';
 
 await testDBConnection();
 await testRedisConnection();
-await initBucket();
 
 const app: Express = express();
 
-// Set the application to trust the reverse proxy
-app.set('trust proxy', true);
+// Set the application to trust the first reverse proxy only
+app.set('trust proxy', 1);
 
 // Middlewares
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50kb' }));
+app.use(express.urlencoded({ extended: true, limit: '50kb' }));
 app.use(cors({ origin: env.CORS_ORIGIN, credentials: true }));
 app.use(helmet());
 app.use(rateLimiter);

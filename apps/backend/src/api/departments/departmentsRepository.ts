@@ -40,26 +40,25 @@ export class DepartmentsRepository {
 	}
 
 	async updateAsync(codes: string[]): Promise<Department[]> {
-		await prisma.departments.updateMany({
-			where: {
-				code: {
-					notIn: codes,
+		const updatedDepartments = await prisma.$transaction(async (tx) => {
+			await tx.departments.updateMany({
+				where: {
+					code: { notIn: codes },
+					active: true,
 				},
-				active: true,
-			},
-			data: { active: false },
+				data: { active: false },
+			});
+
+			await tx.departments.updateMany({
+				where: {
+					code: { in: codes },
+				},
+				data: { active: true },
+			});
+
+			return tx.departments.findMany();
 		});
 
-		await prisma.departments.updateMany({
-			where: {
-				code: {
-					in: codes,
-				},
-			},
-			data: { active: true },
-		});
-
-		const updatedDepartments = await prisma.departments.findMany();
 		return updatedDepartments.map((dept) => ({
 			...dept,
 			geojson: GeoJsonSchema.parse(dept.geojson),

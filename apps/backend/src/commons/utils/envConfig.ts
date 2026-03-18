@@ -21,17 +21,12 @@ const envSchema = z.object({
 		.number()
 		.int()
 		.positive()
-		.default(1000),
+		.default(15 * 60 * 1000), // 15 minutes
 
 	DATABASE_URL: z.string(),
 
 	REDIS_HOST: z.string().default('localhost'),
 	REDIS_PORT: z.coerce.number().int().positive().default(6379),
-
-	MINIO_ENDPOINT: z.url().default('http://localhost:9000'),
-	MINIO_ROOT_USER: z.string().default('minio'),
-	MINIO_ROOT_PASSWORD: z.string(),
-	MINIO_BUCKET: z.string().default('website'),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

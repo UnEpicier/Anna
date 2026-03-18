@@ -47,7 +47,7 @@ describe('servicesService', () => {
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.NOT_FOUND);
 			expect(result.success).toBeFalsy();
-			expect(result.message).equals('Any services found');
+			expect(result.message).equals('No services found');
 			expect(result.responseObject).toBeNull();
 		});
 

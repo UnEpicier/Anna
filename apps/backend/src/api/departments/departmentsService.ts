@@ -67,7 +67,7 @@ export class DepartmentsService {
 		body: string[]
 	): Promise<ServiceResponse<Department[] | null>> {
 		try {
-			if (!body || !Array.isArray(body)) {
+			if (!body || !Array.isArray(body) || !body.every((item) => typeof item === 'string')) {
 				return ServiceResponse.failure(
 					'Invalid request body',
 					null,

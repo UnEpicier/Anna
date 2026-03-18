@@ -16,5 +16,4 @@ services:
         depends_on:
             - postgres
             - redis
-            - minio
         restart: unless-stopped
