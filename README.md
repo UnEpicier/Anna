@@ -1,135 +1,131 @@
-# Turborepo starter
+# Anna — Monorepo
 
-This Turborepo starter is maintained by the Turborepo core team.
+Monorepo full-stack pour un site vitrine et un backoffice de gestion, dans le domaine de l'ostéopathie animalière.
 
-## Using this example
-
-Run the following command:
-
-```sh
-npx create-turbo@latest
-```
-
-## What's inside?
-
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
+## Structure
 
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+anna-mono/
+├── apps/
+│   ├── backend/       # API REST (Express.js)
+│   ├── frontend/      # Site vitrine (Next.js)
+│   └── backoffice/    # Dashboard admin (Next.js)
+├── packages/
+│   ├── ui/            # Bibliothèque de composants partagés
+│   ├── app-types/     # Types TypeScript partagés
+│   ├── utils/         # Fonctions utilitaires partagées
+│   └── typescript-config/  # tsconfig de base
+├── docker-compose.deps.yaml  # PostgreSQL + Redis (dev)
+└── docker-compose.yaml       # Stack complète (prod)
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## Stack
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
+| | Tech |
+|---|---|
+| Monorepo | Turborepo + pnpm |
+| Linting/Formatting | Biome |
+| Backend | Express 5, Prisma 7, PostgreSQL 17, Redis 8 |
+| Frontend / Backoffice | Next.js 16, React 19, Tailwind CSS 4 |
+| Cartographie | Deck.gl, Mapbox GL, MapTiler, Turf.js |
+| Composants UI | Radix UI, Lucide React, Motion |
+| Tests | Vitest |
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
+## Prérequis
 
-### Develop
+- Node.js ≥ 18
+- pnpm ≥ 10
+- Docker & Docker Compose
 
-To develop all apps and packages, run the following command:
+## Installation
 
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
+```bash
+pnpm install
 ```
 
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+## Variables d'environnement
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+**`apps/backend/.env`**
+```env
+NODE_ENV=development
+PORT=8080
+CORS_ORIGIN=http://localhost:3000
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=db
+DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
 
-### Remote Caching
+REDIS_HOST=localhost
+REDIS_PORT=6379
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+COMMON_RATE_LIMIT_WINDOW_MS=900000
+COMMON_RATE_LIMIT_MAX_REQUESTS=20
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+**`apps/frontend/.env.local`** et **`apps/backoffice/.env.local`**
+```env
+NEXT_PUBLIC_MAPTILER_API_KEY=<your_maptiler_key>
+API_URL=http://localhost:8080
 ```
 
-## Useful Links
+## Développement
 
-Learn more about the power of Turborepo:
+Démarrer PostgreSQL et Redis :
+```bash
+pnpm deps:up
+```
 
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+Appliquer les migrations et générer le client Prisma :
+```bash
+cd apps/backend
+pnpm prisma:migrate
+pnpm prisma:generate
+```
+
+Lancer toutes les apps en parallèle :
+```bash
+pnpm dev
+```
+
+| App | URL |
+|---|---|
+| Backend API | http://localhost:8080 |
+| Frontend | http://localhost:3000 |
+| Backoffice | http://localhost:3001 |
+
+Pour lancer une app spécifique :
+```bash
+pnpm dev --filter=backend
+pnpm dev --filter=frontend
+pnpm dev --filter=backoffice
+```
+
+## Commandes disponibles
+
+```bash
+pnpm build        # Build de toutes les apps
+pnpm lint         # Vérification du code
+pnpm lint:fix     # Correction automatique
+pnpm format       # Formatage
+pnpm check-types  # Vérification des types TypeScript
+```
+
+## Tests
+
+```bash
+cd apps/backend
+pnpm test         # Tests unitaires + intégration
+pnpm test:cov     # Avec couverture de code
+```
+
+> Les tests reset la base de données et la re-seede automatiquement avant chaque run.
+
+## Arrêt des dépendances
+
+```bash
+pnpm deps:down    # Arrêter les conteneurs
+pnpm deps:clean   # Arrêter et supprimer les volumes
+```
