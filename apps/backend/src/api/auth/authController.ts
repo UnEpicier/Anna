@@ -1,5 +1,5 @@
-import type { Request, RequestHandler, Response } from 'express';
 import { authService } from '@/api/auth/authService';
+import type { Request, RequestHandler, Response } from 'express';
 
 class AuthController {
 	public login: RequestHandler = async (req: Request, res: Response) => {
@@ -18,6 +18,13 @@ class AuthController {
 		);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
+
+	public checkToken: RequestHandler = async (
+		req: Request,
+		res: Response
+	) => {};
+
+	public logout: RequestHandler = async (req: Request, res: Response) => {};
 }
 
 export const authController = new AuthController();

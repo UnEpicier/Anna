@@ -1,15 +1,23 @@
-import { randomUUID } from 'node:crypto';
-import bcrypt from 'bcrypt';
-import { StatusCodes } from 'http-status-codes';
 import { informationsService } from '@/api/informations/informationsService';
 import { ServiceResponse } from '@/commons/models/serviceResponse';
 import redisClient from '@/libs/redis';
+import bcrypt from 'bcrypt';
+import { StatusCodes } from 'http-status-codes';
+import { randomUUID } from 'node:crypto';
 
 export class AuthService {
 	private saltRounds = 10;
 	private salt = bcrypt.genSaltSync(this.saltRounds);
 
-	async login(email: string): Promise<ServiceResponse<string | null>> {
+	async login(email?: string): Promise<ServiceResponse<string | null>> {
+		if (!email || !email.trim()) {
+			return ServiceResponse.failure(
+				'Email not provided',
+				null,
+				StatusCodes.BAD_REQUEST
+			);
+		}
+
 		try {
 			const validEmail = await informationsService.find();
 
