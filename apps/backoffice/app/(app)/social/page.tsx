@@ -1,0 +1,30 @@
+import SocialContent from '@/app/(app)/social/content';
+import type { Informations, ResponseObject } from '@repo/app-types';
+import { cookies } from 'next/headers';
+import type { Metadata } from 'next';
+
+export const dynamic = 'force-dynamic';
+
+async function getData() {
+	const cookieStore = await cookies();
+	const token = cookieStore.get('token')?.value;
+	const authHeaders: Record<string, string> = token ? { Cookie: `token=${token}` } : {};
+
+	const res = await fetch(`${process.env.API_URL}/informations`, { headers: authHeaders });
+	const data: ResponseObject<Informations> = await res.json();
+
+	return {
+		facebook: data.responseObject?.facebook ?? '',
+		instagram: data.responseObject?.instagram ?? '',
+	};
+}
+
+export const metadata: Metadata = {
+	title: 'Réseaux sociaux',
+};
+
+export default async function SocialPage() {
+	const data = await getData();
+
+	return <SocialContent socials={data} />;
+}

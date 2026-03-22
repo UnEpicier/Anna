@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { type ReactNode, useCallback, useState } from 'react';
 
 type Section =
@@ -70,11 +70,12 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 	const [sidebarOpen, setSidebarOpen] = useState(false);
 
 	const currentSection = usePathname();
+	const router = useRouter();
 
 	const onLogout = useCallback(async () => {
-		// TODO: Implement logout logic
-		return;
-	}, []);
+		await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+		router.push('/auth/login');
+	}, [router]);
 
 	const isDesktop = useMediaQuery('(min-width: 1024px)');
 
