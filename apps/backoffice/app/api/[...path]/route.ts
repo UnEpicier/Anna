@@ -12,12 +12,27 @@ function isCsrfSafe(req: NextRequest): boolean {
 	return ALLOWED_ORIGINS.has(origin);
 }
 
+const SAFE_SEGMENT = /^[a-zA-Z0-9_-]+$/;
+
+function safePath(segments: string[]): string | null {
+	if (segments.length === 0) return null;
+	for (const segment of segments) {
+		if (!SAFE_SEGMENT.test(segment)) return null;
+	}
+	return segments.join('/');
+}
+
 async function handler(req: NextRequest, ctx: RouteContext<'/api/[...path]'>) {
 	if (!isCsrfSafe(req)) {
 		return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
 	}
 
-	const path = (await ctx.params).path.join('/');
+	const rawSegments = (await ctx.params).path;
+	const path = safePath(rawSegments);
+	if (!path) {
+		return NextResponse.json({ success: false, message: 'Invalid path' }, { status: 400 });
+	}
+
 	const url = new URL(req.url);
 
 	const backendUrl = `${process.env.API_URL}/${path}${url.search}`;
