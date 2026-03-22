@@ -10,6 +10,7 @@ import rateLimiter from '@/commons/middleware/rateLimiter';
 import { env } from '@/commons/utils/envConfig';
 import { testDBConnection } from '@/libs/prisma';
 import { testRedisConnection } from '@/libs/redis';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { type Express } from 'express';
 import helmet from 'helmet';
@@ -26,6 +27,7 @@ app.set('trust proxy', 1);
 // Middlewares
 app.use(express.json({ limit: '50kb' }));
 app.use(express.urlencoded({ extended: true, limit: '50kb' }));
+app.use(cookieParser());
 app.use(cors({ origin: env.CORS_ORIGIN, credentials: true }));
 app.use(helmet());
 app.use(rateLimiter);

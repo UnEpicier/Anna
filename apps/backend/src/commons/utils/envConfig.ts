@@ -27,6 +27,11 @@ const envSchema = z.object({
 
 	REDIS_HOST: z.string().default('localhost'),
 	REDIS_PORT: z.coerce.number().int().positive().default(6379),
+
+	MAILJET_PUBLIC_KEY: z.string(),
+	MAILJET_PRIVATE_KEY: z.string(),
+
+	JWT_SECRET: z.string().min(32),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);

@@ -1,5 +1,6 @@
 'use client';
 
+import type { ResponseObject } from '@repo/app-types';
 import {
 	Button,
 	Card,
@@ -10,10 +11,53 @@ import {
 	Label,
 } from '@repo/ui';
 import { Lock } from 'lucide-react';
-import { useActionState } from 'react';
+import { useRouter } from 'next/navigation';
+import { type SubmitEvent, useCallback } from 'react';
+import { toast } from 'sonner';
 
 export default function Page() {
-	const [_error, action, _pending] = useActionState(() => {}, null);
+	const router = useRouter();
+
+	const onSubmit = useCallback(
+		async (ev: SubmitEvent<HTMLFormElement>) => {
+			ev.preventDefault();
+
+			const formData = new FormData(ev.currentTarget);
+			const email = formData.get('email');
+
+			if (!email || !email.toString().trim()) {
+				toast.error('Adresse e-mail invalide');
+				return;
+			}
+
+			try {
+				const request = await fetch('/api/auth/login', {
+					method: 'POST',
+					body: JSON.stringify({
+						email,
+					}),
+				});
+
+				const data: ResponseObject<null> = await request.json();
+
+				if (data.success) {
+					router.push('/auth/verify-code');
+					return;
+				}
+
+				if (data.statusCode === 500) {
+					throw new Error(data.message);
+				}
+
+				toast.error('Adresse e-mail invalide');
+				return;
+			} catch (error) {
+				console.error(error);
+				toast.error('Impossible de se connecter pour le moment');
+			}
+		},
+		[router]
+	);
 
 	return (
 		<div className='min-h-screen flex items-center justify-center bg-gray-50 px-4'>
@@ -29,17 +73,18 @@ export default function Page() {
 				</CardHeader>
 				<CardContent>
 					<form
-						action={action}
+						onSubmit={onSubmit}
 						className='space-y-4'
 					>
 						<div>
-							<Label htmlFor='password'>Mot de passe</Label>
+							<Label htmlFor='email'>Adresse e-mail</Label>
 							<Input
-								id='password'
-								name='password'
-								type='password'
-								placeholder='Entrez le mot de passe'
+								id='email'
+								name='email'
+								type='email'
+								placeholder="Entrez l'adresse email"
 								className='mt-1'
+								autoComplete='email'
 								required
 							/>
 						</div>
@@ -49,9 +94,6 @@ export default function Page() {
 						>
 							Se connecter
 						</Button>
-						<p className='text-sm text-gray-500 text-center mt-4'>
-							Mot de passe par défaut : admin123
-						</p>
 					</form>
 				</CardContent>
 			</Card>
