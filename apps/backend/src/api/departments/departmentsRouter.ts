@@ -1,10 +1,11 @@
+import { requireAuth } from '@/commons/middleware/requireAuth';
 import { Router } from 'express';
 import { departmentsController } from './departmentsController';
 
 export const departmentsRouter: Router = Router();
 
-departmentsRouter.get('/', departmentsController.getDepartments);
+departmentsRouter.get('/', requireAuth, departmentsController.getDepartments);
 
 departmentsRouter.get('/actives', departmentsController.getActiveDepartments);
 
-departmentsRouter.put('/', departmentsController.updateDepartment);
+departmentsRouter.put('/', requireAuth, departmentsController.updateDepartment);

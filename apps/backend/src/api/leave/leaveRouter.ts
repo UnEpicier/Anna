@@ -1,3 +1,4 @@
+import { requireAuth } from '@/commons/middleware/requireAuth';
 import { Router } from 'express';
 import { leaveController } from './leaveController';
 
@@ -5,8 +6,8 @@ export const leaveRouter: Router = Router();
 
 leaveRouter.get('/', leaveController.getLeave);
 
-leaveRouter.post('/', leaveController.createLeave);
+leaveRouter.post('/', requireAuth, leaveController.createLeave);
 
-leaveRouter.put('/', leaveController.updateLeave);
+leaveRouter.put('/', requireAuth, leaveController.updateLeave);
 
-leaveRouter.delete('/', leaveController.deleteLeave);
+leaveRouter.delete('/', requireAuth, leaveController.deleteLeave);

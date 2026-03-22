@@ -45,7 +45,11 @@ export async function proxy(request: NextRequest) {
 
 			if (!res.ok) {
 				url.pathname = '/auth/login';
-				return NextResponse.redirect(url);
+				const response = NextResponse.redirect(url);
+				for (const cookie of res.headers.getSetCookie?.() ?? []) {
+					response.headers.append('Set-Cookie', cookie);
+				}
+				return response;
 			}
 		} catch {
 			url.pathname = '/auth/login';

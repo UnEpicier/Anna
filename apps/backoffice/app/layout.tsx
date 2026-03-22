@@ -25,7 +25,7 @@ export default async function RootLayout({
 			lang='fr'
 			data-scroll-behavior='smooth'
 		>
-			<body nonce={nonce}>
+			<body nonce={nonce} suppressHydrationWarning>
 				<Toaster
 					richColors
 					expand

@@ -85,6 +85,11 @@ class AuthController {
 		}
 
 		const serviceResponse = await authService.checkTokenRevoked(token);
+
+		if (!serviceResponse.success) {
+			res.clearCookie(AUTH_COOKIE, { httpOnly: true, secure: env.isProduction, sameSite: 'strict' });
+		}
+
 		res.status(serviceResponse.statusCode).send({ ...serviceResponse, responseObject: null });
 	};
 

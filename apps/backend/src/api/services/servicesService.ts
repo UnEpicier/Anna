@@ -36,38 +36,6 @@ export class ServicesService {
 		}
 	}
 
-	async find(id: string): Promise<ServiceResponse<Service | null>> {
-		try {
-			const parsedId = parseInt(id, 10);
-			if (!parsedId || parsedId <= 0) {
-				return ServiceResponse.failure(
-					'Invalid ID provided',
-					null,
-					StatusCodes.BAD_REQUEST
-				);
-			}
-
-			const service = await this.servicesRepository.findById(parsedId);
-			if (!service) {
-				return ServiceResponse.failure(
-					'Service not found',
-					null,
-					StatusCodes.NOT_FOUND
-				);
-			}
-
-			return ServiceResponse.success<Service>('Service found', service);
-		} catch (error) {
-			const errorMessage = `Error finding service: ${(error as Error).message}`;
-			console.error(errorMessage);
-			return ServiceResponse.failure(
-				'An error occurred while retrieving service.',
-				null,
-				StatusCodes.INTERNAL_SERVER_ERROR
-			);
-		}
-	}
-
 	async createMany(
 		data: Omit<Service, 'id' | 'enabled' | 'createdAt' | 'updatedAt'>[]
 	): Promise<ServiceResponse<Service[] | null>> {

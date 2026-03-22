@@ -23,23 +23,6 @@ export class ServicesRepository {
 		}));
 	}
 
-	async findById(id: number): Promise<Service | null> {
-		const service = await prisma.services.findUnique({
-			where: {
-				id: id,
-			},
-		});
-
-		if (!service) {
-			return null;
-		}
-
-		return {
-			...service,
-			price: service.price.toNumber(),
-		};
-	}
-
 	async createMany(
 		data: Omit<Service, 'id' | 'enabled' | 'createdAt' | 'updatedAt'>[]
 	): Promise<Service[]> {

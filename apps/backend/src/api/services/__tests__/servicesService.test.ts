@@ -72,71 +72,6 @@ describe('servicesService', () => {
 		});
 	});
 
-	describe('find', () => {
-		it('returns the service', async () => {
-			// Arrange
-			(servicesRepositoryInstance.findById as Mock).mockReturnValue(
-				mockService
-			);
-
-			// Act
-			const result = await servicesServiceInstance.find(
-				`${mockService.id}`
-			);
-
-			// Assert
-			expect(result.statusCode).toEqual(StatusCodes.OK);
-			expect(result.success).toBeTruthy();
-			expect(result.message).toEqual('Service found');
-			expect(result.responseObject).toEqual(mockService);
-		});
-
-		it('returns a not found error for non-existing service', async () => {
-			// Arrange
-			(servicesRepositoryInstance.findById as Mock).mockReturnValue(null);
-
-			// Act
-			const result = await servicesServiceInstance.find('999');
-
-			// Assert
-			expect(result.statusCode).toEqual(StatusCodes.NOT_FOUND);
-			expect(result.success).toBeFalsy();
-			expect(result.message).toEqual('Service not found');
-			expect(result.responseObject).toBeNull();
-		});
-
-		it('returns 400 for invalid id', async () => {
-			// Act
-			const result = await servicesServiceInstance.find('invalid');
-
-			// Assert
-			expect(result.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-			expect(result.success).toBeFalsy();
-			expect(result.message).toEqual('Invalid ID provided');
-			expect(result.responseObject).toBeNull();
-		});
-
-		it('handles errors for find', async () => {
-			// Arrange
-			(servicesRepositoryInstance.findById as Mock).mockRejectedValue(
-				new Error('Database error')
-			);
-
-			// Act
-			const result = await servicesServiceInstance.find('1');
-
-			// Assert
-			expect(result.statusCode).toEqual(
-				StatusCodes.INTERNAL_SERVER_ERROR
-			);
-			expect(result.success).toBeFalsy();
-			expect(result.message).toEqual(
-				'An error occurred while retrieving service.'
-			);
-			expect(result.responseObject).toBeNull();
-		});
-	});
-
 	describe('createMany', () => {
 		it('creates and returns services', async () => {
 			// Arrange
@@ -175,13 +110,16 @@ describe('servicesService', () => {
 
 		it('returns 400 for missing required fields', async () => {
 			// Arrange
-			const invalidData = [{ icon: 'icon', price: 50 }] as unknown as Omit<
+			const invalidData = [
+				{ icon: 'icon', price: 50 },
+			] as unknown as Omit<
 				Service,
 				'id' | 'enabled' | 'createdAt' | 'updatedAt'
 			>[];
 
 			// Act
-			const result = await servicesServiceInstance.createMany(invalidData);
+			const result =
+				await servicesServiceInstance.createMany(invalidData);
 
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.BAD_REQUEST);

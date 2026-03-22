@@ -1,3 +1,4 @@
+import { requireAuth } from '@/commons/middleware/requireAuth';
 import { Router } from 'express';
 import { servicesController } from './servicesController';
 
@@ -5,10 +6,8 @@ export const servicesRouter: Router = Router();
 
 servicesRouter.get('/', servicesController.getServices);
 
-servicesRouter.get('/:id', servicesController.getServiceById);
+servicesRouter.post('/', requireAuth, servicesController.createService);
 
-servicesRouter.post('/', servicesController.createService);
+servicesRouter.put('/', requireAuth, servicesController.updateService);
 
-servicesRouter.put('/', servicesController.updateService);
-
-servicesRouter.delete('/:id', servicesController.deleteService);
+servicesRouter.delete('/:id', requireAuth, servicesController.deleteService);

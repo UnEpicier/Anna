@@ -11,16 +11,6 @@ class ServicesController {
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 
-	public getServiceById: RequestHandler = async (
-		req: Request,
-		res: Response
-	) => {
-		const serviceResponse = await servicesService.find(
-			<string>req.params.id
-		);
-		res.status(serviceResponse.statusCode).send(serviceResponse);
-	};
-
 	public createService: RequestHandler = async (
 		req: Request,
 		res: Response
