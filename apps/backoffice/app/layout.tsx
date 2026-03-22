@@ -1,5 +1,5 @@
-import Sidebar from '@/ui/sidebar';
 import type { Metadata } from 'next';
+import { headers } from 'next/headers';
 import type { ReactNode } from 'react';
 import { Toaster } from 'sonner';
 import './globals.css';
@@ -18,12 +18,14 @@ export default async function RootLayout({
 }: Readonly<{
 	children: ReactNode;
 }>) {
+	const nonce = (await headers()).get('x-nonce') ?? undefined;
+
 	return (
 		<html
 			lang='fr'
 			data-scroll-behavior='smooth'
 		>
-			<body>
+			<body nonce={nonce}>
 				<Toaster
 					richColors
 					expand
@@ -35,7 +37,7 @@ export default async function RootLayout({
 						},
 					}}
 				/>
-				<Sidebar>{children}</Sidebar>
+				{children}
 			</body>
 		</html>
 	);
