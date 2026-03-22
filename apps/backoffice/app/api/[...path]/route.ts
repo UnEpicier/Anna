@@ -11,6 +11,7 @@ async function handler(req: NextRequest, ctx: RouteContext<'/api/[...path]'>) {
 		headers: {
 			'Content-Type': 'application/json',
 			Authorization: req.headers.get('Authorization') ?? '',
+			Cookie: req.headers.get('Cookie') ?? '',
 		},
 		body:
 			req.method !== 'GET' && req.method !== 'HEAD'
@@ -18,13 +19,22 @@ async function handler(req: NextRequest, ctx: RouteContext<'/api/[...path]'>) {
 				: undefined,
 	});
 
+	const setCookieHeaders = res.headers.getSetCookie?.() ?? [];
+
+	let response: NextResponse;
 	try {
 		const data = await res.json();
-		return NextResponse.json(data, { status: res.status });
+		response = NextResponse.json(data, { status: res.status });
 	} catch (_error) {
 		const text = await res.text();
-		return new NextResponse(text, { status: res.status });
+		response = new NextResponse(text, { status: res.status });
 	}
+
+	for (const cookie of setCookieHeaders) {
+		response.headers.append('Set-Cookie', cookie);
+	}
+
+	return response;
 }
 
 export const GET = handler;
