@@ -84,6 +84,9 @@ jobs:
       CORS_ORIGIN: http://localhost:3000
       COMMON_RATE_LIMIT_WINDOW_MS: "900000"
       COMMON_RATE_LIMIT_MAX_REQUESTS: "10000"
+      MAILJET_PUBLIC_KEY: ${{ secrets.MAILJET_PUBLIC_KEY }}
+      MAILJET_PRIVATE_KEY: ${{ secrets.MAILJET_PRIVATE_KEY }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
     steps:
       - uses: actions/checkout@v4
 
@@ -150,5 +153,6 @@ jobs:
       - name: Build all packages
         run: pnpm build
         env:
-          NEXT_PUBLIC_MAPTILER_API_KEY: ${{ secrets.NEXT_PUBLIC_MAPTILER_API_KEY }}
+          MAPTILER_API_KEY: ${{ secrets.MAPTILER_API_KEY }}
           API_URL: http://localhost:8080
+          NEXT_PUBLIC_APP_URL: http://localhost:3001

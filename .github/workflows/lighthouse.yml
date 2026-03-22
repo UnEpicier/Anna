@@ -55,6 +55,9 @@ jobs:
       COMMON_RATE_LIMIT_WINDOW_MS: "900000"
       COMMON_RATE_LIMIT_MAX_REQUESTS: "10000"
       API_URL: http://localhost:8080
+      MAILJET_PUBLIC_KEY: ${{ secrets.MAILJET_PUBLIC_KEY }}
+      MAILJET_PRIVATE_KEY: ${{ secrets.MAILJET_PRIVATE_KEY }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
     steps:
       - uses: actions/checkout@v4
 
