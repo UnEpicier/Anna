@@ -38,7 +38,7 @@ class AuthController {
 		const serviceResponse = await authService.verifyCode(sessionToken, code);
 
 		if (serviceResponse.success) {
-			res.clearCookie(SESSION_COOKIE);
+			res.clearCookie(SESSION_COOKIE, { httpOnly: true, secure: env.isProduction, sameSite: 'strict' });
 			res.cookie(AUTH_COOKIE, serviceResponse.responseObject as string, {
 				httpOnly: true,
 				maxAge: 4 * 60 * 60 * 1000,
@@ -95,7 +95,7 @@ class AuthController {
 			await authService.logout(token);
 		}
 
-		res.clearCookie(AUTH_COOKIE);
+		res.clearCookie(AUTH_COOKIE, { httpOnly: true, secure: env.isProduction, sameSite: 'strict' });
 		res.status(200).send({ success: true, message: 'Logged out', responseObject: null, statusCode: 200 });
 	};
 }
