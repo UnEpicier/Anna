@@ -73,8 +73,16 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 	const router = useRouter();
 
 	const onLogout = useCallback(async () => {
-		await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
-		router.push('/auth/login');
+		try {
+			const res = await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+			if (!res.ok) {
+				console.error('Logout failed with status', res.status);
+			}
+		} catch (err) {
+			console.error('Logout request failed', err);
+		} finally {
+			router.push('/auth/login');
+		}
 	}, [router]);
 
 	const isDesktop = useMediaQuery('(min-width: 1024px)');
