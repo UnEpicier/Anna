@@ -5,6 +5,10 @@ import { StatusCodes } from 'http-status-codes';
 import request from 'supertest';
 import { informations } from '../../../../prisma/data/informations';
 
+vi.mock('@/commons/middleware/requireAuth', () => ({
+	requireAuth: (_req: unknown, _res: unknown, next: () => void) => next(),
+}));
+
 describe('Informations API Endpoints', () => {
 	describe('GET /informations', () => {
 		it('should return informations object', async () => {

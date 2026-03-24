@@ -5,6 +5,10 @@ import { department } from '@/api/departments/departmentsRepository';
 import type { ServiceResponse } from '@/commons/models/serviceResponse';
 import app from '@/server';
 
+vi.mock('@/commons/middleware/requireAuth', () => ({
+	requireAuth: (_req: unknown, _res: unknown, next: () => void) => next(),
+}));
+
 describe('Departments API Endpoints', () => {
 	describe('GET /departments', () => {
 		it('should return departments object', async () => {

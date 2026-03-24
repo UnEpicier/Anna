@@ -5,6 +5,10 @@ import { StatusCodes } from 'http-status-codes';
 import request from 'supertest';
 import { services } from '../../../../prisma/data/services';
 
+vi.mock('@/commons/middleware/requireAuth', () => ({
+	requireAuth: (_req: unknown, _res: unknown, next: () => void) => next(),
+}));
+
 const service = services[0];
 
 describe('Services API Endpoints', () => {

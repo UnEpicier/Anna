@@ -5,6 +5,10 @@ import { StatusCodes } from 'http-status-codes';
 import request from 'supertest';
 import { leave } from '../../../../prisma/data/leave';
 
+vi.mock('@/commons/middleware/requireAuth', () => ({
+	requireAuth: (_req: unknown, _res: unknown, next: () => void) => next(),
+}));
+
 describe('Leave API Endpoints', () => {
 	describe('GET /leave', () => {
 		it('should return leave object', async () => {

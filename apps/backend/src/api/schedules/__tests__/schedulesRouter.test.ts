@@ -5,6 +5,10 @@ import { StatusCodes } from 'http-status-codes';
 import request from 'supertest';
 import { schedules } from '../../../../prisma/data/schedules';
 
+vi.mock('@/commons/middleware/requireAuth', () => ({
+	requireAuth: (_req: unknown, _res: unknown, next: () => void) => next(),
+}));
+
 const schedule = schedules[0];
 
 describe('Schedules API Endpoints', () => {

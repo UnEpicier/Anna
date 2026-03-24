@@ -2,12 +2,10 @@
 	"compilerOptions": {
 		"target": "esnext",
 		"module": "esnext",
-		"rootDir": "./src",
 		"paths": {
 			"@/*": ["./src/*"]
 		},
 		"moduleResolution": "bundler",
-		"outDir": "dist",
 		"strict": true,
 		"esModuleInterop": true,
 		"skipLibCheck": true,
@@ -15,5 +13,5 @@
 		"types": ["vitest/globals"]
 	},
 	"include": ["src/**/*"],
-	"exclude": ["node_modules", "src/**/__tests__/**", "src/**/*.test.ts"]
+	"exclude": ["node_modules"]
 }
