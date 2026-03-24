@@ -22,10 +22,10 @@
 		"@maptiler/sdk": "^3.11.1",
 		"@repo/ui": "workspace:*",
 		"@turf/turf": "^7.3.4",
-		"lucide-react": "^0.577.0",
+		"lucide-react": "^1.6.0",
 		"mapbox-gl": "^3.20.0",
 		"motion": "^12.38.0",
-		"next": "16.1.7",
+		"next": "16.2.1",
 		"react": "19.2.4",
 		"react-dom": "19.2.4",
 		"react-map-gl": "^8.1.0"
@@ -34,12 +34,12 @@
 		"@repo/app-types": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"@repo/utils": "workspace:*",
-		"@tailwindcss/postcss": "^4.2.1",
+		"@tailwindcss/postcss": "^4.2.2",
 		"@types/node": "^25",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
 		"postcss": "^8.5.8",
-		"tailwindcss": "^4.2.1",
-		"typescript": "^5.9.3"
+		"tailwindcss": "^4.2.2",
+		"typescript": "^6.0.2"
 	}
 }
