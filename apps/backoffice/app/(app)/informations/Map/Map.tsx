@@ -105,7 +105,7 @@ export default function MapComponent({
 			maxBounds={[
 				-20.2696443271, 35.691171142, 25.8949064542, 58.5957166429,
 			]}
-			mapStyle='/api/map/style'
+			mapStyle={`https://api.maptiler.com/maps/019c900c-33c6-7117-9201-72b30eef182b/style.json?key=${process.env.NEXT_PUBLIC_MAPTILER_API_KEY}&language=fr`}
 		>
 			<DeckGLOverlay
 				controller={false}
