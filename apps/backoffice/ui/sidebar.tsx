@@ -8,6 +8,7 @@ import {
 	LogOut,
 	MapPin,
 	Menu,
+	PlaneTakeoff,
 	Settings,
 	Share2,
 	X,
@@ -24,8 +25,7 @@ type Section =
 	| 'schedule'
 	| 'social'
 	| 'services'
-	| 'categories'
-	| 'blog';
+	| 'leave';
 
 const navItems = [
 	{
@@ -64,6 +64,12 @@ const navItems = [
 		icon: Briefcase,
 		path: '/services',
 	},
+	{
+		id: 'leave' as Section,
+		label: 'Congés',
+		icon: PlaneTakeoff,
+		path: '/leave',
+	},
 ];
 
 export default function Sidebar({ children }: { children: ReactNode }) {
@@ -74,7 +80,10 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 
 	const onLogout = useCallback(async () => {
 		try {
-			const res = await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+			const res = await fetch('/api/auth/logout', {
+				method: 'POST',
+				credentials: 'include',
+			});
 			if (!res.ok) {
 				console.error('Logout failed with status', res.status);
 			}

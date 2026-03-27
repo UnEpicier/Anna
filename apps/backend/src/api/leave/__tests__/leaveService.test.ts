@@ -16,15 +16,15 @@ describe('leaveService', () => {
 		leaveServiceInstance = new LeaveService(leaveRepositoryInstance);
 	});
 
-	describe('find', () => {
+	describe('findForFrontend', () => {
 		it('return leave', async () => {
 			// Arrange
-			(leaveRepositoryInstance.findAsync as Mock).mockReturnValue(
-				mockLeave
-			);
+			(
+				leaveRepositoryInstance.findForFrontendAsync as Mock
+			).mockReturnValue(mockLeave);
 
 			// Act
-			const result = await leaveServiceInstance.find();
+			const result = await leaveServiceInstance.findForFrontend();
 
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.OK);
@@ -33,12 +33,14 @@ describe('leaveService', () => {
 			expect(result.responseObject).toEqual(mockLeave);
 		});
 
-		it('return null when no leave found', async () => {
+		it('return null when no leave found within 1 month', async () => {
 			// Arrange
-			(leaveRepositoryInstance.findAsync as Mock).mockReturnValue(null);
+			(
+				leaveRepositoryInstance.findForFrontendAsync as Mock
+			).mockReturnValue(null);
 
 			// Act
-			const result = await leaveServiceInstance.find();
+			const result = await leaveServiceInstance.findForFrontend();
 
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.NO_CONTENT);
@@ -47,14 +49,14 @@ describe('leaveService', () => {
 			expect(result.responseObject).toBeNull();
 		});
 
-		it('handles errors for findAsync', async () => {
+		it('handles errors for findForFrontendAsync', async () => {
 			// Arrange
-			(leaveRepositoryInstance.findAsync as Mock).mockRejectedValue(
-				new Error('Database error')
-			);
+			(
+				leaveRepositoryInstance.findForFrontendAsync as Mock
+			).mockRejectedValue(new Error('Database error'));
 
 			// Act
-			const result = await leaveServiceInstance.find();
+			const result = await leaveServiceInstance.findForFrontend();
 
 			// Assert
 			expect(result.statusCode).toEqual(
@@ -68,6 +70,43 @@ describe('leaveService', () => {
 		});
 	});
 
+	describe('findAll', () => {
+		it('returns all leaves', async () => {
+			// Arrange
+			(leaveRepositoryInstance.findAllAsync as Mock).mockReturnValue([
+				mockLeave,
+			]);
+
+			// Act
+			const result = await leaveServiceInstance.findAll();
+
+			// Assert
+			expect(result.statusCode).toEqual(StatusCodes.OK);
+			expect(result.success).toBeTruthy();
+			expect(result.message).equals('Leaves found');
+			expect(result.responseObject).toEqual([mockLeave]);
+		});
+
+		it('handles errors for findAllAsync', async () => {
+			// Arrange
+			(leaveRepositoryInstance.findAllAsync as Mock).mockRejectedValue(
+				new Error('Database error')
+			);
+
+			// Act
+			const result = await leaveServiceInstance.findAll();
+
+			// Assert
+			expect(result.statusCode).toEqual(
+				StatusCodes.INTERNAL_SERVER_ERROR
+			);
+			expect(result.success).toBeFalsy();
+			expect(result.message).equals(
+				'An error occurred while retrieving leaves.'
+			);
+		});
+	});
+
 	describe('create', () => {
 		it('creates and returns the leave', async () => {
 			// Arrange
@@ -75,7 +114,6 @@ describe('leaveService', () => {
 				from: new Date('2024-01-01'),
 				to: new Date('2024-01-10'),
 			};
-			(leaveRepositoryInstance.findAsync as Mock).mockReturnValue(null);
 			(leaveRepositoryInstance.createAsync as Mock).mockReturnValue({
 				id: 1,
 				...createData,
@@ -98,33 +136,12 @@ describe('leaveService', () => {
 			});
 		});
 
-		it('returns error when leave already exists', async () => {
-			// Arrange
-			const createData: Omit<Leave, 'id' | 'createdAt' | 'updatedAt'> = {
-				from: new Date('2024-01-01'),
-				to: new Date('2024-01-10'),
-			};
-			(leaveRepositoryInstance.findAsync as Mock).mockReturnValue(
-				mockLeave
-			);
-
-			// Act
-			const result = await leaveServiceInstance.create(createData);
-
-			// Assert
-			expect(result.statusCode).toEqual(StatusCodes.CONFLICT);
-			expect(result.success).toBeFalsy();
-			expect(result.message).toEqual('Leave already exists');
-			expect(result.responseObject).toBeNull();
-		});
-
 		it('handles errors for createAsync', async () => {
 			// Arrange
 			const createData: Omit<Leave, 'id' | 'createdAt' | 'updatedAt'> = {
 				from: new Date('2024-01-01'),
 				to: new Date('2024-01-10'),
 			};
-			(leaveRepositoryInstance.findAsync as Mock).mockReturnValue(null);
 			(leaveRepositoryInstance.createAsync as Mock).mockRejectedValue(
 				new Error('Database error')
 			);
@@ -148,52 +165,44 @@ describe('leaveService', () => {
 		it('updates and returns the leave', async () => {
 			// Arrange
 			const updateData: Partial<Leave> = { to: new Date('2024-12-31') };
-			const updatedInformations: Leave = { ...mockLeave, ...updateData };
-			(leaveRepositoryInstance.findAsync as Mock).mockReturnValue(
-				mockLeave
-			);
+			const updatedLeave: Leave = { ...mockLeave, ...updateData };
 			(leaveRepositoryInstance.updateAsync as Mock).mockReturnValue(
-				updatedInformations
+				updatedLeave
 			);
 
 			// Act
-			const result = await leaveServiceInstance.update(updateData);
+			const result = await leaveServiceInstance.update(1, updateData);
 
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.OK);
 			expect(result.success).toBeTruthy();
 			expect(result.message).toEqual('Leave updated successfully');
-			expect(result.responseObject).toEqual(updatedInformations);
+			expect(result.responseObject).toEqual(updatedLeave);
 		});
 
-		it('return error when no leave found', async () => {
+		it('returns not found when leave does not exist', async () => {
 			// Arrange
-			const updateData: Partial<Leave> = { to: new Date('2024-12-31') };
-			(leaveRepositoryInstance.findAsync as Mock).mockReturnValue(null);
-			(leaveRepositoryInstance.updateAsync as Mock).mockReturnValue(null);
+			(leaveRepositoryInstance.updateAsync as Mock).mockRejectedValue(
+				new Error('Record to update not found')
+			);
 
 			// Act
-			const result = await leaveServiceInstance.update(updateData);
+			const result = await leaveServiceInstance.update(99, {});
 
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.NOT_FOUND);
 			expect(result.success).toBeFalsy();
 			expect(result.message).toEqual('Leave not found');
-			expect(result.responseObject).toBeNull;
 		});
 
 		it('handles errors for updateAsync', async () => {
 			// Arrange
-			const updateData: Partial<Leave> = { to: new Date('2024-12-31') };
-			(leaveRepositoryInstance.findAsync as Mock).mockReturnValue(
-				mockLeave
-			);
 			(leaveRepositoryInstance.updateAsync as Mock).mockRejectedValue(
 				new Error('Database error')
 			);
 
 			// Act
-			const result = await leaveServiceInstance.update(updateData);
+			const result = await leaveServiceInstance.update(1, {});
 
 			// Assert
 			expect(result.statusCode).toEqual(
@@ -208,15 +217,14 @@ describe('leaveService', () => {
 	});
 
 	describe('delete', () => {
-		it('deletes and returns the leave', async () => {
+		it('deletes the leave', async () => {
 			// Arrange
-			(leaveRepositoryInstance.findAsync as Mock).mockReturnValue(
+			(leaveRepositoryInstance.deleteAsync as Mock).mockReturnValue(
 				mockLeave
 			);
-			(leaveRepositoryInstance.deleteAsync as Mock).mockReturnValue(null);
 
 			// Act
-			const result = await leaveServiceInstance.delete();
+			const result = await leaveServiceInstance.delete(1);
 
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.OK);
@@ -225,32 +233,29 @@ describe('leaveService', () => {
 			expect(result.responseObject).toBeNull();
 		});
 
-		it('return error when no leave found', async () => {
+		it('returns not found when leave does not exist', async () => {
 			// Arrange
-			(leaveRepositoryInstance.findAsync as Mock).mockReturnValue(null);
-			(leaveRepositoryInstance.deleteAsync as Mock).mockReturnValue(null);
+			(leaveRepositoryInstance.deleteAsync as Mock).mockRejectedValue(
+				new Error('Record to delete does not exist')
+			);
 
 			// Act
-			const result = await leaveServiceInstance.delete();
+			const result = await leaveServiceInstance.delete(99);
 
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.NOT_FOUND);
 			expect(result.success).toBeFalsy();
 			expect(result.message).toEqual('Leave not found');
-			expect(result.responseObject).toBeNull;
 		});
 
 		it('handles errors for deleteAsync', async () => {
 			// Arrange
-			(leaveRepositoryInstance.findAsync as Mock).mockReturnValue(
-				mockLeave
-			);
 			(leaveRepositoryInstance.deleteAsync as Mock).mockRejectedValue(
 				new Error('Database error')
 			);
 
 			// Act
-			const result = await leaveServiceInstance.delete();
+			const result = await leaveServiceInstance.delete(1);
 
 			// Assert
 			expect(result.statusCode).toEqual(

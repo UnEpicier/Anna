@@ -10,9 +10,9 @@ export class LeaveService {
 		this.leaveRepository = repository;
 	}
 
-	async find(): Promise<ServiceResponse<Leave | null>> {
+	async findForFrontend(): Promise<ServiceResponse<Leave | null>> {
 		try {
-			const leave = await this.leaveRepository.findAsync();
+			const leave = await this.leaveRepository.findForFrontendAsync();
 			if (!leave) {
 				return ServiceResponse.failure(
 					'No leave found',
@@ -32,19 +32,25 @@ export class LeaveService {
 		}
 	}
 
+	async findAll(): Promise<ServiceResponse<Leave[] | null>> {
+		try {
+			const leaves = await this.leaveRepository.findAllAsync();
+			return ServiceResponse.success<Leave[]>('Leaves found', leaves);
+		} catch (error) {
+			const errorMessage = `Error finding leaves: ${(error as Error).message}`;
+			console.error(errorMessage);
+			return ServiceResponse.failure(
+				'An error occurred while retrieving leaves.',
+				null,
+				StatusCodes.INTERNAL_SERVER_ERROR
+			);
+		}
+	}
+
 	async create(
 		data: Omit<Leave, 'id' | 'createdAt' | 'updatedAt'>
 	): Promise<ServiceResponse<Leave | null>> {
 		try {
-			const leaveExists = await this.leaveRepository.findAsync();
-			if (leaveExists) {
-				return ServiceResponse.failure(
-					'Leave already exists',
-					null,
-					StatusCodes.CONFLICT
-				);
-			}
-
 			const newLeave = await this.leaveRepository.createAsync(data);
 			return ServiceResponse.success<Leave>(
 				'Leave created successfully',
@@ -62,25 +68,26 @@ export class LeaveService {
 		}
 	}
 
-	async update(data: Partial<Leave>): Promise<ServiceResponse<Leave | null>> {
+	async update(
+		id: number,
+		data: Partial<Omit<Leave, 'id' | 'createdAt' | 'updatedAt'>>
+	): Promise<ServiceResponse<Leave | null>> {
 		try {
-			const leaveExists = await this.leaveRepository.findAsync();
-			if (!leaveExists) {
+			const updatedLeave = await this.leaveRepository.updateAsync(id, data);
+			return ServiceResponse.success<Leave>(
+				'Leave updated successfully',
+				updatedLeave
+			);
+		} catch (error) {
+			const errorMessage = (error as Error).message;
+			if (errorMessage.includes('Record to update not found')) {
 				return ServiceResponse.failure(
 					'Leave not found',
 					null,
 					StatusCodes.NOT_FOUND
 				);
 			}
-
-			const updatedLeave = await this.leaveRepository.updateAsync(data);
-			return ServiceResponse.success<Leave>(
-				'Leave updated successfully',
-				updatedLeave
-			);
-		} catch (error) {
-			const errorMessage = `Error updating leave: ${(error as Error).message}`;
-			console.error(errorMessage);
+			console.error(`Error updating leave: ${errorMessage}`);
 			return ServiceResponse.failure(
 				'An error occurred while updating leave.',
 				null,
@@ -89,29 +96,40 @@ export class LeaveService {
 		}
 	}
 
-	async delete(): Promise<ServiceResponse<Leave | null>> {
+	async delete(id: number): Promise<ServiceResponse<Leave | null>> {
 		try {
-			const leaveExists = await this.leaveRepository.findAsync();
-			if (!leaveExists) {
+			await this.leaveRepository.deleteAsync(id);
+			return ServiceResponse.success<null>(
+				'Leave deleted successfully',
+				null
+			);
+		} catch (error) {
+			const errorMessage = (error as Error).message;
+			if (errorMessage.includes('Record to delete does not exist')) {
 				return ServiceResponse.failure(
 					'Leave not found',
 					null,
 					StatusCodes.NOT_FOUND
 				);
 			}
-
-			await this.leaveRepository.deleteAsync();
-			return ServiceResponse.success<null>(
-				'Leave deleted successfully',
-				null
-			);
-		} catch (error) {
-			const errorMessage = `Error deleting leave: ${(error as Error).message}`;
-			console.error(errorMessage);
+			console.error(`Error deleting leave: ${errorMessage}`);
 			return ServiceResponse.failure(
 				'An error occurred while deleting leave.',
 				null,
 				StatusCodes.INTERNAL_SERVER_ERROR
+			);
+		}
+	}
+
+	async deleteExpired(): Promise<void> {
+		try {
+			const count = await this.leaveRepository.deleteExpiredAsync();
+			if (count > 0) {
+				console.info(`Deleted ${count} expired leave(s).`);
+			}
+		} catch (error) {
+			console.error(
+				`Error deleting expired leaves: ${(error as Error).message}`
 			);
 		}
 	}

@@ -1,3 +1,5 @@
+import cron from 'node-cron';
+import { leaveService } from '@/api/leave/leaveService';
 import { env } from '@/commons/utils/envConfig';
 import app from '@/server';
 
@@ -7,6 +9,9 @@ const server = app.listen(env.PORT, () => {
 		`Server (${NODE_ENV}) running on port http://localhost:${PORT}`
 	);
 });
+
+// Delete expired leaves every day at 1am
+cron.schedule('0 1 * * *', () => leaveService.deleteExpired());
 
 const onCloseSignal = () => {
 	console.info('sigint received, shutting down');

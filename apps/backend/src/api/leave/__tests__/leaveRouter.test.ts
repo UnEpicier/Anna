@@ -11,7 +11,7 @@ vi.mock('@/commons/middleware/requireAuth', () => ({
 
 describe('Leave API Endpoints', () => {
 	describe('GET /leave', () => {
-		it('should return leave object', async () => {
+		it('should return the closest upcoming leave within 1 month', async () => {
 			// Act
 			const response = await request(app).get('/leave');
 			const responseBody: ServiceResponse<Leave> = response.body;
@@ -20,51 +20,21 @@ describe('Leave API Endpoints', () => {
 			expect(response.statusCode).toEqual(StatusCodes.OK);
 			expect(responseBody.success).toBeTruthy();
 			expect(responseBody.message).toContain('Leave found');
-			compareInformations(leave as Leave, responseBody.responseObject);
+			compareLeave(leave as Leave, responseBody.responseObject);
 		});
 	});
 
-	describe('PUT /leave', () => {
-		it('should update and return the updated leave object', async () => {
-			// Arrange
-			const updateData: Partial<Leave> = {
-				to: new Date('2024-12-31T23:59:59Z'),
-			};
-
+	describe('GET /leave/all', () => {
+		it('should return all leaves', async () => {
 			// Act
-			const response = await request(app).put('/leave').send(updateData);
-			const responseBody: ServiceResponse<Leave> = response.body;
+			const response = await request(app).get('/leave/all');
+			const responseBody: ServiceResponse<Leave[]> = response.body;
 
 			// Assert
 			expect(response.statusCode).toEqual(StatusCodes.OK);
 			expect(responseBody.success).toBeTruthy();
-			expect(responseBody.message).toContain(
-				'Leave updated successfully'
-			);
-			if (responseBody.responseObject) {
-				compareInformations(
-					leave as Leave,
-					responseBody.responseObject
-				);
-			} else {
-				throw new Error('Response object is undefined');
-			}
-		});
-	});
-
-	describe('DELETE /leave', () => {
-		it('should delete the leave object', async () => {
-			// Act
-			const response = await request(app).delete('/leave');
-			const responseBody: ServiceResponse<null> = response.body;
-
-			// Assert
-			expect(response.statusCode).toEqual(StatusCodes.OK);
-			expect(responseBody.success).toBeTruthy();
-			expect(responseBody.message).toContain(
-				'Leave deleted successfully'
-			);
-			expect(responseBody.responseObject).toBeNull();
+			expect(responseBody.message).toContain('Leaves found');
+			expect(Array.isArray(responseBody.responseObject)).toBeTruthy();
 		});
 	});
 
@@ -85,11 +55,9 @@ describe('Leave API Endpoints', () => {
 			// Assert
 			expect(response.statusCode).toEqual(StatusCodes.CREATED);
 			expect(responseBody.success).toBeTruthy();
-			expect(responseBody.message).toContain(
-				'Leave created successfully'
-			);
+			expect(responseBody.message).toContain('Leave created successfully');
 			if (responseBody.responseObject) {
-				compareInformations(
+				compareLeave(
 					responseBody.responseObject,
 					responseBody.responseObject
 				);
@@ -98,9 +66,72 @@ describe('Leave API Endpoints', () => {
 			}
 		});
 	});
+
+	describe('PUT /leave/:id', () => {
+		it('should update and return the updated leave object', async () => {
+			// Arrange
+			const updateData: Partial<Leave> = {
+				to: new Date('2024-12-31T23:59:59Z'),
+			};
+
+			// Act
+			const response = await request(app)
+				.put(`/leave/${leave.id}`)
+				.send(updateData);
+			const responseBody: ServiceResponse<Leave> = response.body;
+
+			// Assert
+			expect(response.statusCode).toEqual(StatusCodes.OK);
+			expect(responseBody.success).toBeTruthy();
+			expect(responseBody.message).toContain('Leave updated successfully');
+			if (responseBody.responseObject) {
+				compareLeave(leave as Leave, responseBody.responseObject);
+			} else {
+				throw new Error('Response object is undefined');
+			}
+		});
+
+		it('should return 404 when leave does not exist', async () => {
+			// Act
+			const response = await request(app)
+				.put('/leave/99999')
+				.send({ to: new Date() });
+			const responseBody: ServiceResponse<null> = response.body;
+
+			// Assert
+			expect(response.statusCode).toEqual(StatusCodes.NOT_FOUND);
+			expect(responseBody.success).toBeFalsy();
+			expect(responseBody.message).toContain('Leave not found');
+		});
+	});
+
+	describe('DELETE /leave/:id', () => {
+		it('should delete the leave object', async () => {
+			// Act
+			const response = await request(app).delete(`/leave/${leave.id}`);
+			const responseBody: ServiceResponse<null> = response.body;
+
+			// Assert
+			expect(response.statusCode).toEqual(StatusCodes.OK);
+			expect(responseBody.success).toBeTruthy();
+			expect(responseBody.message).toContain('Leave deleted successfully');
+			expect(responseBody.responseObject).toBeNull();
+		});
+
+		it('should return 404 when leave does not exist', async () => {
+			// Act
+			const response = await request(app).delete('/leave/99999');
+			const responseBody: ServiceResponse<null> = response.body;
+
+			// Assert
+			expect(response.statusCode).toEqual(StatusCodes.NOT_FOUND);
+			expect(responseBody.success).toBeFalsy();
+			expect(responseBody.message).toContain('Leave not found');
+		});
+	});
 });
 
-function compareInformations(mockLeave: Leave, responseLeave: Leave) {
+function compareLeave(mockLeave: Leave, responseLeave: Leave) {
 	if (!mockLeave || !responseLeave) {
 		throw new Error(
 			'Invalid test data: mockLeave or responseLeave is undefined'

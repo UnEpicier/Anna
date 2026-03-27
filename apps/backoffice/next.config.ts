@@ -1,7 +1,5 @@
 import type { NextConfig } from 'next';
 
-const isDev = process.env.NODE_ENV === 'development';
-
 const securityHeaders = [
 	{ key: 'X-Frame-Options', value: 'DENY' },
 	{ key: 'X-Content-Type-Options', value: 'nosniff' },
@@ -18,12 +16,12 @@ const securityHeaders = [
 		key: 'Content-Security-Policy',
 		value: [
 			"default-src 'self'",
-			// unsafe-eval required by React dev mode (error overlays, call stack reconstruction)
-			`script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
+			// unsafe-eval required by React (dev overlays + some runtime dependencies)
+			"script-src 'self' 'unsafe-inline' 'unsafe-eval'",
 			"style-src 'self' 'unsafe-inline'",
 			"img-src 'self' data: blob: https://images.unsplash.com https://api.maptiler.com",
 			"font-src 'self' https://api.maptiler.com",
-			"connect-src 'self' https://api.maptiler.com",
+			"connect-src 'self' https://api.maptiler.com data:",
 		].join('; '),
 	},
 ];

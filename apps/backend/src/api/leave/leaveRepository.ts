@@ -2,40 +2,45 @@ import prisma from '@/libs/prisma';
 import type { Leave } from '@repo/app-types';
 
 export class LeaveRepository {
-	async findAsync(): Promise<Leave | null> {
+	async findForFrontendAsync(): Promise<Leave | null> {
+		const now = new Date();
+		const oneMonthLater = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
 		return prisma.leave.findFirst({
 			where: {
-				id: 1,
+				to: { gte: now },
+				from: { lte: oneMonthLater },
 			},
+			orderBy: { from: 'asc' },
+		});
+	}
+
+	async findAllAsync(): Promise<Leave[]> {
+		return prisma.leave.findMany({
+			orderBy: { from: 'asc' },
 		});
 	}
 
 	async createAsync(
 		data: Omit<Leave, 'id' | 'createdAt' | 'updatedAt'>
 	): Promise<Leave> {
-		return prisma.leave.create({
-			data: {
-				...data,
-			},
-		});
+		return prisma.leave.create({ data });
 	}
 
-	async updateAsync(data: Partial<Leave>): Promise<Leave> {
-		return prisma.leave.update({
-			where: {
-				id: 1,
-			},
-			data: {
-				...data,
-			},
-		});
+	async updateAsync(
+		id: number,
+		data: Partial<Omit<Leave, 'id' | 'createdAt' | 'updatedAt'>>
+	): Promise<Leave> {
+		return prisma.leave.update({ where: { id }, data });
 	}
 
-	async deleteAsync(): Promise<Leave> {
-		return prisma.leave.delete({
-			where: {
-				id: 1,
-			},
+	async deleteAsync(id: number): Promise<Leave> {
+		return prisma.leave.delete({ where: { id } });
+	}
+
+	async deleteExpiredAsync(): Promise<number> {
+		const result = await prisma.leave.deleteMany({
+			where: { to: { lt: new Date() } },
 		});
+		return result.count;
 	}
 }

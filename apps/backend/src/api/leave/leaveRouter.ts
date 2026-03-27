@@ -6,8 +6,10 @@ export const leaveRouter: Router = Router();
 
 leaveRouter.get('/', leaveController.getLeave);
 
+leaveRouter.get('/all', requireAuth, leaveController.getAllLeaves);
+
 leaveRouter.post('/', requireAuth, leaveController.createLeave);
 
-leaveRouter.put('/', requireAuth, leaveController.updateLeave);
+leaveRouter.put('/:id', requireAuth, leaveController.updateLeave);
 
-leaveRouter.delete('/', requireAuth, leaveController.deleteLeave);
+leaveRouter.delete('/:id', requireAuth, leaveController.deleteLeave);

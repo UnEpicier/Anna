@@ -9,7 +9,7 @@ const cspHeader = [
 	"style-src 'self' 'unsafe-inline'",
 	"img-src 'self' data: blob: https://images.unsplash.com https://api.maptiler.com",
 	"font-src 'self' https://api.maptiler.com",
-	"connect-src 'self' https://api.maptiler.com",
+	"connect-src 'self' https://api.maptiler.com data:",
 	"worker-src blob:",
 ].join('; ');
 

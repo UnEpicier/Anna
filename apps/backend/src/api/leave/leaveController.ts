@@ -4,7 +4,15 @@ import { leaveService } from '@/api/leave/leaveService';
 
 class LeaveController {
 	public getLeave: RequestHandler = async (_req: Request, res: Response) => {
-		const serviceResponse = await leaveService.find();
+		const serviceResponse = await leaveService.findForFrontend();
+		res.status(serviceResponse.statusCode).send(serviceResponse);
+	};
+
+	public getAllLeaves: RequestHandler = async (
+		_req: Request,
+		res: Response
+	) => {
+		const serviceResponse = await leaveService.findAll();
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 
@@ -20,15 +28,17 @@ class LeaveController {
 		req: Request,
 		res: Response
 	) => {
-		const serviceResponse = await leaveService.update(req.body);
+		const id = Number(req.params.id);
+		const serviceResponse = await leaveService.update(id, req.body);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 
 	public deleteLeave: RequestHandler = async (
-		_req: Request,
+		req: Request,
 		res: Response
 	) => {
-		const serviceResponse = await leaveService.delete();
+		const id = Number(req.params.id);
+		const serviceResponse = await leaveService.delete(id);
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 }
