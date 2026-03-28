@@ -8,6 +8,9 @@ const config: KnipConfig = {
 		},
 		"apps/backend": {
 			project: ["src/**/*.ts"],
+			paths: {
+				"@/*": ["./src/*"],
+			},
 		},
 		"apps/frontend": {
 			entry: ["app/**/*.{ts,tsx}", "ui/**/*.{ts,tsx}"],
