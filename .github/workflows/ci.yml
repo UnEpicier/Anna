@@ -65,6 +65,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Generate Prisma client
+        working-directory: apps/backend
+        run: pnpm exec prisma generate
+        env:
+          DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
+
       - name: Check dead code
         run: pnpm knip
         env:
@@ -163,6 +169,9 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Build internal packages
+        run: pnpm turbo run build --filter=@repo/app-types --filter=@repo/utils
 
       - name: Build frontend
         working-directory: apps/frontend
