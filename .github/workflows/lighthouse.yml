@@ -90,6 +90,12 @@ jobs:
         working-directory: apps/backend
         run: pnpm exec prisma db seed
 
+      - name: Run tests with coverage
+        working-directory: apps/backend
+        run: pnpm test:cov
+        env:
+          NODE_ENV: test
+
       - name: Build frontend
         working-directory: apps/frontend
         run: pnpm build
@@ -120,8 +126,45 @@ jobs:
           timeout 60 bash -c 'until curl -s http://localhost:3000 > /dev/null; do sleep 2; done'
           timeout 60 bash -c 'until curl -s http://localhost:3001 > /dev/null; do sleep 2; done'
 
+      - name: Generate auth token for backoffice Lighthouse
+        id: auth
+        run: |
+          python3 << 'EOF'
+          import hmac, hashlib, base64, json, time, uuid, os, subprocess
+
+          secret = os.environ['JWT_SECRET']
+          jti = str(uuid.uuid4())
+          now = int(time.time())
+
+          header = base64.urlsafe_b64encode(
+            json.dumps({"alg": "HS256", "typ": "JWT"}, separators=(',', ':')).encode()
+          ).rstrip(b'=').decode()
+          payload = base64.urlsafe_b64encode(
+            json.dumps({"jti": jti, "iat": now, "exp": now + 14400}, separators=(',', ':')).encode()
+          ).rstrip(b'=').decode()
+
+          sig_input = f"{header}.{payload}".encode()
+          sig = base64.urlsafe_b64encode(
+            hmac.new(secret.encode(), sig_input, hashlib.sha256).digest()
+          ).rstrip(b'=').decode()
+
+          token = f"{header}.{payload}.{sig}"
+          subprocess.run(
+            ['redis-cli', '-h', 'localhost', 'set', f'authSession:{jti}', '1', 'EX', '14400'],
+            check=True
+          )
+
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+            f.write(f'token={token}\n')
+          EOF
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
       - name: Create reports directory
-        run: mkdir -p lighthouse-reports
+        run: mkdir -p lighthouse-reports lighthouse-reports/coverage
+
+      - name: Copy coverage report
+        run: cp -r apps/backend/coverage/* lighthouse-reports/coverage/
 
       - name: Run Lighthouse on frontend
         run: |
@@ -137,6 +180,7 @@ jobs:
             --output html \
             --output-path lighthouse-reports/backoffice.html \
             --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage --disable-gpu" \
+            --extra-headers='{"Cookie": "token=${{ steps.auth.outputs.token }}"}' \
             --quiet
 
       - name: Generate index page
@@ -167,6 +211,7 @@ jobs:
               <p class="subtitle">Performance, accessibility &amp; best practices</p>
               <a href="frontend.html">Frontend <span class="arrow">→</span></a>
               <a href="backoffice.html">Backoffice <span class="arrow">→</span></a>
+              <a href="coverage/index.html">Coverage <span class="arrow">→</span></a>
               <div class="meta">
                 <p>Run #${{ github.run_number }} &mdash; Commit <code>${{ github.sha }}</code></p>
               </div>
