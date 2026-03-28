@@ -1,33 +1,6 @@
 import ContentService from '@/app/services/content';
 import type { Informations, ResponseObject, Service } from '@repo/app-types';
 
-const _serviceDetails: Record<string, string[]> = {
-	Chiens: [
-		'Bilan ostéopathique complet',
-		'Traitement des troubles locomoteurs',
-		'Amélioration de la mobilité',
-		'Conseils personnalisés',
-	],
-	Chats: [
-		'Examen en douceur',
-		'Traitement des tensions',
-		'Soulagement des douleurs',
-		'Suivi personnalisé',
-	],
-	NAC: [
-		'Manipulation délicate',
-		'Adaptation à chaque espèce',
-		'Traitement préventif et curatif',
-		"Conseils d'entretien",
-	],
-	Chevaux: [
-		'Bilan ostéopathique complet',
-		'Optimisation des performances',
-		'Prévention des blessures',
-		'Suivi régulier recommandé',
-	],
-};
-
 async function getData() {
 	const result: {
 		services: Service[];

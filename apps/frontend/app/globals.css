@@ -203,6 +203,20 @@ html {
 	animation: scaleIn 0.4s ease-out;
 }
 
+@keyframes marquee {
+	0%,
+	10% {
+		transform: translateX(0);
+	}
+	100% {
+		transform: translateX(-100%);
+	}
+}
+
+.animate-marquee {
+	animation: marquee 12s linear infinite;
+}
+
 .glass-effect {
 	background: rgba(255, 255, 255, 0.7);
 	-webkit-backdrop-filter: blur(4px);

@@ -1,7 +1,8 @@
-import './globals.css';
-import type { ReactNode } from 'react';
 import Footer from '@/ui/Footer';
+import LeaveBanner from '@/ui/LeaveBanner';
 import Navbar from '@/ui/Navbar';
+import type { ReactNode } from 'react';
+import './globals.css';
 
 export default function RootLayout({
 	children,
@@ -15,6 +16,7 @@ export default function RootLayout({
 		>
 			<body>
 				<div className='min-h-screen flex flex-col'>
+					<LeaveBanner />
 					<Navbar />
 					<main
 						data-landmark-index='1'

@@ -1,7 +1,7 @@
-import type { Leave } from '@repo/app-types';
-import { StatusCodes } from 'http-status-codes';
 import { LeaveRepository } from '@/api/leave/leaveRepository';
 import { ServiceResponse } from '@/commons/models/serviceResponse';
+import type { Leave } from '@repo/app-types';
+import { StatusCodes } from 'http-status-codes';
 
 export class LeaveService {
 	private leaveRepository: LeaveRepository;
@@ -73,7 +73,10 @@ export class LeaveService {
 		data: Partial<Omit<Leave, 'id' | 'createdAt' | 'updatedAt'>>
 	): Promise<ServiceResponse<Leave | null>> {
 		try {
-			const updatedLeave = await this.leaveRepository.updateAsync(id, data);
+			const updatedLeave = await this.leaveRepository.updateAsync(
+				id,
+				data
+			);
 			return ServiceResponse.success<Leave>(
 				'Leave updated successfully',
 				updatedLeave
