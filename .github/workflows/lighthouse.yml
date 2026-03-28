@@ -130,7 +130,7 @@ jobs:
         id: auth
         run: |
           python3 << 'EOF'
-          import hmac, hashlib, base64, json, time, uuid, os, subprocess
+          import hmac, hashlib, base64, json, time, uuid, os, socket
 
           secret = os.environ['JWT_SECRET']
           jti = str(uuid.uuid4())
@@ -149,10 +149,17 @@ jobs:
           ).rstrip(b'=').decode()
 
           token = f"{header}.{payload}.{sig}"
-          subprocess.run(
-            ['redis-cli', '-h', 'localhost', 'set', f'authSession:{jti}', '1', 'EX', '14400'],
-            check=True
+
+          # Store session in Redis via raw socket (no redis-cli needed)
+          key = f'authSession:{jti}'.encode()
+          cmd = (
+            f'*5\r\n$3\r\nSET\r\n${len(key)}\r\n'.encode() + key +
+            f'\r\n$1\r\n1\r\n$2\r\nEX\r\n$5\r\n14400\r\n'.encode()
           )
+          import socket
+          with socket.create_connection(('localhost', 6379)) as s:
+            s.sendall(cmd)
+            s.recv(100)
 
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
             f.write(f'token={token}\n')
