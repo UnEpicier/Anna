@@ -1,5 +1,21 @@
 import ContentService from '@/app/services/content';
 import type { Informations, ResponseObject, Service } from '@repo/app-types';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'Services',
+	description:
+		'Découvrez les services d\'ostéopathie animalière proposés par Anna Nischwitz à Bordeaux. Soins à domicile adaptés aux chiens, chats, chevaux et NAC.',
+	alternates: {
+		canonical: '/services',
+	},
+	openGraph: {
+		title: 'Services d\'Ostéopathie Animalière | Anna Nischwitz',
+		description:
+			'Soins ostéopathiques à domicile pour chiens, chats, chevaux et NAC dans la région bordelaise.',
+		url: '/services',
+	},
+};
 
 async function getData() {
 	const result: {

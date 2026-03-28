@@ -5,6 +5,22 @@ import type {
 	ResponseObject,
 	Schedule,
 } from '@repo/app-types';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'Contact & Rendez-vous',
+	description:
+		'Contactez Anna Nischwitz pour prendre rendez-vous. Ostéopathe animalier intervenant à domicile dans la région bordelaise.',
+	alternates: {
+		canonical: '/contact',
+	},
+	openGraph: {
+		title: 'Contact & Prise de Rendez-vous | Anna Nischwitz',
+		description:
+			'Prenez rendez-vous avec Anna Nischwitz, ostéopathe animalier à domicile dans la région de Bordeaux.',
+		url: '/contact',
+	},
+};
 
 async function getData() {
 	const result: {
