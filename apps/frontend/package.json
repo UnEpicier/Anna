@@ -11,7 +11,8 @@
 		"lint:fix": "biome check . --write",
 		"lint:strict": "biome lint . --max-diagnostics=0",
 		"format": "biome format . --write",
-		"check-types": "next typegen && tsc --noEmit"
+		"check-types": "next typegen && tsc --noEmit",
+		"size": "size-limit"
 	},
 	"dependencies": {
 		"@deck.gl/core": "^9.2.11",
@@ -34,11 +35,13 @@
 		"@repo/app-types": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"@repo/utils": "workspace:*",
+		"@size-limit/file": "^12.0.1",
 		"@tailwindcss/postcss": "^4.2.2",
 		"@types/node": "^25",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
 		"postcss": "^8.5.8",
+		"size-limit": "^12.0.1",
 		"tailwindcss": "^4.2.2",
 		"typescript": "^6.0.2"
 	}
