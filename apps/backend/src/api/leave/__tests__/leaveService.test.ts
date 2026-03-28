@@ -1,9 +1,15 @@
 import { LeaveRepository } from '@/api/leave/leaveRepository';
 import { LeaveService } from '@/api/leave/leaveService';
+import { Prisma } from '@/generated/prisma-client/client';
 import type { Leave } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 import type { Mock } from 'vitest';
 import { leave as mockLeave } from '../../../../prisma/data/leave';
+
+const notFoundError = new Prisma.PrismaClientKnownRequestError('Record not found', {
+	code: 'P2025',
+	clientVersion: '0.0.0',
+});
 
 vi.mock('@/api/leave/leaveRepository');
 
@@ -182,9 +188,7 @@ describe('leaveService', () => {
 
 		it('returns not found when leave does not exist', async () => {
 			// Arrange
-			(leaveRepositoryInstance.updateAsync as Mock).mockRejectedValue(
-				new Error('Record to update not found')
-			);
+			(leaveRepositoryInstance.updateAsync as Mock).mockRejectedValue(notFoundError);
 
 			// Act
 			const result = await leaveServiceInstance.update(99, {});
@@ -235,9 +239,7 @@ describe('leaveService', () => {
 
 		it('returns not found when leave does not exist', async () => {
 			// Arrange
-			(leaveRepositoryInstance.deleteAsync as Mock).mockRejectedValue(
-				new Error('Record to delete does not exist')
-			);
+			(leaveRepositoryInstance.deleteAsync as Mock).mockRejectedValue(notFoundError);
 
 			// Act
 			const result = await leaveServiceInstance.delete(99);

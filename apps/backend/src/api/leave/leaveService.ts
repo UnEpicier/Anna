@@ -1,6 +1,7 @@
 import { LeaveRepository } from '@/api/leave/leaveRepository';
 import { ServiceResponse } from '@/commons/models/serviceResponse';
 import type { Leave } from '@repo/app-types';
+import { Prisma } from '@/generated/prisma-client/client';
 import { StatusCodes } from 'http-status-codes';
 
 export class LeaveService {
@@ -82,15 +83,10 @@ export class LeaveService {
 				updatedLeave
 			);
 		} catch (error) {
-			const errorMessage = (error as Error).message;
-			if (errorMessage.includes('Record to update not found')) {
-				return ServiceResponse.failure(
-					'Leave not found',
-					null,
-					StatusCodes.NOT_FOUND
-				);
+			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+				return ServiceResponse.failure('Leave not found', null, StatusCodes.NOT_FOUND);
 			}
-			console.error(`Error updating leave: ${errorMessage}`);
+			console.error(`Error updating leave: ${(error as Error).message}`);
 			return ServiceResponse.failure(
 				'An error occurred while updating leave.',
 				null,
@@ -107,15 +103,10 @@ export class LeaveService {
 				null
 			);
 		} catch (error) {
-			const errorMessage = (error as Error).message;
-			if (errorMessage.includes('Record to delete does not exist')) {
-				return ServiceResponse.failure(
-					'Leave not found',
-					null,
-					StatusCodes.NOT_FOUND
-				);
+			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+				return ServiceResponse.failure('Leave not found', null, StatusCodes.NOT_FOUND);
 			}
-			console.error(`Error deleting leave: ${errorMessage}`);
+			console.error(`Error deleting leave: ${(error as Error).message}`);
 			return ServiceResponse.failure(
 				'An error occurred while deleting leave.',
 				null,
