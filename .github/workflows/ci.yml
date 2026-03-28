@@ -67,6 +67,8 @@ jobs:
 
       - name: Check dead code
         run: pnpm knip
+        env:
+          DATABASE_URL: postgresql://placeholder:placeholder@localhost:5432/placeholder
 
   test-backend:
     name: Backend Tests
