@@ -23,7 +23,7 @@
 		"check-types": "tsc --noEmit"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.8",
+		"@biomejs/biome": "2.4.9",
 		"@repo/typescript-config": "workspace:*",
 		"@types/node": "^25.5.0"
 	}

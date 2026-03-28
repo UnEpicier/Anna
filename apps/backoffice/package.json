@@ -22,7 +22,7 @@
 		"@maptiler/sdk": "^3.11.1",
 		"@repo/ui": "workspace:*",
 		"@turf/turf": "^7.3.4",
-		"lucide-react": "^1.6.0",
+		"lucide-react": "^1.7.0",
 		"mapbox-gl": "^3.20.0",
 		"motion": "^12.38.0",
 		"next": "16.2.1",
@@ -32,7 +32,7 @@
 		"sonner": "^2.0.7"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.8",
+		"@biomejs/biome": "2.4.9",
 		"@repo/app-types": "workspace:*",
 		"@repo/typescript-config": "workspace:*",
 		"@repo/utils": "workspace:*",
