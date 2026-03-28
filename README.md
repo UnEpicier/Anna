@@ -129,3 +129,37 @@ pnpm test:cov     # Avec couverture de code
 pnpm deps:down    # Arrêter les conteneurs
 pnpm deps:clean   # Arrêter et supprimer les volumes
 ```
+
+## CI / Intégration Continue
+
+Deux workflows GitHub Actions principaux, déclenchés sur chaque push et pull request vers `main`.
+
+### `ci.yml` — Qualité de code
+
+Les jobs tournent en parallèle. Le job `build` final n'est lancé que si tous les autres passent.
+
+| Job | Outil | Rôle |
+|---|---|---|
+| **Lint** | [Biome](https://biomejs.dev) | Vérifie les règles de style et les bonnes pratiques TypeScript/JS |
+| **Type Check** | TypeScript | Vérifie les types statiquement sur tout le monorepo |
+| **Backend Tests** | [Vitest](https://vitest.dev) | Tests unitaires et d'intégration avec vraie base PostgreSQL + Redis. Bloque si la couverture passe sous **75 %** |
+| **Dead Code** | [knip](https://knip.dev) | Détecte les exports, fichiers et dépendances non utilisés dans le monorepo |
+| **Bundle Size** | [size-limit](https://github.com/ai/size-limit) | Surveille la taille du bundle JS du frontend. Bloque si le bundle dépasse le seuil configuré dans `apps/frontend/.size-limit.json` (actuellement **3400 kB**) |
+| **Build** | Turbo | Build de toutes les apps |
+
+### `security.yml` — Sécurité
+
+Tourne sur chaque push/PR **et** tous les lundis à 8h UTC (pour détecter de nouvelles CVEs sur du code non modifié).
+
+| Job | Outil | Rôle |
+|---|---|---|
+| **OSV Scanner** | [osv-scanner](https://google.github.io/osv-scanner/) | Scanne `pnpm-lock.yaml` contre plusieurs bases de CVEs agrégées (GitHub Advisory DB, NVD, OSV.dev). Plus exhaustif que `pnpm audit` seul. Bloque sur toute vulnérabilité détectée. |
+| **Secrets** | [gitleaks](https://gitleaks.io) | Analyse le code et l'historique git pour détecter des secrets hardcodés — clés API, tokens JWT, mots de passe. Scanne l'historique complet sur push, uniquement les fichiers modifiés sur PR. |
+| **SAST** | [semgrep](https://semgrep.dev) | Analyse statique de sécurité du code source. Détecte injections SQL/XSS, mauvaises pratiques crypto, patterns OWASP Top 10. Règles communautaires gratuites (`p/typescript`, `p/nodejs`, `p/owasp-top-ten`). |
+| **Trivy** | [trivy](https://trivy.dev) | Scan du filesystem : vulnérabilités de dépendances, secrets résiduels, misconfigurations (Dockerfiles, fichiers de config). Sévérité HIGH et CRITICAL uniquement. |
+
+> Les vulnérabilités détectées par OSV Scanner ou Trivy peuvent être patchées via les [overrides pnpm](https://pnpm.io/package_json#pnpmoverrides) dans `package.json` si la mise à jour directe n'est pas possible.
+
+### `lighthouse.yml` — Performance
+
+Tourne sur chaque push vers `main`. Lance [Lighthouse](https://developer.chrome.com/docs/lighthouse/overview/) sur le frontend et le backoffice, publie les rapports (+ couverture de code backend) sur **GitHub Pages**.
