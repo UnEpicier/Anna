@@ -15,14 +15,19 @@ concurrency:
 jobs:
   osv-scan:
     name: OSV Scanner
-    uses: google/osv-scanner-action/.github/workflows/osv-scanner-reusable.yml@v2.3.5
-    with:
-      scan-args: |-
-        --lockfile=./pnpm-lock.yaml
-    permissions:
-      security-events: write
-      contents: read
-      actions: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install osv-scanner
+        run: |
+          curl -fsSL https://github.com/google/osv-scanner/releases/latest/download/osv-scanner_linux_amd64 \
+            -o osv-scanner
+          chmod +x osv-scanner
+          sudo mv osv-scanner /usr/local/bin/
+
+      - name: Scan dependencies
+        run: osv-scanner scan --lockfile=./pnpm-lock.yaml
 
   secrets:
     name: Secrets (gitleaks)
