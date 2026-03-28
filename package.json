@@ -15,6 +15,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.4.9",
 		"@repo/typescript-config": "workspace:*",
+		"knip": "^6.1.0",
 		"turbo": "^2.8.21",
 		"typescript": "^6.0.2"
 	},

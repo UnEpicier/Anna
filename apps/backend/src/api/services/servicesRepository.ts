@@ -1,18 +1,6 @@
 import prisma from '@/libs/prisma';
 import type { Service } from '@repo/app-types';
 
-export const service: Service = {
-	id: 1,
-	title: 'Chat',
-	icon: 'cat',
-	price: 60,
-	duration: '1h',
-	description: '',
-	enabled: true,
-	createdAt: new Date(),
-	updatedAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days later
-};
-
 export class ServicesRepository {
 	async findAll(): Promise<Service[]> {
 		const services = await prisma.services.findMany();

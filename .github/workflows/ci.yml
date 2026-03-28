@@ -49,6 +49,25 @@ jobs:
       - name: Check types
         run: pnpm check-types
 
+  knip:
+    name: Dead Code (knip)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check dead code
+        run: pnpm knip
+
   test-backend:
     name: Backend Tests
     runs-on: ubuntu-latest
@@ -130,7 +149,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: [lint, check-types, test-backend]
+    needs: [lint, check-types, test-backend, knip]
     steps:
       - uses: actions/checkout@v4
 
