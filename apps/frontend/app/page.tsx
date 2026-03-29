@@ -84,7 +84,7 @@ export default function Home() {
 				<div className='absolute inset-0'>
 					<ImageWithFallback
 						src='https://images.unsplash.com/photo-1450778869180-41d0601e046e'
-						alt='Ostéopathie animalière'
+						alt=''
 						className='w-full h-full object-cover brightness-90'
 					/>
 					<div className='absolute inset-0 bg-linear-to-t from-[rgba(8,5,3,0.92)] via-[rgba(8,5,3,0.4)] to-transparent' />
@@ -115,7 +115,7 @@ export default function Home() {
 					>
 						<span className='w-6 h-px bg-[#c4956a]/70' />
 						<span className='text-[10px] tracking-[2px] uppercase text-[#c4956a]/90'>
-							Ostéopathe Animalier Diplômée
+							Ostéopathe Animalière Diplômée
 						</span>
 					</motion.div>
 
@@ -126,7 +126,7 @@ export default function Home() {
 						className='text-6xl sm:text-7xl lg:text-8xl font-black text-white leading-[0.95] tracking-tight mb-4'
 					>
 						Anna<br />
-						<em className='not-italic font-light text-white/60'>Nischwitz</em>
+						<span className='font-light text-white/60'>Nischwitz</span>
 					</motion.h1>
 
 					<motion.p
@@ -156,10 +156,11 @@ export default function Home() {
 							</Link>
 						</Button>
 						<button
+							aria-label='Découvrir le contenu'
 							onClick={() => document.getElementById('below-hero')?.scrollIntoView({ behavior: 'smooth' })}
 							className='text-sm text-white/40 flex items-center gap-1 hover:text-white/60 transition-colors'
 						>
-							Découvrir <span className='text-base'>↓</span>
+							Découvrir <span aria-hidden='true' className='text-base'>↓</span>
 						</button>
 					</motion.div>
 				</div>
@@ -177,7 +178,7 @@ export default function Home() {
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.4, delay: i * 0.07 }}
-						className='flex flex-col items-center justify-center py-5 px-4 text-center border-b sm:border-b-0 border-r even:border-r-0 sm:even:border-r sm:last:border-r-0 border-border'
+						className='flex flex-col items-center justify-center py-5 px-4 text-center border-b sm:border-b-0 nth-3:border-b-0 nth-4:border-b-0 border-r even:border-r-0 sm:even:border-r sm:last:border-r-0 border-border'
 					>
 						<span className='text-xl font-black text-foreground tracking-tight'>{stat.num}</span>
 						<span className='text-[9px] uppercase tracking-widest text-muted-foreground mt-0.5'>{stat.label}</span>
@@ -202,7 +203,7 @@ export default function Home() {
 						</div>
 						<h2 className='text-4xl sm:text-5xl lg:text-6xl font-black text-foreground leading-none tracking-tight mb-10'>
 							Une approche<br />
-							<em className='not-italic text-primary font-light'>naturelle</em><br />
+							<span className='text-primary font-light'>naturelle</span><br />
 							&amp; douce
 						</h2>
 					</motion.div>
@@ -268,7 +269,7 @@ export default function Home() {
 							</span>
 						</div>
 						<h2 className='text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-none tracking-tight'>
-							Vos <em className='not-italic font-light text-[#c4956a]/90'>compagnons</em>,<br />
+							Vos <span className='font-light text-[#c4956a]/90'>compagnons</span>,<br />
 							mon expertise
 						</h2>
 					</motion.div>
@@ -284,12 +285,11 @@ export default function Home() {
 							<motion.div
 								key={animal.name}
 								variants={itemVariants}
-								className='p-6 sm:p-8 bg-[#111] hover:bg-[#161616] transition-colors group border-r border-b border-white/5 last:border-r-0 nth-2:border-r-0 lg:nth-2:border-r nth-3:border-r-0 lg:nth-3:border-r nth-3:border-b-0 nth-4:border-b-0 lg:nth-4:border-r-0'
+								className='p-6 sm:p-8 bg-[#111] hover:bg-[#161616] transition-colors border-r border-b border-white/5 last:border-r-0 nth-2:border-r-0 lg:nth-2:border-r nth-3:border-r-0 lg:nth-3:border-r lg:nth-1:border-b-0 lg:nth-2:border-b-0 nth-3:border-b-0 nth-4:border-b-0 lg:nth-4:border-r-0'
 							>
 								<div className='text-3xl mb-4'>{animal.emoji}</div>
 								<h3 className='text-lg font-black text-white mb-2'>{animal.name}</h3>
 								<p className='text-xs text-white/40 leading-relaxed'>{animal.description}</p>
-								<span className='block mt-4 text-[#c4956a]/50 text-sm group-hover:text-[#c4956a]/80 transition-colors'>→</span>
 							</motion.div>
 						))}
 					</motion.div>
@@ -329,7 +329,7 @@ export default function Home() {
 								</span>
 							</div>
 							<h2 className='text-4xl sm:text-5xl font-black text-foreground leading-none tracking-tight mb-6'>
-								<em className='not-italic text-primary font-light'>Passionnée</em><br />
+								<span className='text-primary font-light'>Passionnée</span><br />
 								par le bien-être<br />
 								animal
 							</h2>
@@ -381,7 +381,7 @@ export default function Home() {
 						</p>
 						<h2 className='text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-none tracking-tight mb-4'>
 							Améliorons le bien-être<br />
-							<em className='not-italic font-light text-white/50'>de votre animal</em>
+							<span className='font-light text-white/50'>de votre animal</span>
 						</h2>
 						<p className='text-sm text-white/40 mb-8 max-w-md mx-auto leading-relaxed'>
 							Prenez rendez-vous dès aujourd&apos;hui pour une consultation personnalisée à domicile.
