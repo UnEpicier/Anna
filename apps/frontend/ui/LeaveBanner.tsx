@@ -18,7 +18,7 @@ export default async function LeaveBanner() {
 		to: new Date(leaveResponseData.responseObject.to),
 	};
 
-	const text = `Je serais en congés du ${leave.from.toLocaleDateString(
+	const text = `Je serais absente du ${leave.from.toLocaleDateString(
 		'fr-FR',
 		{
 			month: 'long',

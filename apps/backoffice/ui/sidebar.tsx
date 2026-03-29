@@ -66,7 +66,7 @@ const navItems = [
 	},
 	{
 		id: 'leave' as Section,
-		label: 'Congés',
+		label: 'Absences',
 		icon: PlaneTakeoff,
 		path: '/leave',
 	},

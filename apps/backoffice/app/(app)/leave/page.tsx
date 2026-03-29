@@ -22,7 +22,7 @@ async function getData() {
 }
 
 export const metadata: Metadata = {
-	title: 'Congés',
+	title: 'Absences',
 };
 
 export default async function LeavePage() {
