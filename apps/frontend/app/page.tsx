@@ -296,61 +296,60 @@ export default function Home() {
 				</div>
 			</section>
 
-			{/* About Section */}
-			<section className='py-24 bg-white relative overflow-hidden'>
-				<div className='absolute top-0 right-0 w-1/3 h-full bg-linear-to-l from-secondary to-transparent opacity-30'></div>
-
-				<div className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-					<div className='grid grid-cols-1 lg:grid-cols-2 gap-16 items-center'>
+			{/* About */}
+			<section className='py-20 sm:py-28 bg-white'>
+				<div className='max-w-7xl mx-auto px-6 sm:px-8 lg:px-16'>
+					<div className='grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-end'>
+						{/* Photo */}
 						<motion.div
 							initial={{ opacity: 0, x: -30 }}
 							whileInView={{ opacity: 1, x: 0 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.7 }}
-							className='relative'
+							className='rounded-2xl overflow-hidden aspect-2/3 w-full max-w-xs mx-auto lg:mx-0 lg:max-w-none'
 						>
-							<div className='absolute -inset-4 bg-linear-to-br from-primary/20 to-transparent rounded-3xl blur-2xl'></div>
-							<div className='relative rounded-3xl overflow-hidden shadow-2xl'>
-								<ImageWithFallback
-									src='https://images.unsplash.com/photo-1548681528-6a5c45b66b42'
-									alt='Anna Nischwitz'
-									className='w-full h-137.5 object-cover'
-								/>
-							</div>
+							<ImageWithFallback
+								src='https://images.unsplash.com/photo-1548681528-6a5c45b66b42'
+								alt='Anna Nischwitz'
+								className='w-full h-full object-cover'
+							/>
 						</motion.div>
 
+						{/* Texte */}
 						<motion.div
 							initial={{ opacity: 0, x: 30 }}
 							whileInView={{ opacity: 1, x: 0 }}
 							viewport={{ once: true }}
-							transition={{ duration: 0.7 }}
+							transition={{ duration: 0.7, delay: 0.15 }}
 						>
-							<h2 className='text-4xl md:text-5xl text-primary mb-8'>
-								À Propos de Moi
+							<div className='flex items-center gap-3 mb-4'>
+								<span className='w-5 h-px bg-primary' />
+								<span className='text-[9px] tracking-[2px] uppercase text-primary font-semibold'>
+									À propos
+								</span>
+							</div>
+							<h2 className='text-4xl sm:text-5xl font-black text-foreground leading-none tracking-tight mb-6'>
+								<em className='not-italic text-primary font-light'>Passionnée</em><br />
+								par le bien-être<br />
+								animal
 							</h2>
-							<div className='space-y-6 text-gray-600 leading-relaxed'>
+							<div className='space-y-4 text-sm text-muted-foreground leading-relaxed'>
 								<p>
-									Diplômée en ostéopathie animalière, je me
-									consacre depuis plusieurs années au
-									bien-être de nos compagnons à quatre pattes
-									et de nos amis équidés.
+									Diplômée en ostéopathie animalière, je me consacre depuis plusieurs
+									années au bien-être de nos compagnons à quatre pattes et de nos amis équidés.
 								</p>
 								<p>
-									Ma passion pour les animaux et mon expertise
-									me permettent d&apos;identifier et de
-									traiter les tensions, blocages et
-									déséquilibres qui peuvent affecter la
-									qualité de vie de vos animaux.
+									Ma passion pour les animaux et mon expertise me permettent d&apos;identifier
+									et de traiter les tensions, blocages et déséquilibres qui peuvent affecter
+									la qualité de vie de vos animaux.
 								</p>
 								<p>
-									Chaque séance est personnalisée en fonction
-									des besoins spécifiques de l&apos;animal,
-									dans le respect de son bien-être et de sa
-									physiologie.
+									Chaque séance est personnalisée en fonction des besoins spécifiques de
+									l&apos;animal, dans le respect de son bien-être et de sa physiologie.
 								</p>
 							</div>
 							<Button
-								className='mt-8 bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all group'
+								className='mt-8 bg-primary hover:bg-primary/90 font-bold shadow-lg group'
 								size='lg'
 								asChild
 							>
