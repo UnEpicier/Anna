@@ -197,7 +197,7 @@ export default function ServiceCard({
 								updateService(
 									service.id,
 									'price',
-									e.target.value
+									e.target.valueAsNumber
 								)
 							}
 							placeholder='60€'
