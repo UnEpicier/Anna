@@ -71,81 +71,97 @@ const itemVariants = {
 export default function Home() {
 	return (
 		<div className='min-h-screen'>
-			{/* Landing Section */}
-			<section className='relative min-h-[90svh] flex items-center overflow-hidden'>
-				<div className='absolute inset-0 bg-linear-to-br from-secondary via-white to-primary/5' />
-				<div className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20'>
-					<div className='grid grid-cols-1 lg:grid-cols-2 gap-16 items-center'>
-						<motion.div
-							initial={{ opacity: 0, x: -30 }}
-							animate={{ opacity: 1, x: 0 }}
-							transition={{ duration: 0.7 }}
-						>
-							<motion.div
-								initial={{ opacity: 0, y: 20 }}
-								animate={{ opacity: 1, y: 0 }}
-								transition={{ delay: 0.2 }}
-								className='inline-block px-4 py-2 bg-primary/10 rounded-full mb-6'
-							>
-								<span className='text-primary'>
-									Ostéopathie Animalière Professionnelle
-								</span>
-							</motion.div>
-
-							<h1 className='text-5xl md:text-6xl lg:text-7xl text-primary mb-6 leading-tight'>
-								Anna Nischwitz
-							</h1>
-							<h2 className='text-2xl md:text-3xl text-gray-700 mb-8'>
-								Ostéopathe Animalier
-							</h2>
-							<p className='text-lg text-gray-600 mb-10 leading-relaxed'>
-								Passionnée par le bien-être animal, je mets mon
-								expertise au service de vos compagnons pour
-								améliorer leur mobilité, soulager leurs douleurs
-								et optimiser leurs performances.
-							</p>
-							<div className='flex flex-wrap gap-4'>
-								<Button
-									size='lg'
-									className='bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all group'
-									asChild
-								>
-									<Link href='/contact'>
-										Prendre Rendez-vous
-										<ArrowRight className='ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform' />
-									</Link>
-								</Button>
-								<Button
-									variant='outline'
-									size='lg'
-									className='border-2 border-primary/20 text-primary hover:bg-primary/5 hover:border-primary/40'
-									asChild
-								>
-									<Link href='/services'>
-										Découvrir les Services
-									</Link>
-								</Button>
-							</div>
-						</motion.div>
-						<motion.div
-							initial={{ opacity: 0, scale: 0.95 }}
-							animate={{ opacity: 1, scale: 1 }}
-							transition={{ duration: 0.7, delay: 0.3 }}
-							className='relative'
-						>
-							<div className='absolute inset-0 bg-linear-to-br from-primary/20 to-transparent rounded-3xl blur-2xl' />
-
-							<div className='relative rounded-3xl overflow-hidden shadow-2xl'>
-								<ImageWithFallback
-									src='https://images.unsplash.com/photo-1450778869180-41d0601e046e'
-									alt='Ostéopathie animalière'
-									className='w-full h-125 lg:h-150 object-cover'
-								/>
-							</div>
-						</motion.div>
-					</div>
+			{/* Hero */}
+			<section className='relative min-h-svh flex flex-col overflow-hidden'>
+				{/* Image de fond */}
+				<div className='absolute inset-0'>
+					<ImageWithFallback
+						src='https://images.unsplash.com/photo-1450778869180-41d0601e046e'
+						alt='Ostéopathie animalière'
+						className='w-full h-full object-cover brightness-90'
+					/>
+					<div className='absolute inset-0 bg-linear-to-t from-[rgba(8,5,3,0.92)] via-[rgba(8,5,3,0.4)] to-transparent' />
 				</div>
+
+				{/* Badge flottant centré en haut */}
+				<motion.div
+					initial={{ opacity: 0, y: -10 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.6, delay: 0.2 }}
+					className='relative z-10 flex justify-center pt-8'
+				>
+					<span className='px-4 py-2 text-[10px] tracking-[2px] uppercase text-white/80 border border-white/20 rounded-full backdrop-blur-sm bg-white/5'>
+						Ostéopathie Animalière · Bordeaux
+					</span>
+				</motion.div>
+
+				{/* Spacer */}
+				<div className='flex-1' />
+
+				{/* Contenu ancré en bas */}
+				<div className='relative z-10 px-6 sm:px-10 lg:px-16 pb-10 sm:pb-14'>
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ duration: 0.5, delay: 0.4 }}
+						className='flex items-center gap-3 mb-4'
+					>
+						<span className='w-6 h-px bg-[#c4956a]/70' />
+						<span className='text-[10px] tracking-[2px] uppercase text-[#c4956a]/90'>
+							Ostéopathe Animalier Diplômée
+						</span>
+					</motion.div>
+
+					<motion.h1
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.7, delay: 0.5 }}
+						className='text-6xl sm:text-7xl lg:text-8xl font-black text-white leading-[0.95] tracking-tight mb-4'
+					>
+						Anna<br />
+						<em className='not-italic font-light text-white/60'>Nischwitz</em>
+					</motion.h1>
+
+					<motion.p
+						initial={{ opacity: 0, y: 15 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.6, delay: 0.65 }}
+						className='text-sm text-white/55 leading-relaxed mb-6 max-w-sm'
+					>
+						Soins à domicile pour améliorer la mobilité, soulager les douleurs
+						et optimiser le bien-être de vos animaux.
+					</motion.p>
+
+					<motion.div
+						initial={{ opacity: 0, y: 10 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.5, delay: 0.8 }}
+						className='flex flex-wrap items-center gap-3'
+					>
+						<Button
+							size='lg'
+							className='bg-primary hover:bg-primary/90 text-white font-bold shadow-lg'
+							asChild
+						>
+							<Link href='/contact'>
+								Prendre Rendez-vous
+								<ArrowRight className='ml-2 h-4 w-4' />
+							</Link>
+						</Button>
+						<button
+							onClick={() => document.getElementById('below-hero')?.scrollIntoView({ behavior: 'smooth' })}
+							className='text-sm text-white/40 flex items-center gap-1 hover:text-white/60 transition-colors'
+						>
+							Découvrir <span className='text-base'>↓</span>
+						</button>
+					</motion.div>
+				</div>
+
+				{/* Scroll indicator */}
+				<div className='absolute bottom-0 right-8 w-px h-8 bg-white/15' />
 			</section>
+
+			<div id='below-hero' />
 
 			{/* Benefits Section */}
 			<section className='py-24 bg-white relative'>
