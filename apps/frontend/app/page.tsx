@@ -1,25 +1,22 @@
 'use client';
 
-import { Button, Card, CardContent, ImageWithFallback } from '@repo/ui';
-import { ArrowRight, Award, CheckCircle, Clock, Heart } from 'lucide-react';
+import { Button, ImageWithFallback } from '@repo/ui';
+import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
 
 // Content
 const benefits = [
 	{
-		icon: Heart,
 		title: 'Approche Douce',
 		description:
 			'Une méthode naturelle et non invasive pour le bien-être de vos animaux',
 	},
 	{
-		icon: Clock,
 		title: 'Disponibilité',
 		description: 'Déplacements à domicile pour le confort de votre animal',
 	},
 	{
-		icon: Award,
 		title: 'Expertise',
 		description:
 			'Diplômée et formée aux techniques ostéopathiques pour tous animaux',
@@ -185,53 +182,69 @@ export default function Home() {
 				))}
 			</div>
 
-			{/* Benefits Section */}
-			<section className='py-24 bg-white relative'>
-				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+			{/* Benefits */}
+			<section className='py-20 sm:py-28 bg-white'>
+				<div className='max-w-7xl mx-auto px-6 sm:px-8 lg:px-16'>
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6 }}
-						className='text-center mb-16'
 					>
-						<h2 className='text-4xl md:text-5xl text-primary mb-4'>
-							Pourquoi Choisir l&apos;Ostéopathie Animalière ?
+						<div className='flex items-center gap-3 mb-4'>
+							<span className='w-5 h-px bg-primary' />
+							<span className='text-[9px] tracking-[2px] uppercase text-primary font-semibold'>
+								Pourquoi l&apos;ostéopathie
+							</span>
+						</div>
+						<h2 className='text-4xl sm:text-5xl lg:text-6xl font-black text-foreground leading-none tracking-tight mb-10'>
+							Une approche<br />
+							<em className='not-italic text-primary font-light'>naturelle</em><br />
+							&amp; douce
 						</h2>
-						<p className='text-gray-600 text-lg max-w-2xl mx-auto'>
-							Une approche naturelle et holistique pour la santé
-							de vos compagnons
-						</p>
 					</motion.div>
 
-					<motion.div
-						variants={containerVariants}
-						initial='hidden'
-						whileInView='visible'
-						viewport={{ once: true }}
-						className='grid grid-cols-1 md:grid-cols-3 gap-8'
-					>
-						{benefits.map((benefit, index) => (
-							<motion.div
-								key={index}
-								variants={itemVariants}
-							>
-								<Card className='border-0 shadow-lg hover:shadow-2xl transition-all duration-300 h-full group bg-linear-to-br from-white to-gray-50/50'>
-									<CardContent className='pt-8 pb-8'>
-										<div className='bg-primary/10 w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors'>
-											<benefit.icon className='h-8 w-8 text-primary' />
-										</div>
-										<h3 className='text-xl text-primary mb-3'>
-											{benefit.title}
-										</h3>
-										<p className='text-gray-600 leading-relaxed'>
-											{benefit.description}
-										</p>
-									</CardContent>
-								</Card>
-							</motion.div>
-						))}
-					</motion.div>
+					<div className='grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start'>
+						{/* Liste numérotée */}
+						<motion.div
+							initial='hidden'
+							whileInView='visible'
+							viewport={{ once: true }}
+							variants={containerVariants}
+							className='divide-y divide-secondary'
+						>
+							{benefits.map((benefit, i) => (
+								<motion.div
+									key={i}
+									variants={itemVariants}
+									className='flex gap-4 py-5 group'
+								>
+									<span className='text-[11px] font-black text-primary min-w-6 pt-0.5'>
+										{String(i + 1).padStart(2, '0')}
+									</span>
+									<div>
+										<h3 className='text-base font-bold text-foreground mb-1 group-hover:text-primary transition-colors'>{benefit.title}</h3>
+										<p className='text-sm text-muted-foreground leading-relaxed'>{benefit.description}</p>
+									</div>
+								</motion.div>
+							))}
+						</motion.div>
+
+						{/* Photo portrait */}
+						<motion.div
+							initial={{ opacity: 0, x: 30 }}
+							whileInView={{ opacity: 1, x: 0 }}
+							viewport={{ once: true }}
+							transition={{ duration: 0.7, delay: 0.2 }}
+							className='rounded-2xl overflow-hidden aspect-3/4 w-full max-w-xs mx-auto lg:mx-0 lg:max-w-none'
+						>
+							<ImageWithFallback
+								src='https://images.unsplash.com/photo-1548681528-6a5c45b66b42'
+								alt='Anna Nischwitz'
+								className='w-full h-full object-cover'
+							/>
+						</motion.div>
+					</div>
 				</div>
 			</section>
 
