@@ -152,15 +152,16 @@ export default function ServicesContent({
 		[]
 	);
 
-	const deleteService = useCallback((id: number) => {
-		setServices((prev) => {
-			const service = prev.find((s) => s.id === id);
+	const deleteService = useCallback(
+		(id: number) => {
+			setServices((prev) => prev.filter((s) => s.id !== id));
+			const service = services.find((s) => s.id === id);
 			if (service && !('toCreate' in service)) {
 				setDeletedIds((d) => [...d, id]);
 			}
-			return prev.filter((s) => s.id !== id);
-		});
-	}, []);
+		},
+		[services]
+	);
 
 	const addService = useCallback(() => {
 		const newService: Service & {
