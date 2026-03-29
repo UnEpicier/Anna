@@ -46,6 +46,13 @@ const animals = [
 	},
 ];
 
+const stats = [
+	{ num: '4', label: 'Espèces' },
+	{ num: '100%', label: 'Naturel' },
+	{ num: 'Bordeaux', label: '& région' },
+	{ num: 'Domicile', label: 'À domicile' },
+];
+
 // Motion
 const containerVariants = {
 	hidden: { opacity: 0 },
@@ -161,7 +168,22 @@ export default function Home() {
 				<div className='absolute bottom-0 right-8 w-px h-8 bg-white/15' />
 			</section>
 
-			<div id='below-hero' />
+			{/* Stats Bar */}
+			<div id='below-hero' className='grid grid-cols-2 sm:grid-cols-4 bg-white border-b border-border'>
+				{stats.map((stat, i) => (
+					<motion.div
+						key={stat.num}
+						initial={{ opacity: 0, y: 10 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.4, delay: i * 0.07 }}
+						className='flex flex-col items-center justify-center py-5 px-4 text-center border-b sm:border-b-0 border-r even:border-r-0 sm:even:border-r sm:last:border-r-0 border-border'
+					>
+						<span className='text-xl font-black text-foreground tracking-tight'>{stat.num}</span>
+						<span className='text-[9px] uppercase tracking-widest text-muted-foreground mt-0.5'>{stat.label}</span>
+					</motion.div>
+				))}
+			</div>
 
 			{/* Benefits Section */}
 			<section className='py-24 bg-white relative'>
