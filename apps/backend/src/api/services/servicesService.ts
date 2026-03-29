@@ -1,8 +1,8 @@
-import { ServicesRepository } from '@/api/services/servicesRepository';
-import { ServiceResponse } from '@/commons/models/serviceResponse';
 import { type Service, ServiceSchema } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 import z from 'zod';
+import { ServicesRepository } from '@/api/services/servicesRepository';
+import { ServiceResponse } from '@/commons/models/serviceResponse';
 
 export class ServicesService {
 	private servicesRepository: ServicesRepository;
@@ -58,7 +58,9 @@ export class ServicesService {
 		}
 
 		try {
-			const newServices = await this.servicesRepository.createMany(data);
+			const newServices = await this.servicesRepository.createMany(
+				validationResult.data
+			);
 			return ServiceResponse.success<Service[]>(
 				'Services created successfully',
 				newServices,

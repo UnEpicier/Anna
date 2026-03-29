@@ -21,14 +21,14 @@ export default function ServicesContent({
 			if (!ev.currentTarget.reportValidity()) return;
 
 			const servicesToUpdate = services
-				.filter((s) => 'toUpdate' in s)
+				.filter((s) => 'toUpdate' in s && !('toCreate' in s))
 				.map((x) => {
 					const {
 						createdAt: _,
 						updatedAt: __,
 						toUpdate: ___,
 						...serviceData
-					} = x;
+					} = x as Service & { toUpdate?: boolean };
 					return serviceData;
 				});
 
@@ -36,11 +36,16 @@ export default function ServicesContent({
 				.filter((s) => 'toCreate' in s)
 				.map((x) => {
 					const {
-						id: ___,
-						createdAt: ____,
-						updatedAt: _____,
+						id: _,
+						createdAt: __,
+						updatedAt: ___,
+						toCreate: ____,
+						toUpdate: _____,
 						...serviceData
-					} = x;
+					} = x as Service & {
+						toCreate?: boolean;
+						toUpdate?: boolean;
+					};
 					return serviceData;
 				});
 

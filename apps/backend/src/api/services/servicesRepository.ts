@@ -1,5 +1,5 @@
-import prisma from '@/libs/prisma';
 import type { Service } from '@repo/app-types';
+import prisma from '@/libs/prisma';
 
 export class ServicesRepository {
 	async findAll(): Promise<Service[]> {
@@ -26,12 +26,10 @@ export class ServicesRepository {
 
 	async updateMany(data: Partial<Service>[]): Promise<Service[]> {
 		const services = await prisma.$transaction(
-			data.map((service) =>
+			data.map(({ id, createdAt: _, updatedAt: __, ...rest }) =>
 				prisma.services.update({
-					where: {
-						id: service.id,
-					},
-					data: service,
+					where: { id },
+					data: rest,
 				})
 			)
 		);
