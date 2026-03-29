@@ -95,6 +95,7 @@ export default function MapComponent({
 	return (
 		<MapLibre
 			ref={mapRef}
+			cooperativeGestures
 			onLoad={onMapLoad}
 			initialViewState={{
 				longitude: 1.7191036,

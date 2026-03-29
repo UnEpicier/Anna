@@ -1,8 +1,8 @@
 'use client';
 
-import useLayers from '@/app/contact/components/Map/hooks/useLayers';
 import type { DeckProps } from '@deck.gl/core';
 import { MapboxOverlay } from '@deck.gl/mapbox';
+import useLayers from '@/app/contact/components/Map/hooks/useLayers';
 import '@maptiler/sdk/dist/maptiler-sdk.css';
 import type { Department } from '@repo/app-types';
 import { bbox, circle, feature, featureCollection } from '@turf/turf';
@@ -68,6 +68,7 @@ export default function MapComponent({
 		<MapLibre
 			ref={mapRef}
 			reuseMaps
+			cooperativeGestures
 			onLoad={onMapLoad}
 			initialViewState={{
 				longitude: 1.7191036,
