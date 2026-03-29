@@ -14,6 +14,7 @@ export default function ServicesContent({
 	services: Service[];
 }) {
 	const [services, setServices] = useState<Service[]>(dbServices ?? []);
+	const [deletedIds, setDeletedIds] = useState<number[]>([]);
 
 	const onSubmit = useCallback(
 		async (ev: FormEvent<HTMLFormElement>) => {
@@ -51,7 +52,8 @@ export default function ServicesContent({
 
 			if (
 				servicesToUpdate.length === 0 &&
-				servicesToCreate.length === 0
+				servicesToCreate.length === 0 &&
+				deletedIds.length === 0
 			) {
 				toast.warning('Aucun changement à enregistrer.', {
 					icon: '⚠️',
@@ -95,6 +97,20 @@ export default function ServicesContent({
 				});
 			}
 
+			if (deletedIds.length > 0) {
+				for (const id of deletedIds) {
+					const deleteRequest = fetch(`/api/services/${id}`, {
+						method: 'DELETE',
+					});
+					promises.push(deleteRequest);
+					toast.promise(deleteRequest, {
+						loading: 'Suppression des services...',
+						success: 'Services supprimés avec succès !',
+						error: 'Erreur lors de la suppression des services.',
+					});
+				}
+			}
+
 			await Promise.all(promises);
 
 			const newServicesRequest = await fetch('/api/services');
@@ -102,11 +118,12 @@ export default function ServicesContent({
 
 			if (newServicesData.success) {
 				setServices(newServicesData.responseObject);
+				setDeletedIds([]);
 			} else {
 				toast.error('Erreur lors du rafraîchissement des services.');
 			}
 		},
-		[services]
+		[services, deletedIds]
 	);
 
 	const updateService = useCallback(
@@ -136,7 +153,13 @@ export default function ServicesContent({
 	);
 
 	const deleteService = useCallback((id: number) => {
-		setServices((prev) => prev.filter((s) => s.id !== id));
+		setServices((prev) => {
+			const service = prev.find((s) => s.id === id);
+			if (service && !('toCreate' in service)) {
+				setDeletedIds((d) => [...d, id]);
+			}
+			return prev.filter((s) => s.id !== id);
+		});
 	}, []);
 
 	const addService = useCallback(() => {
