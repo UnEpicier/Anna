@@ -1,9 +1,9 @@
-import Footer from '@/ui/Footer';
-import LeaveBanner from '@/ui/LeaveBanner';
-import Navbar from '@/ui/Navbar';
 import type { Informations, ResponseObject, Service } from '@repo/app-types';
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
+import Footer from '@/ui/Footer';
+import LeaveBanner from '@/ui/LeaveBanner';
+import Navbar from '@/ui/Navbar';
 import './globals.css';
 
 const SITE_URL = 'https://anna-nischwitz.fr';
@@ -89,12 +89,17 @@ async function getJsonLdData(): Promise<{
 }> {
 	try {
 		const [infoRes, servicesRes] = await Promise.all([
-			fetch(`${process.env.API_URL}/informations`, { next: { revalidate: 3600 } }),
-			fetch(`${process.env.API_URL}/services`, { next: { revalidate: 3600 } }),
+			fetch(`${process.env.API_URL}/informations`, {
+				next: { revalidate: 3600 },
+			}),
+			fetch(`${process.env.API_URL}/services`, {
+				next: { revalidate: 3600 },
+			}),
 		]);
 
 		const infoData: ResponseObject<Informations> = await infoRes.json();
-		const servicesData: ResponseObject<Service[]> = await servicesRes.json();
+		const servicesData: ResponseObject<Service[]> =
+			await servicesRes.json();
 
 		return {
 			informations: infoData.success ? infoData.responseObject : null,
@@ -108,10 +113,9 @@ async function getJsonLdData(): Promise<{
 }
 
 function buildJsonLd(informations: Informations | null, services: Service[]) {
-	const sameAs = [
-		informations?.facebook,
-		informations?.instagram,
-	].filter(Boolean) as string[];
+	const sameAs = [informations?.facebook, informations?.instagram].filter(
+		Boolean
+	) as string[];
 
 	return {
 		'@context': 'https://schema.org',
