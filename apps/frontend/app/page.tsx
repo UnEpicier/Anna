@@ -70,7 +70,7 @@ const itemVariants = {
 
 export default function Home() {
 	return (
-		<div className='min-h-screen pt-20'>
+		<div className='min-h-screen'>
 			{/* Landing Section */}
 			<section className='relative min-h-[90svh] flex items-center overflow-hidden'>
 				<div className='absolute inset-0 bg-linear-to-br from-secondary via-white to-primary/5' />

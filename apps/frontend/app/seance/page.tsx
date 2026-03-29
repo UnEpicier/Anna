@@ -143,7 +143,7 @@ export default function SeanceTypePage() {
 	};
 
 	return (
-		<div className='min-h-screen pt-20'>
+		<div className='min-h-screen'>
 			{/* Header */}
 			<section className='relative py-24 overflow-hidden'>
 				<div className='absolute inset-0 bg-linear-to-br from-secondary via-white to-primary/5'></div>

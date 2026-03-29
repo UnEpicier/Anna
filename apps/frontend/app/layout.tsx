@@ -168,12 +168,28 @@ function buildJsonLd(informations: Informations | null, services: Service[]) {
 	};
 }
 
+async function getHasBanner(): Promise<boolean> {
+	try {
+		const leaveRes = await fetch(`${process.env.API_URL}/leave`, {
+			cache: 'no-cache',
+		});
+		if (!leaveRes.ok) return false;
+		const data = await leaveRes.json();
+		return data.success && data.responseObject !== null;
+	} catch {
+		return false;
+	}
+}
+
 export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: ReactNode;
 }>) {
-	const { informations, services } = await getJsonLdData();
+	const [{ informations, services }, hasBanner] = await Promise.all([
+		getJsonLdData(),
+		getHasBanner(),
+	]);
 	const jsonLd = buildJsonLd(informations, services);
 
 	return (
@@ -193,7 +209,7 @@ export default async function RootLayout({
 					<Navbar />
 					<main
 						data-landmark-index='1'
-						className='flex-1'
+						className={`flex-1${hasBanner ? '' : ' pt-20'}`}
 					>
 						{children}
 					</main>
