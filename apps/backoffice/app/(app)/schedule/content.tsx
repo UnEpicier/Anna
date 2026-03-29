@@ -1,20 +1,11 @@
 'use client';
 
 import type { Schedule } from '@repo/app-types';
-import { Button, Input, Label, Switch } from '@repo/ui';
+import { Button } from '@repo/ui';
 import { Calendar, Check, Clock } from 'lucide-react';
 import { type FormEvent, useCallback, useState } from 'react';
 import { toast } from 'sonner';
-
-const frenchDays: Record<string, string> = {
-	monday: 'Lundi',
-	tuesday: 'Mardi',
-	wednesday: 'Mercredi',
-	thursday: 'Jeudi',
-	friday: 'Vendredi',
-	saturday: 'Samedi',
-	sunday: 'Dimanche',
-};
+import ScheduleRow from './components/ScheduleRow';
 
 export default function ScheduleContent({
 	schedules,
@@ -76,7 +67,7 @@ export default function ScheduleContent({
 
 				<div className='flex gap-2 items-center'>
 					<Clock className='w-4 h-4 text-gray-500' />
-					<p className='text-gray-700'>Horaire de fermeture</p>
+					<p className='text-gray-700'>Lieu</p>
 				</div>
 
 				<div className='flex gap-2 items-center'>
@@ -86,60 +77,11 @@ export default function ScheduleContent({
 			</div>
 
 			{schedules.map((schedule) => (
-				<div
+				<ScheduleRow
 					key={schedule.day}
-					className='grid grid-cols-4 gap-6'
-				>
-					<p>{frenchDays[schedule.day]}</p>
-
-					<Label
-						htmlFor={`time-${schedule.day}`}
-						className='sr-only'
-					>
-						Heure d&apos;ouverture
-					</Label>
-					<Input
-						id={`time-${schedule.day}`}
-						name={`time-${schedule.day}`}
-						type='text'
-						defaultValue={schedule.time}
-						autoComplete='off'
-						required={schedule.open}
-						disabled={isPending}
-						className='border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20 transition-all duration-200'
-					/>
-
-					<Label
-						htmlFor={`location-${schedule.day}`}
-						className='sr-only'
-					>
-						Lieu
-					</Label>
-					<Input
-						id={`location-${schedule.day}`}
-						name={`location-${schedule.day}`}
-						defaultValue={schedule.location}
-						type='text'
-						autoComplete='off'
-						required={schedule.open}
-						disabled={isPending}
-						className='border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20 transition-all duration-200'
-					/>
-
-					<Label
-						htmlFor={`open-${schedule.day}`}
-						className='sr-only'
-					>
-						Ouvert
-					</Label>
-					<Switch
-						id={`open-${schedule.day}`}
-						defaultChecked={schedule.open}
-						name={`open-${schedule.day}`}
-						disabled={isPending}
-						className='data-[state=checked]:bg-[#7f5539]'
-					/>
-				</div>
+					schedule={schedule}
+					isPending={isPending}
+				/>
 			))}
 
 			<div className='pt-4 border-t border-gray-200'>
