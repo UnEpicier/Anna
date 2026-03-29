@@ -1,16 +1,18 @@
+'use client';
+
 import { Button } from '@repo/ui';
 import Link from 'next/link';
 
-export default function NotFound() {
+export default function ErrorPage() {
 	return (
 		<div className='flex min-h-screen flex-col items-center justify-center bg-white px-6 py-24 sm:py-32 lg:px-8'>
 			<div className='text-center'>
 				<h1 className='text-4xl tracking-tight text-primary sm:text-9xl'>
-					404
+					Erreur
 				</h1>
 				<p className='mt-8 text-base text-gray-600'>
-					La page demandée n&apos;existe pas ou n&apos;est pas
-					accessible pour le moment.
+					La page demandée a rencontrée une erreur, nous nous excusons
+					pour la gène occasionnée
 				</p>
 
 				<Button

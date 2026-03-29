@@ -5,12 +5,12 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
 	title: 'Services',
 	description:
-		'Découvrez les services d\'ostéopathie animalière proposés par Anna Nischwitz à Bordeaux. Soins à domicile adaptés aux chiens, chats, chevaux et NAC.',
+		"Découvrez les services d'ostéopathie animalière proposés par Anna Nischwitz à Bordeaux. Soins à domicile adaptés aux chiens, chats, chevaux et NAC.",
 	alternates: {
 		canonical: '/services',
 	},
 	openGraph: {
-		title: 'Services d\'Ostéopathie Animalière | Anna Nischwitz',
+		title: "Services d'Ostéopathie Animalière | Anna Nischwitz",
 		description:
 			'Soins ostéopathiques à domicile pour chiens, chats, chevaux et NAC dans la région bordelaise.',
 		url: '/services',
@@ -28,7 +28,7 @@ async function getData() {
 
 	// --- Services
 
-	const servicesRes = await fetch(`${process.env.API_URL}/services`, {
+	const servicesRes = await fetch(`${process.env.API_URL}/services/res`, {
 		cache: 'no-cache',
 	});
 	const servicesResponseData: ResponseObject<Service[]> =
