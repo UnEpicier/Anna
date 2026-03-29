@@ -134,7 +134,7 @@ export default function ScheduleContent({
 					</Label>
 					<Switch
 						id={`open-${schedule.day}`}
-						checked={schedule.open}
+						defaultChecked={schedule.open}
 						name={`open-${schedule.day}`}
 						disabled={isPending}
 						className='data-[state=checked]:bg-[#7f5539]'
