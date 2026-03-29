@@ -25,19 +25,22 @@ const benefits = [
 
 const animals = [
 	{
+		emoji: '🐕',
 		name: 'Chiens',
-		description:
-			'Prise en charge adaptée à toutes les races et tous les âges',
+		description: 'Prise en charge adaptée à toutes les races et tous les âges',
 	},
 	{
+		emoji: '🐈',
 		name: 'Chats',
 		description: 'Soins en douceur dans un environnement familier',
 	},
 	{
+		emoji: '🐰',
 		name: 'NAC',
 		description: 'Expertise pour lapins, furets et autres petits animaux',
 	},
 	{
+		emoji: '🐴',
 		name: 'Chevaux',
 		description: 'Ostéopathie équine pour améliorer les performances',
 	},
@@ -215,7 +218,7 @@ export default function Home() {
 						>
 							{benefits.map((benefit, i) => (
 								<motion.div
-									key={i}
+									key={benefit.title}
 									variants={itemVariants}
 									className='flex gap-4 py-5 group'
 								>
@@ -248,51 +251,45 @@ export default function Home() {
 				</div>
 			</section>
 
-			{/* Animals Section */}
-			<section className='py-24 bg-linear-to-b from-white to-gray-50 relative'>
-				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+			{/* Animals */}
+			<section className='py-20 sm:py-28 bg-[#111]'>
+				<div className='max-w-7xl mx-auto px-6 sm:px-8 lg:px-16'>
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6 }}
-						className='text-center mb-16'
+						className='mb-10'
 					>
-						<h2 className='text-4xl md:text-5xl text-primary mb-4'>
-							Tous Vos Compagnons Sont les Bienvenus
+						<div className='flex items-center gap-3 mb-4'>
+							<span className='w-5 h-px bg-[#c4956a]/70' />
+							<span className='text-[9px] tracking-[2px] uppercase text-[#c4956a]/80 font-semibold'>
+								Tous les bienvenus
+							</span>
+						</div>
+						<h2 className='text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-none tracking-tight'>
+							Vos <em className='not-italic font-light text-[#c4956a]/90'>compagnons</em>,<br />
+							mon expertise
 						</h2>
-						<p className='text-gray-600 text-lg max-w-2xl mx-auto'>
-							J&apos;interviens auprès de différentes espèces
-							animales, chacune nécessitant une approche
-							spécifique et adaptée.
-						</p>
 					</motion.div>
 
 					<motion.div
-						variants={containerVariants}
 						initial='hidden'
 						whileInView='visible'
 						viewport={{ once: true }}
-						className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'
+						variants={containerVariants}
+						className='grid grid-cols-2 lg:grid-cols-4 border border-white/5 rounded-2xl overflow-hidden'
 					>
-						{animals.map((animal, index) => (
+						{animals.map((animal) => (
 							<motion.div
-								key={index}
+								key={animal.name}
 								variants={itemVariants}
+								className='p-6 sm:p-8 bg-[#111] hover:bg-[#161616] transition-colors group border-r border-b border-white/5 last:border-r-0 nth-2:border-r-0 lg:nth-2:border-r nth-3:border-r-0 lg:nth-3:border-r nth-3:border-b-0 nth-4:border-b-0 lg:nth-4:border-r-0'
 							>
-								<Card className='border-0 shadow-md hover:shadow-xl transition-all duration-300 h-full group cursor-pointer bg-white'>
-									<CardContent className='pt-8 pb-8'>
-										<div className='bg-linear-to-br from-primary to-primary/80 w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-lg'>
-											<CheckCircle className='h-6 w-6 text-white' />
-										</div>
-										<h3 className='text-lg text-primary mb-3 group-hover:text-primary/80 transition-colors'>
-											{animal.name}
-										</h3>
-										<p className='text-gray-600 text-sm leading-relaxed'>
-											{animal.description}
-										</p>
-									</CardContent>
-								</Card>
+								<div className='text-3xl mb-4'>{animal.emoji}</div>
+								<h3 className='text-lg font-black text-white mb-2'>{animal.name}</h3>
+								<p className='text-xs text-white/40 leading-relaxed'>{animal.description}</p>
+								<span className='block mt-4 text-[#c4956a]/50 text-sm group-hover:text-[#c4956a]/80 transition-colors'>→</span>
 							</motion.div>
 						))}
 					</motion.div>
