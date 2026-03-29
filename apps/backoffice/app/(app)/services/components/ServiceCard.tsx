@@ -2,9 +2,11 @@
 
 import type { Service } from '@repo/app-types';
 import {
+	BovinIcon,
 	Button,
 	Input,
 	Label,
+	OvinIcon,
 	Switch,
 	Textarea,
 	useOutsideClick,
@@ -31,10 +33,12 @@ import { useMemo, useRef, useState } from 'react';
 const availableIcons = Object.entries({
 	Bird,
 	Bone,
+	BovinIcon,
 	Cat,
 	Dog,
 	Egg,
 	Fish,
+	OvinIcon,
 	PawPrint,
 	Rabbit,
 	Rat,

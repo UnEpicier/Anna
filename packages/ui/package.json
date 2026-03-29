@@ -15,7 +15,8 @@
 	},
 	"peerDependencies": {
 		"react": "*",
-		"react-dom": "*"
+		"react-dom": "*",
+		"lucide-react": "*"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "2.4.9",

@@ -1,7 +1,15 @@
 'use client';
 
 import type { Informations, Service } from '@repo/app-types';
-import { Button, Card, CardContent, CardHeader, CardTitle } from '@repo/ui';
+import {
+	BovinIcon,
+	Button,
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+	OvinIcon,
+} from '@repo/ui';
 import {
 	ArrowRight,
 	Bird,
@@ -24,10 +32,12 @@ import Link from 'next/link';
 const availableIcons = Object.entries({
 	Bird,
 	Bone,
+	BovinIcon,
 	Cat,
 	Dog,
 	Egg,
 	Fish,
+	OvinIcon,
 	PawPrint,
 	Rabbit,
 	Rat,
