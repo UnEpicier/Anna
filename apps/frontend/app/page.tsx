@@ -363,39 +363,41 @@ export default function Home() {
 				</div>
 			</section>
 
-			{/* CTA Section */}
-			<section className='py-24 bg-linear-to-br from-primary via-primary/95 to-primary/90 text-white relative overflow-hidden'>
-				<div className='absolute inset-0 opacity-10'>
-					<div className='absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl'></div>
-					<div className='absolute bottom-10 right-10 w-80 h-80 bg-white rounded-full blur-3xl'></div>
-				</div>
-
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					viewport={{ once: true }}
-					transition={{ duration: 0.6 }}
-					className='relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center'
-				>
-					<h2 className='text-4xl md:text-5xl mb-8'>
-						Prêt à Améliorer le Bien-être de Votre Animal ?
-					</h2>
-					<p className='text-xl mb-10 opacity-95 max-w-2xl mx-auto leading-relaxed'>
-						Prenez rendez-vous dès aujourd&apos;hui pour une
-						consultation personnalisée.
-					</p>
-					<Button
-						size='lg'
-						variant='secondary'
-						className='bg-white text-primary hover:bg-gray-100 shadow-2xl hover:shadow-xl transition-all hover:scale-105'
-						asChild
+			{/* CTA */}
+			<section className='py-16 sm:py-20 bg-white'>
+				<div className='max-w-7xl mx-auto px-6 sm:px-8 lg:px-16'>
+					<motion.div
+						initial={{ opacity: 0, scale: 0.98 }}
+						whileInView={{ opacity: 1, scale: 1 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6 }}
+						className='relative bg-[#111] rounded-2xl sm:rounded-3xl px-8 sm:px-16 py-14 sm:py-20 text-center overflow-hidden'
 					>
-						<Link href='/contact'>
-							Prendre Rendez-vous
-							<ArrowRight className='ml-2 h-5 w-5' />
-						</Link>
-					</Button>
-				</motion.div>
+						{/* Lueur radiale */}
+						<div className='absolute -top-20 left-1/2 -translate-x-1/2 w-72 h-72 bg-primary/20 rounded-full blur-3xl pointer-events-none' />
+
+						<p className='text-[9px] tracking-[2px] uppercase text-[#c4956a]/70 mb-4'>
+							Prêt à commencer ?
+						</p>
+						<h2 className='text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-none tracking-tight mb-4'>
+							Améliorons le bien-être<br />
+							<em className='not-italic font-light text-white/50'>de votre animal</em>
+						</h2>
+						<p className='text-sm text-white/40 mb-8 max-w-md mx-auto leading-relaxed'>
+							Prenez rendez-vous dès aujourd&apos;hui pour une consultation personnalisée à domicile.
+						</p>
+						<Button
+							size='lg'
+							className='bg-primary hover:bg-primary/90 text-white font-bold shadow-2xl hover:shadow-xl transition-all hover:scale-105'
+							asChild
+						>
+							<Link href='/contact'>
+								Prendre Rendez-vous
+								<ArrowRight className='ml-2 h-5 w-5' />
+							</Link>
+						</Button>
+					</motion.div>
+				</div>
 			</section>
 		</div>
 	);
