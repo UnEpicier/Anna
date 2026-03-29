@@ -51,7 +51,7 @@ export default async function Footer() {
 							<li>
 								<Link
 									href='/services'
-									className='text-gray-600 hover:text-primary transition-colors hover:translate-x-1 inline-block'
+									className='text-gray-600 hover:text-primary transition-all hover:translate-x-1 inline-block'
 								>
 									Services & Tarifs
 								</Link>
@@ -59,7 +59,7 @@ export default async function Footer() {
 							<li>
 								<Link
 									href='/seance'
-									className='text-gray-600 hover:text-primary transition-colors hover:translate-x-1 inline-block'
+									className='text-gray-600 hover:text-primary transition-all hover:translate-x-1 inline-block'
 								>
 									Déroulement d&apos;une Séance
 								</Link>
@@ -67,7 +67,7 @@ export default async function Footer() {
 							<li>
 								<Link
 									href='/blog'
-									className='text-gray-600 hover:text-primary transition-colors hover:translate-x-1 inline-block'
+									className='text-gray-600 hover:text-primary transition-all hover:translate-x-1 inline-block'
 								>
 									Blog
 								</Link>
@@ -75,7 +75,7 @@ export default async function Footer() {
 							<li>
 								<Link
 									href='/contact'
-									className='text-gray-600 hover:text-primary transition-colors hover:translate-x-1 inline-block'
+									className='text-gray-600 hover:text-primary transition-all hover:translate-x-1 inline-block'
 								>
 									Contact
 								</Link>
