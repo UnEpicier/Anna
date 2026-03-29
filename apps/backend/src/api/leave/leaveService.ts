@@ -1,8 +1,19 @@
+import type { Leave } from '@repo/app-types';
+import { StatusCodes } from 'http-status-codes';
 import { LeaveRepository } from '@/api/leave/leaveRepository';
 import { ServiceResponse } from '@/commons/models/serviceResponse';
-import type { Leave } from '@repo/app-types';
 import { Prisma } from '@/generated/prisma-client/client';
-import { StatusCodes } from 'http-status-codes';
+
+function parseDateUTC(value: Date | string): Date {
+	if (value instanceof Date) return value;
+	const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+	if (match) {
+		return new Date(
+			Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3]))
+		);
+	}
+	return new Date(value);
+}
 
 export class LeaveService {
 	private leaveRepository: LeaveRepository;
@@ -52,7 +63,10 @@ export class LeaveService {
 		data: Omit<Leave, 'id' | 'createdAt' | 'updatedAt'>
 	): Promise<ServiceResponse<Leave | null>> {
 		try {
-			const newLeave = await this.leaveRepository.createAsync(data);
+			const newLeave = await this.leaveRepository.createAsync({
+				from: parseDateUTC(data.from as Date | string),
+				to: parseDateUTC(data.to as Date | string),
+			});
 			return ServiceResponse.success<Leave>(
 				'Leave created successfully',
 				newLeave,
@@ -74,17 +88,29 @@ export class LeaveService {
 		data: Partial<Omit<Leave, 'id' | 'createdAt' | 'updatedAt'>>
 	): Promise<ServiceResponse<Leave | null>> {
 		try {
+			const parsed: typeof data = { ...data };
+			if (data.from !== undefined)
+				parsed.from = parseDateUTC(data.from as Date | string);
+			if (data.to !== undefined)
+				parsed.to = parseDateUTC(data.to as Date | string);
 			const updatedLeave = await this.leaveRepository.updateAsync(
 				id,
-				data
+				parsed
 			);
 			return ServiceResponse.success<Leave>(
 				'Leave updated successfully',
 				updatedLeave
 			);
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
-				return ServiceResponse.failure('Leave not found', null, StatusCodes.NOT_FOUND);
+			if (
+				error instanceof Prisma.PrismaClientKnownRequestError &&
+				error.code === 'P2025'
+			) {
+				return ServiceResponse.failure(
+					'Leave not found',
+					null,
+					StatusCodes.NOT_FOUND
+				);
 			}
 			console.error(`Error updating leave: ${(error as Error).message}`);
 			return ServiceResponse.failure(
@@ -103,8 +129,15 @@ export class LeaveService {
 				null
 			);
 		} catch (error) {
-			if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
-				return ServiceResponse.failure('Leave not found', null, StatusCodes.NOT_FOUND);
+			if (
+				error instanceof Prisma.PrismaClientKnownRequestError &&
+				error.code === 'P2025'
+			) {
+				return ServiceResponse.failure(
+					'Leave not found',
+					null,
+					StatusCodes.NOT_FOUND
+				);
 			}
 			console.error(`Error deleting leave: ${(error as Error).message}`);
 			return ServiceResponse.failure(

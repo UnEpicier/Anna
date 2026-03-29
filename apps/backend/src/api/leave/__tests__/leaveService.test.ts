@@ -1,15 +1,18 @@
-import { LeaveRepository } from '@/api/leave/leaveRepository';
-import { LeaveService } from '@/api/leave/leaveService';
-import { Prisma } from '@/generated/prisma-client/client';
 import type { Leave } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 import type { Mock } from 'vitest';
+import { LeaveRepository } from '@/api/leave/leaveRepository';
+import { LeaveService } from '@/api/leave/leaveService';
+import { Prisma } from '@/generated/prisma-client/client';
 import { leave as mockLeave } from '../../../../prisma/data/leave';
 
-const notFoundError = new Prisma.PrismaClientKnownRequestError('Record not found', {
-	code: 'P2025',
-	clientVersion: '0.0.0',
-});
+const notFoundError = new Prisma.PrismaClientKnownRequestError(
+	'Record not found',
+	{
+		code: 'P2025',
+		clientVersion: '0.0.0',
+	}
+);
 
 vi.mock('@/api/leave/leaveRepository');
 
@@ -142,6 +145,38 @@ describe('leaveService', () => {
 			});
 		});
 
+		it('converts YYYY-MM-DD strings to UTC midnight Date objects', async () => {
+			// Arrange
+			const createData = {
+				from: '2024-06-15' as unknown as Date,
+				to: '2024-06-20' as unknown as Date,
+			};
+			(leaveRepositoryInstance.createAsync as Mock).mockImplementation(
+				(data: Omit<Leave, 'id' | 'createdAt' | 'updatedAt'>) =>
+					Promise.resolve({
+						id: 1,
+						...data,
+						createdAt: new Date(),
+						updatedAt: new Date(),
+					})
+			);
+
+			// Act
+			await leaveServiceInstance.create(createData);
+
+			// Assert — repository doit recevoir des Date UTC midnight
+			const [passedData] = (leaveRepositoryInstance.createAsync as Mock)
+				.mock.calls[0];
+			expect(passedData.from).toBeInstanceOf(Date);
+			expect(passedData.from.toISOString()).toBe(
+				'2024-06-15T00:00:00.000Z'
+			);
+			expect(passedData.to).toBeInstanceOf(Date);
+			expect(passedData.to.toISOString()).toBe(
+				'2024-06-20T00:00:00.000Z'
+			);
+		});
+
 		it('handles errors for createAsync', async () => {
 			// Arrange
 			const createData: Omit<Leave, 'id' | 'createdAt' | 'updatedAt'> = {
@@ -186,9 +221,37 @@ describe('leaveService', () => {
 			expect(result.responseObject).toEqual(updatedLeave);
 		});
 
+		it('converts YYYY-MM-DD strings to UTC midnight Date objects', async () => {
+			// Arrange
+			const updateData = {
+				from: '2024-12-01' as unknown as Date,
+				to: '2024-12-15' as unknown as Date,
+			};
+			(leaveRepositoryInstance.updateAsync as Mock).mockReturnValue(
+				mockLeave
+			);
+
+			// Act
+			await leaveServiceInstance.update(1, updateData);
+
+			// Assert — repository doit recevoir des Date UTC midnight
+			const [, passedData] = (leaveRepositoryInstance.updateAsync as Mock)
+				.mock.calls[0];
+			expect(passedData.from).toBeInstanceOf(Date);
+			expect(passedData.from.toISOString()).toBe(
+				'2024-12-01T00:00:00.000Z'
+			);
+			expect(passedData.to).toBeInstanceOf(Date);
+			expect(passedData.to.toISOString()).toBe(
+				'2024-12-15T00:00:00.000Z'
+			);
+		});
+
 		it('returns not found when leave does not exist', async () => {
 			// Arrange
-			(leaveRepositoryInstance.updateAsync as Mock).mockRejectedValue(notFoundError);
+			(leaveRepositoryInstance.updateAsync as Mock).mockRejectedValue(
+				notFoundError
+			);
 
 			// Act
 			const result = await leaveServiceInstance.update(99, {});
@@ -239,7 +302,9 @@ describe('leaveService', () => {
 
 		it('returns not found when leave does not exist', async () => {
 			// Arrange
-			(leaveRepositoryInstance.deleteAsync as Mock).mockRejectedValue(notFoundError);
+			(leaveRepositoryInstance.deleteAsync as Mock).mockRejectedValue(
+				notFoundError
+			);
 
 			// Act
 			const result = await leaveServiceInstance.delete(99);
