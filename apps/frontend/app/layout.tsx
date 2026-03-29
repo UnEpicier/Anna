@@ -1,9 +1,9 @@
-import type { Informations, ResponseObject, Service } from '@repo/app-types';
-import type { Metadata, Viewport } from 'next';
-import type { ReactNode } from 'react';
 import Footer from '@/ui/Footer';
 import LeaveBanner from '@/ui/LeaveBanner';
 import Navbar from '@/ui/Navbar';
+import type { Informations, ResponseObject, Service } from '@repo/app-types';
+import type { Metadata, Viewport } from 'next';
+import type { ReactNode } from 'react';
 import './globals.css';
 
 const SITE_URL = 'https://anna-nischwitz.fr';
@@ -172,28 +172,12 @@ function buildJsonLd(informations: Informations | null, services: Service[]) {
 	};
 }
 
-async function getHasBanner(): Promise<boolean> {
-	try {
-		const leaveRes = await fetch(`${process.env.API_URL}/leave`, {
-			cache: 'no-cache',
-		});
-		if (!leaveRes.ok) return false;
-		const data = await leaveRes.json();
-		return data.success && data.responseObject !== null;
-	} catch {
-		return false;
-	}
-}
-
 export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: ReactNode;
 }>) {
-	const [{ informations, services }, hasBanner] = await Promise.all([
-		getJsonLdData(),
-		getHasBanner(),
-	]);
+	const { informations, services } = await getJsonLdData();
 	const jsonLd = buildJsonLd(informations, services);
 
 	return (
@@ -213,7 +197,7 @@ export default async function RootLayout({
 					<Navbar />
 					<main
 						data-landmark-index='1'
-						className={`flex-1${hasBanner ? '' : ' pt-20'}`}
+						className='flex-1'
 					>
 						{children}
 					</main>
