@@ -79,7 +79,6 @@ export default async function Footer() {
 							{[
 								{ href: '/services', label: 'Services & Tarifs' },
 								{ href: '/seance', label: "Déroulement d'une Séance" },
-								{ href: '/blog', label: 'Blog' },
 								{ href: '/contact', label: 'Contact' },
 							].map(({ href, label }) => (
 								<li key={href}>
