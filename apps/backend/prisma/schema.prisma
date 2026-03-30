@@ -52,7 +52,6 @@ model Leave {
 model Services {
   id          Int @id @default(autoincrement())
   title       String
-  icon        String
   price       Decimal @db.Decimal(10,2)
   duration    String
   description String

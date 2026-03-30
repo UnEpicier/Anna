@@ -4,7 +4,6 @@ export type Service = z.infer<typeof ServiceSchema>;
 export const ServiceSchema = z.object({
 	id: z.number(),
 	title: z.string(),
-	icon: z.string(),
 	price: z.number(),
 	duration: z.string(),
 	description: z.string(),
