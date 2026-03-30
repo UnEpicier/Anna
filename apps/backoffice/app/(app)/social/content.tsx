@@ -2,7 +2,7 @@
 
 import { SiFacebook, SiInstagram } from '@icons-pack/react-simple-icons';
 import { Button, Input, Label } from '@repo/ui';
-import { LoaderCircle } from 'lucide-react';
+import { Info, LoaderCircle } from 'lucide-react';
 import { type FormEvent, useCallback, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -29,121 +29,112 @@ export default function SocialContent({
 		[]
 	);
 
-	const onSubmit = useCallback(async (ev: FormEvent<HTMLFormElement>) => {
-		ev.preventDefault();
-		const formData = new FormData(ev.currentTarget);
-		const body = {
-			facebook: (formData.get('facebook') as string).toString(),
-			instagram: (formData.get('instagram') as string).toString(),
-		};
+	const onSubmit = useCallback(
+		async (ev: FormEvent<HTMLFormElement>) => {
+			ev.preventDefault();
+			const formData = new FormData(ev.currentTarget);
+			const body = {
+				facebook: (formData.get('facebook') as string).toString(),
+				instagram: (formData.get('instagram') as string).toString(),
+			};
 
-		if (!validateSocialUrl(body.facebook, 'facebook.com')) {
-			toast.error('URL Facebook invalide. Elle doit commencer par https://facebook.com ou https://www.facebook.com');
-			return;
-		}
-		if (!validateSocialUrl(body.instagram, 'instagram.com')) {
-			toast.error('URL Instagram invalide. Elle doit commencer par https://instagram.com ou https://www.instagram.com');
-			return;
-		}
+			if (!validateSocialUrl(body.facebook, 'facebook.com')) {
+				toast.error('URL Facebook invalide. Elle doit commencer par https://facebook.com ou https://www.facebook.com');
+				return;
+			}
+			if (!validateSocialUrl(body.instagram, 'instagram.com')) {
+				toast.error('URL Instagram invalide. Elle doit commencer par https://instagram.com ou https://www.instagram.com');
+				return;
+			}
 
-		setIsPending(true);
+			setIsPending(true);
 
-		const promise = fetch(`/api/informations`, {
-			method: 'PUT',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify(body),
-		});
+			const promise = fetch('/api/informations', {
+				method: 'PUT',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(body),
+			});
 
-		await toast
-			.promise(promise, {
-				loading: 'Enregistrement en cours...',
-				success: 'Informations mises à jour avec succès !',
-				error: 'Une erreur est survenue lors de la mise à jour.',
-			})
-			.unwrap();
+			await toast
+				.promise(promise, {
+					loading: 'Enregistrement en cours...',
+					success: 'Informations mises à jour avec succès !',
+					error: 'Une erreur est survenue lors de la mise à jour.',
+				})
+				.unwrap();
 
-		setIsPending(false);
-	}, [validateSocialUrl]);
+			setIsPending(false);
+		},
+		[validateSocialUrl]
+	);
 
 	return (
-		<form
-			onSubmit={onSubmit}
-			className='space-y-6'
-		>
-			<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-				<div className='relative overflow-hidden bg-linear-to-br from-white to-gray-50 rounded-2xl border border-gray-200 p-6 group hover:shadow-md transition-all duration-300'>
-					<div className='absolute top-0 right-0 w-20 h-20 bg-linear-to-br from-blue-500 to-blue-600 opacity-5 rounded-bl-full' />
-
-					<div className='relative'>
-						<Label
-							htmlFor='facebook'
-							className='flex items-center gap-3 mb-4 cursor-pointer'
-						>
-							<div className='p-3 rounded-xl bg-linear-to-br from-blue-500 to-blue-600 text-white shadow-lg'>
-								<SiFacebook className='w-5 h-5' />
-							</div>
-							<span className='text-lg font-semibold text-gray-900'>
-								Facebook
-							</span>
-						</Label>
-
-						<Input
-							id='facebook'
-							name='facebook'
-							type='url'
-							defaultValue={socials.facebook}
-							placeholder='https://www.facebook.com/votreprofil'
-							className='border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20 transition-all duration-200'
-							disabled={isPending}
-						/>
-					</div>
+		<form onSubmit={onSubmit} className='space-y-6'>
+			<div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
+				{/* Facebook */}
+				<div className='border border-border p-5'>
+					<div className='h-1 w-full bg-sky-500 -mt-5 -mx-5 mb-5 w-[calc(100%+2.5rem)]' />
+					<Label
+						htmlFor='facebook'
+						className='flex items-center gap-3 mb-4 cursor-pointer'
+					>
+						<div className='w-9 h-9 bg-sky-500 flex items-center justify-center shrink-0'>
+							<SiFacebook className='w-4 h-4 text-white' />
+						</div>
+						<span className='text-sm font-semibold text-foreground'>
+							Facebook
+						</span>
+					</Label>
+					<Input
+						id='facebook'
+						name='facebook'
+						type='url'
+						defaultValue={socials.facebook}
+						placeholder='https://www.facebook.com/votreprofil'
+						disabled={isPending}
+					/>
 				</div>
 
-				<div className='relative overflow-hidden bg-linear-to-br from-white to-gray-50 rounded-2xl border border-gray-200 p-6 group hover:shadow-md transition-all duration-300'>
-					<div className='absolute top-0 right-0 w-20 h-20 bg-linear-to-br from-pink-500 to-purple-600 opacity-5 rounded-bl-full' />
-
-					<div className='relative'>
-						<Label
-							htmlFor='instagram'
-							className='flex items-center gap-3 mb-4 cursor-pointer'
-						>
-							<div className='p-3 rounded-xl bg-linear-to-br from-pink-500 to-purple-600 text-white shadow-lg'>
-								<SiInstagram className='w-5 h-5' />
-							</div>
-							<span className='text-lg font-semibold text-gray-900'>
-								Instagram
-							</span>
-						</Label>
-
-						<Input
-							id='instagram'
-							name='instagram'
-							type='url'
-							defaultValue={socials.instagram}
-							placeholder='https://www.instagram.com/votreprofil'
-							className='border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20 transition-all duration-200'
-							disabled={isPending}
-						/>
-					</div>
+				{/* Instagram */}
+				<div className='border border-border p-5'>
+					<div className='h-1 w-full bg-pink-500 -mt-5 -mx-5 mb-5 w-[calc(100%+2.5rem)]' />
+					<Label
+						htmlFor='instagram'
+						className='flex items-center gap-3 mb-4 cursor-pointer'
+					>
+						<div className='w-9 h-9 bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center shrink-0'>
+							<SiInstagram className='w-4 h-4 text-white' />
+						</div>
+						<span className='text-sm font-semibold text-foreground'>
+							Instagram
+						</span>
+					</Label>
+					<Input
+						id='instagram'
+						name='instagram'
+						type='url'
+						defaultValue={socials.instagram}
+						placeholder='https://www.instagram.com/votreprofil'
+						disabled={isPending}
+					/>
 				</div>
 			</div>
 
-			<div className='bg-blue-50 border border-blue-200 rounded-xl p-4'>
-				<p className='text-sm text-blue-900'>
-					<span className='font-semibold'>💡 Astuce :</span> Entrez
-					l&apos;URL complète de votre profil (commençant par
-					https://). Laissez le champ vide ou avec &ldquo;#&ldquo; si
-					vous n&apos;avez pas de compte.
+			{/* Info */}
+			<div className='border border-sky-200 bg-sky-50 p-4 flex gap-3'>
+				<Info className='w-4 h-4 text-sky-600 shrink-0 mt-0.5' />
+				<p className='text-sm text-sky-900'>
+					Entrez l&apos;URL complète de votre profil (commençant par https://).
+					Laissez le champ vide si vous n&apos;avez pas de compte.
 				</p>
 			</div>
 
-			<div className='pt-4 border-t border-gray-200'>
+			{/* Submit */}
+			<div className='pt-2 border-t border-border'>
 				<Button
 					type='submit'
 					disabled={isPending}
-					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'
+					className='bg-primary hover:bg-primary/85 text-white'
 				>
 					{isPending ? (
 						<>
