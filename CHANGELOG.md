@@ -7,26 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [backoffice@1.0.0] - 2026-03-30
+
+### Added
+- Complete editorial redesign of the backoffice:
+  - New theme: primary color #c4956a, zero border-radius, editorial sidebar
+  - Dashboard: colored stat cards and quick links
+  - Departments, social, services, schedule, informations, leave pages redesigned
+  - Auth pages: clean bordered layout replacing Card component
+  - 404 page: editorial style
+
+### Changed
+- All backoffice pages migrated to the new editorial design system
+- Services page: square card style, icon picker removed
+
 ## [frontend@1.0.0] - 2026-03-30
 
 ### Added
-- Complete editorial dark redesign of the public website:
-  - Full-screen immersive hero with motion animations
-  - Editorial asymmetric navbar with scroll behavior and responsive menu
-  - Numbered editorial benefits section
-  - Animals section with dark grid layout
-  - Asymmetric about section
-  - Services page redesign with numbered editorial list
-  - Session type page with scroll-driven timeline
-  - Dark editorial footer with error and not-found pages
-  - Dark editorial contact page with form and embedded map
-- Leave banner with seamless infinite scroll marquee
+- Complete editorial dark redesign of the public website
+- Leave banner with infinite scroll marquee
 - SEO: metadata, sitemap.xml, robots.txt, dynamic JSON-LD schema
-- Two-finger gesture required to scroll maps on mobile
-
-### Changed
-- Primary color and square button style unified across all pages
-- Static animal icons replaced with dynamic services from API
 
 ## [backend@1.1.0] [backoffice@0.8.0] - 2026-03-27
 
@@ -39,12 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - OTP-based email authentication with Mailjet
 - Auth middleware enforcing authentication on protected routes
-- Auth router tests with Mailjet mock to capture OTP tokens
-- Backoffice: CSRF Origin validation, nonce-based CSP, HSTS, path traversal protection
-
-### Fixed
-- Auth: SameSite=Strict cookie configuration and logout error handling
-- Backoffice: security headers, auth cookie forwarding, MapTiler key moved server-side
+- Auth router tests; CSRF, CSP, HSTS, path traversal protection
 
 ## [backoffice@0.7.0] - 2026-03-18
 
@@ -54,9 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [backoffice@0.6.0] [backend@0.1.2] - 2026-03-17
 
 ### Added
-- Backoffice: full schedules management, toast notifications, services CRUD
-- Backoffice: departments and informations form actions
-- Backend: initial test suite
+- Backoffice: schedules management, toast notifications, services CRUD, departments and informations form actions
 
 ## [backoffice@0.1.0] - 2026-02-25
 
@@ -72,6 +65,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Initial monorepo setup: Next.js frontend and Node.js backend
-- Footer connected to API, navigation links, not found page
-- Contact page with MapTiler integration
+- Footer, navigation, not found page, contact page with MapTiler
 - Shared types and UI packages

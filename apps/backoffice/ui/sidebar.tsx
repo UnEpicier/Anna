@@ -97,29 +97,34 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 	const isDesktop = useMediaQuery('(min-width: 1024px)');
 
 	return (
-		<div className='min-h-screen bg-gray-50'>
+		<div className='min-h-screen bg-[#f7f6f4]'>
 			{/* Mobile header */}
-			<div className='lg:hidden bg-white border-b border-gray-200 px-4 py-4 flex items-center justify-between sticky top-0 z-40'>
+			<div className='lg:hidden bg-white border-b border-border px-5 h-14 flex items-center justify-between sticky top-0 z-40'>
 				<div className='flex items-center gap-3'>
 					<button
 						onClick={() => void setSidebarOpen((prev) => !prev)}
-						className='p-2 hover:bg-gray-100 rounded-lg transition-colors'
+						className='p-1.5 hover:bg-muted transition-colors'
+						aria-label={sidebarOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
 					>
 						{sidebarOpen ? (
-							<X className='w-6 h-6' />
+							<X className='w-5 h-5' />
 						) : (
-							<Menu className='w-6 h-6' />
+							<Menu className='w-5 h-5' />
 						)}
 					</button>
-					<h1 className='text-xl font-bold text-gray-900'>
-						Dashboard
-					</h1>
+					<div className='flex items-center gap-2'>
+						<span className='w-1.5 h-1.5 bg-primary' />
+						<span className='text-[11px] tracking-[2px] uppercase font-black text-foreground'>
+							Anna Nischwitz
+						</span>
+					</div>
 				</div>
 				<button
 					onClick={onLogout}
-					className='p-2 hover:bg-gray-100 rounded-lg transition-colors'
+					className='p-1.5 hover:bg-muted transition-colors text-muted-foreground hover:text-destructive'
+					aria-label='Déconnexion'
 				>
-					<LogOut className='w-5 h-5 text-gray-600' />
+					<LogOut className='w-4 h-4' />
 				</button>
 			</div>
 
@@ -136,55 +141,59 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 								damping: 25,
 								stiffness: 200,
 							}}
-							className='fixed lg:sticky top-0 left-0 h-screen w-70 bg-white border-r border-gray-200 z-50 lg:z-0'
+							className='fixed lg:sticky top-0 left-0 h-screen w-64 bg-white border-r border-border z-50 lg:z-0'
 						>
 							<div className='flex flex-col h-full'>
-								{/* Logo */}
-								<div className='hidden lg:flex items-center gap-3 px-6 py-6 border-b border-gray-200'>
-									<div className='w-10 h-10 rounded-xl bg-linear-to-br from-[#7f5539] to-[#5a3a26] flex items-center justify-center text-white font-bold'>
-										AN
-									</div>
+								{/* Brand */}
+								<div className='hidden lg:flex items-center gap-3 px-6 py-5 border-b border-border'>
+									<span className='w-1.5 h-1.5 bg-primary shrink-0' />
 									<div>
-										<h2 className='font-bold text-gray-900'>
+										<div className='text-[11px] tracking-[2px] uppercase font-black text-foreground'>
 											Anna Nischwitz
-										</h2>
-										<p className='text-sm text-gray-600'>
+										</div>
+										<div className='text-[9px] tracking-[1.5px] uppercase text-muted-foreground mt-0.5'>
 											Dashboard Admin
-										</p>
+										</div>
 									</div>
 								</div>
 
 								{/* Navigation */}
-								<nav className='flex-1 px-3 py-6 space-y-1 overflow-y-auto'>
-									{navItems.map((item) => (
-										<Link
-											key={item.id}
-											href={item.path}
-											onClick={() => {
-												setSidebarOpen(false);
-											}}
-											className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-												currentSection === item.path
-													? 'bg-linear-to-r from-[#7f5539] to-[#5a3a26] text-white shadow-lg shadow-[#7f5539]/20'
-													: 'text-gray-700 hover:bg-gray-100'
-											}`}
-										>
-											<item.icon className='w-5 h-5 shrink-0' />
-											<span className='font-medium'>
-												{item.label}
-											</span>
-										</Link>
-									))}
+								<nav className='flex-1 py-4 overflow-y-auto'>
+									<div className='px-3 mb-2'>
+										<span className='text-[9px] tracking-[2px] uppercase text-muted-foreground/60 font-semibold px-3'>
+											Navigation
+										</span>
+									</div>
+									{navItems.map((item) => {
+										const isActive = currentSection === item.path;
+										return (
+											<Link
+												key={item.id}
+												href={item.path}
+												onClick={() => setSidebarOpen(false)}
+												className={`w-full flex items-center gap-3 px-6 py-2.5 transition-colors duration-150 border-l-2 ${
+													isActive
+														? 'border-primary bg-primary/6 text-primary'
+														: 'border-transparent text-muted-foreground hover:bg-muted/60 hover:text-foreground'
+												}`}
+											>
+												<item.icon className='w-4 h-4 shrink-0' />
+												<span className='text-sm font-medium'>
+													{item.label}
+												</span>
+											</Link>
+										);
+									})}
 								</nav>
 
 								{/* Logout */}
-								<div className='p-4 border-t border-gray-200'>
+								<div className='border-t border-border p-3'>
 									<button
 										onClick={onLogout}
-										className='w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-600 hover:bg-red-50 transition-all duration-200'
+										className='w-full flex items-center gap-3 px-6 py-2.5 text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-colors duration-150'
 									>
-										<LogOut className='w-5 h-5' />
-										<span className='font-medium'>
+										<LogOut className='w-4 h-4 shrink-0' />
+										<span className='text-sm font-medium'>
 											Déconnexion
 										</span>
 									</button>
@@ -204,32 +213,30 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 
 				{/* Main content */}
 				<main className='flex-1 min-w-0'>
-					<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+					<div className='max-w-6xl mx-auto px-5 sm:px-8 py-8'>
 						<motion.div
 							key={currentSection}
-							initial={{ opacity: 0, y: 20 }}
+							initial={{ opacity: 0, y: 10 }}
 							animate={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.3 }}
+							transition={{ duration: 0.25 }}
 						>
-							{/* Page header (except for overview) */}
-							{currentSection !== 'overview' && (
+							{/* Page header */}
+							{currentSection !== '/' && (
 								<div className='mb-8'>
-									<h1 className='text-3xl font-bold text-gray-900 mb-2'>
-										{
-											navItems.find(
-												(item) =>
-													item.path === currentSection
-											)?.label
-										}
+									<div className='flex items-center gap-3 mb-1'>
+										<span className='w-4 h-px bg-primary/60' />
+										<span className='text-[9px] tracking-[2px] uppercase text-primary/80 font-semibold'>
+											{navItems.find((item) => item.path === currentSection)?.label}
+										</span>
+									</div>
+									<h1 className='text-2xl font-black text-foreground tracking-tight'>
+										{navItems.find((item) => item.path === currentSection)?.label}
 									</h1>
-									<p className='text-gray-600'>
-										Gérez les paramètres de cette section
-									</p>
 								</div>
 							)}
 
 							{/* Content */}
-							<div className='bg-white rounded-2xl p-8 shadow-lg'>
+							<div className='bg-white border border-border p-8'>
 								{children}
 							</div>
 						</motion.div>
