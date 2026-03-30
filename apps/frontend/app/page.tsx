@@ -27,7 +27,8 @@ const animals = [
 	{
 		emoji: '🐕',
 		name: 'Chiens',
-		description: 'Prise en charge adaptée à toutes les races et tous les âges',
+		description:
+			'Prise en charge adaptée à toutes les races et tous les âges',
 	},
 	{
 		emoji: '🐈',
@@ -79,7 +80,7 @@ export default function Home() {
 	return (
 		<div className='min-h-screen'>
 			{/* Hero */}
-			<section className='relative min-h-svh flex flex-col overflow-hidden'>
+			<section className='-mt-18 relative min-h-svh flex flex-col overflow-hidden'>
 				{/* Image de fond */}
 				<div className='absolute inset-0'>
 					<ImageWithFallback
@@ -95,9 +96,9 @@ export default function Home() {
 					initial={{ opacity: 0, y: -10 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.6, delay: 0.2 }}
-					className='relative z-10 flex justify-center pt-8'
+					className='relative z-10 flex justify-center pt-24'
 				>
-					<span className='px-4 py-2 text-[10px] tracking-[2px] uppercase text-white/80 border border-white/20 rounded-full backdrop-blur-sm bg-white/5'>
+					<span className='px-4 py-2 text-[10px] tracking-[2px] uppercase text-white font-medium border border-white/30 rounded-full backdrop-blur-sm bg-white/10'>
 						Ostéopathie Animalière · Bordeaux
 					</span>
 				</motion.div>
@@ -113,8 +114,8 @@ export default function Home() {
 						transition={{ duration: 0.5, delay: 0.4 }}
 						className='flex items-center gap-3 mb-4'
 					>
-						<span className='w-6 h-px bg-[#c4956a]/70' />
-						<span className='text-[10px] tracking-[2px] uppercase text-[#c4956a]/90'>
+						<span className='w-6 h-px bg-primary/70' />
+						<span className='text-[10px] tracking-[2px] uppercase text-primary/90'>
 							Ostéopathe Animalière Diplômée
 						</span>
 					</motion.div>
@@ -125,8 +126,11 @@ export default function Home() {
 						transition={{ duration: 0.7, delay: 0.5 }}
 						className='text-6xl sm:text-7xl lg:text-8xl font-black text-white leading-[0.95] tracking-tight mb-4'
 					>
-						Anna<br />
-						<span className='font-light text-white/60'>Nischwitz</span>
+						Anna
+						<br />
+						<span className='font-light text-white/60'>
+							Nischwitz
+						</span>
 					</motion.h1>
 
 					<motion.p
@@ -135,8 +139,8 @@ export default function Home() {
 						transition={{ duration: 0.6, delay: 0.65 }}
 						className='text-sm text-white/55 leading-relaxed mb-6 max-w-sm'
 					>
-						Soins à domicile pour améliorer la mobilité, soulager les douleurs
-						et optimiser le bien-être de vos animaux.
+						Soins à domicile pour améliorer la mobilité, soulager
+						les douleurs et optimiser le bien-être de vos animaux.
 					</motion.p>
 
 					<motion.div
@@ -147,20 +151,30 @@ export default function Home() {
 					>
 						<Button
 							size='lg'
-							className='bg-primary hover:bg-primary/90 text-white font-bold shadow-lg'
+							className='bg-primary hover:bg-primary/90 text-white'
 							asChild
 						>
 							<Link href='/contact'>
 								Prendre Rendez-vous
-								<ArrowRight className='ml-2 h-4 w-4' />
+								<ArrowRight className='h-4 w-4' />
 							</Link>
 						</Button>
 						<button
 							aria-label='Découvrir le contenu'
-							onClick={() => document.getElementById('below-hero')?.scrollIntoView({ behavior: 'smooth' })}
+							onClick={() =>
+								document
+									.getElementById('below-hero')
+									?.scrollIntoView({ behavior: 'smooth' })
+							}
 							className='text-sm text-white/40 flex items-center gap-1 hover:text-white/60 transition-colors'
 						>
-							Découvrir <span aria-hidden='true' className='text-base'>↓</span>
+							Découvrir{' '}
+							<span
+								aria-hidden='true'
+								className='text-base'
+							>
+								↓
+							</span>
 						</button>
 					</motion.div>
 				</div>
@@ -170,7 +184,10 @@ export default function Home() {
 			</section>
 
 			{/* Stats Bar */}
-			<div id='below-hero' className='grid grid-cols-2 sm:grid-cols-4 bg-white border-b border-border'>
+			<div
+				id='below-hero'
+				className='grid grid-cols-2 sm:grid-cols-4 bg-white border-b border-border'
+			>
 				{stats.map((stat, i) => (
 					<motion.div
 						key={stat.num}
@@ -180,8 +197,12 @@ export default function Home() {
 						transition={{ duration: 0.4, delay: i * 0.07 }}
 						className='flex flex-col items-center justify-center py-5 px-4 text-center border-b sm:border-b-0 nth-3:border-b-0 nth-4:border-b-0 border-r even:border-r-0 sm:even:border-r sm:last:border-r-0 border-border'
 					>
-						<span className='text-xl font-black text-foreground tracking-tight'>{stat.num}</span>
-						<span className='text-[9px] uppercase tracking-widest text-muted-foreground mt-0.5'>{stat.label}</span>
+						<span className='text-xl font-black text-foreground tracking-tight'>
+							{stat.num}
+						</span>
+						<span className='text-[9px] uppercase tracking-widest text-muted-foreground mt-0.5'>
+							{stat.label}
+						</span>
 					</motion.div>
 				))}
 			</div>
@@ -202,8 +223,12 @@ export default function Home() {
 							</span>
 						</div>
 						<h2 className='text-4xl sm:text-5xl lg:text-6xl font-black text-foreground leading-none tracking-tight mb-10'>
-							Une approche<br />
-							<span className='text-primary font-light'>naturelle</span><br />
+							Une approche
+							<br />
+							<span className='text-primary font-light'>
+								naturelle
+							</span>
+							<br />
 							&amp; douce
 						</h2>
 					</motion.div>
@@ -227,8 +252,12 @@ export default function Home() {
 										{String(i + 1).padStart(2, '0')}
 									</span>
 									<div>
-										<h3 className='text-base font-bold text-foreground mb-1 group-hover:text-primary transition-colors'>{benefit.title}</h3>
-										<p className='text-sm text-muted-foreground leading-relaxed'>{benefit.description}</p>
+										<h3 className='text-base font-bold text-foreground mb-1 group-hover:text-primary transition-colors'>
+											{benefit.title}
+										</h3>
+										<p className='text-sm text-muted-foreground leading-relaxed'>
+											{benefit.description}
+										</p>
 									</div>
 								</motion.div>
 							))}
@@ -263,13 +292,17 @@ export default function Home() {
 						className='mb-10'
 					>
 						<div className='flex items-center gap-3 mb-4'>
-							<span className='w-5 h-px bg-[#c4956a]/70' />
-							<span className='text-[9px] tracking-[2px] uppercase text-[#c4956a]/80 font-semibold'>
+							<span className='w-5 h-px bg-primary/70' />
+							<span className='text-[9px] tracking-[2px] uppercase text-primary/80 font-semibold'>
 								Tous les bienvenus
 							</span>
 						</div>
 						<h2 className='text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-none tracking-tight'>
-							Vos <span className='font-light text-[#c4956a]/90'>compagnons</span>,<br />
+							Vos{' '}
+							<span className='font-light text-primary/90'>
+								compagnons
+							</span>
+							,<br />
 							mon expertise
 						</h2>
 					</motion.div>
@@ -287,9 +320,15 @@ export default function Home() {
 								variants={itemVariants}
 								className='p-6 sm:p-8 bg-[#111] hover:bg-[#161616] transition-colors border-r border-b border-white/5 last:border-r-0 nth-2:border-r-0 lg:nth-2:border-r nth-3:border-r-0 lg:nth-3:border-r lg:nth-1:border-b-0 lg:nth-2:border-b-0 nth-3:border-b-0 nth-4:border-b-0 lg:nth-4:border-r-0'
 							>
-								<div className='text-3xl mb-4'>{animal.emoji}</div>
-								<h3 className='text-lg font-black text-white mb-2'>{animal.name}</h3>
-								<p className='text-xs text-white/40 leading-relaxed'>{animal.description}</p>
+								<div className='text-3xl mb-4'>
+									{animal.emoji}
+								</div>
+								<h3 className='text-lg font-black text-white mb-2'>
+									{animal.name}
+								</h3>
+								<p className='text-xs text-white/40 leading-relaxed'>
+									{animal.description}
+								</p>
 							</motion.div>
 						))}
 					</motion.div>
@@ -329,33 +368,43 @@ export default function Home() {
 								</span>
 							</div>
 							<h2 className='text-4xl sm:text-5xl font-black text-foreground leading-none tracking-tight mb-6'>
-								<span className='text-primary font-light'>Passionnée</span><br />
-								par le bien-être<br />
+								<span className='text-primary font-light'>
+									Passionnée
+								</span>
+								<br />
+								par le bien-être
+								<br />
 								animal
 							</h2>
 							<div className='space-y-4 text-sm text-muted-foreground leading-relaxed'>
 								<p>
-									Diplômée en ostéopathie animalière, je me consacre depuis plusieurs
-									années au bien-être de nos compagnons à quatre pattes et de nos amis équidés.
+									Diplômée en ostéopathie animalière, je me
+									consacre depuis plusieurs années au
+									bien-être de nos compagnons à quatre pattes
+									et de nos amis équidés.
 								</p>
 								<p>
-									Ma passion pour les animaux et mon expertise me permettent d&apos;identifier
-									et de traiter les tensions, blocages et déséquilibres qui peuvent affecter
-									la qualité de vie de vos animaux.
+									Ma passion pour les animaux et mon expertise
+									me permettent d&apos;identifier et de
+									traiter les tensions, blocages et
+									déséquilibres qui peuvent affecter la
+									qualité de vie de vos animaux.
 								</p>
 								<p>
-									Chaque séance est personnalisée en fonction des besoins spécifiques de
-									l&apos;animal, dans le respect de son bien-être et de sa physiologie.
+									Chaque séance est personnalisée en fonction
+									des besoins spécifiques de l&apos;animal,
+									dans le respect de son bien-être et de sa
+									physiologie.
 								</p>
 							</div>
 							<Button
-								className='mt-8 bg-primary hover:bg-primary/90 font-bold shadow-lg group'
+								className='mt-8 bg-primary hover:bg-primary/90 text-white group'
 								size='lg'
 								asChild
 							>
 								<Link href='/contact'>
 									Me Contacter
-									<ArrowRight className='ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform' />
+									<ArrowRight className='h-4 w-4 group-hover:translate-x-1 transition-transform' />
 								</Link>
 							</Button>
 						</motion.div>
@@ -376,24 +425,28 @@ export default function Home() {
 						{/* Lueur radiale */}
 						<div className='absolute -top-20 left-1/2 -translate-x-1/2 w-72 h-72 bg-primary/20 rounded-full blur-3xl pointer-events-none' />
 
-						<p className='text-[9px] tracking-[2px] uppercase text-[#c4956a]/70 mb-4'>
+						<p className='text-[9px] tracking-[2px] uppercase text-primary/70 mb-4'>
 							Prêt à commencer ?
 						</p>
 						<h2 className='text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-none tracking-tight mb-4'>
-							Améliorons le bien-être<br />
-							<span className='font-light text-white/50'>de votre animal</span>
+							Améliorons le bien-être
+							<br />
+							<span className='font-light text-white/50'>
+								de votre animal
+							</span>
 						</h2>
 						<p className='text-sm text-white/40 mb-8 max-w-md mx-auto leading-relaxed'>
-							Prenez rendez-vous dès aujourd&apos;hui pour une consultation personnalisée à domicile.
+							Prenez rendez-vous dès aujourd&apos;hui pour une
+							consultation personnalisée à domicile.
 						</p>
 						<Button
 							size='lg'
-							className='bg-primary hover:bg-primary/90 text-white font-bold shadow-2xl hover:shadow-xl transition-all hover:scale-105'
+							className='bg-primary hover:bg-primary/90 text-white hover:scale-105'
 							asChild
 						>
 							<Link href='/contact'>
 								Prendre Rendez-vous
-								<ArrowRight className='ml-2 h-5 w-5' />
+								<ArrowRight className='h-5 w-5' />
 							</Link>
 						</Button>
 					</motion.div>
