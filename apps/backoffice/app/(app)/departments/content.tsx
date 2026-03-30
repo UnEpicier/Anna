@@ -4,7 +4,8 @@ import type { Department } from '@repo/app-types';
 import { Button, Input } from '@repo/ui';
 import { LoaderCircle, MapPin, Search, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
-import { type FormEvent, useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
+import type React from 'react';
 import { toast } from 'sonner';
 
 export default function DepartmentsContent({
@@ -40,7 +41,7 @@ export default function DepartmentsContent({
 	const [isPending, setIsPending] = useState(false);
 
 	const onSubmit = useCallback(
-		async (ev: FormEvent<HTMLFormElement>) => {
+		async (ev: React.FormEvent<HTMLFormElement>) => {
 			ev.preventDefault();
 			setIsPending(true);
 

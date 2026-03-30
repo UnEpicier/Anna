@@ -4,7 +4,8 @@ import type { Service } from '@repo/app-types';
 import { Button } from '@repo/ui';
 import { Plus } from 'lucide-react';
 import { AnimatePresence } from 'motion/react';
-import { type FormEvent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
+import type React from 'react';
 import { toast } from 'sonner';
 import ServiceCard from './components/ServiceCard';
 
@@ -17,7 +18,7 @@ export default function ServicesContent({
 	const [deletedIds, setDeletedIds] = useState<number[]>([]);
 
 	const onSubmit = useCallback(
-		async (ev: FormEvent<HTMLFormElement>) => {
+		async (ev: React.FormEvent<HTMLFormElement>) => {
 			ev.preventDefault();
 			if (!ev.currentTarget.reportValidity()) return;
 
@@ -169,7 +170,6 @@ export default function ServicesContent({
 		} = {
 			id: Date.now(), // Temporary ID, replace with real one from backend
 			title: '',
-			icon: 'Paw',
 			description: '',
 			duration: '',
 			price: 0,

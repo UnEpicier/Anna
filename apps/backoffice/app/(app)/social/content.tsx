@@ -3,7 +3,8 @@
 import { SiFacebook, SiInstagram } from '@icons-pack/react-simple-icons';
 import { Button, Input, Label } from '@repo/ui';
 import { Info, LoaderCircle } from 'lucide-react';
-import { type FormEvent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
+import type React from 'react';
 import { toast } from 'sonner';
 
 export default function SocialContent({
@@ -30,7 +31,7 @@ export default function SocialContent({
 	);
 
 	const onSubmit = useCallback(
-		async (ev: FormEvent<HTMLFormElement>) => {
+		async (ev: React.FormEvent<HTMLFormElement>) => {
 			ev.preventDefault();
 			const formData = new FormData(ev.currentTarget);
 			const body = {
