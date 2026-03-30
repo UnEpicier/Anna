@@ -13,152 +13,156 @@ type HomeContentProps = {
 	};
 };
 
+const statCards = (stats: HomeContentProps['stats']) => [
+	{
+		icon: Briefcase,
+		value: stats.services,
+		label: 'Services',
+		color: 'text-sky-600',
+		bg: 'bg-sky-50',
+		border: 'border-sky-200',
+		top: 'bg-sky-500',
+	},
+	{
+		icon: Clock,
+		value: stats.openDays ?? '—',
+		label: 'Jours ouverts',
+		color: 'text-violet-600',
+		bg: 'bg-violet-50',
+		border: 'border-violet-200',
+		top: 'bg-violet-500',
+	},
+	{
+		icon: Radius,
+		value: stats.actionRadius ? `${stats.actionRadius} km` : '—',
+		label: "Rayon d'action",
+		color: 'text-amber-600',
+		bg: 'bg-amber-50',
+		border: 'border-amber-200',
+		top: 'bg-amber-500',
+	},
+	{
+		icon: MapPin,
+		value: stats.departments,
+		label: 'Départements',
+		color: 'text-emerald-600',
+		bg: 'bg-emerald-50',
+		border: 'border-emerald-200',
+		top: 'bg-emerald-500',
+	},
+];
+
+const quickLinks = [
+	{
+		href: '/services',
+		icon: Briefcase,
+		label: 'Gérer les services',
+		description: 'Modifier les tarifs et descriptions',
+	},
+	{
+		href: '/schedule',
+		icon: Clock,
+		label: 'Gérer les horaires',
+		description: "Modifier les jours et heures d'ouverture",
+	},
+	{
+		href: '/informations',
+		icon: MapPin,
+		label: 'Informations',
+		description: "Zone d'action, coordonnées, adresse",
+	},
+	{
+		href: '/leave',
+		icon: Clock,
+		label: 'Absences',
+		description: 'Planifier des périodes de fermeture',
+	},
+];
+
 export default function HomeContent({ stats }: HomeContentProps) {
 	return (
 		<div className='space-y-8'>
-			{/* Stats Grid */}
-			<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					className='relative overflow-hidden bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300'
-				>
-					<div className='absolute inset-0 bg-linear-to-br from-blue-500 to-cyan-500 opacity-5' />
-					<div className='relative'>
-						<div className='flex items-center justify-between mb-4'>
-							<div className='p-3 rounded-xl bg-linear-to-br from-blue-500 to-cyan-500'>
-								<Briefcase className='w-6 h-6 text-white' />
-							</div>
-						</div>
-						<div className='text-3xl font-bold text-gray-900 mb-1'>
-							{stats.services}
-						</div>
-						<div className='text-sm text-gray-600'>Services</div>
-					</div>
-				</motion.div>
-
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.1 }}
-					className='relative overflow-hidden bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300'
-				>
-					<div
-						className={`absolute inset-0 bg-linear-to-br from-purple-500 to-pink-500 opacity-5`}
-					/>
-					<div className='relative'>
-						<div className='flex items-center justify-between mb-4'>
-							<div className='p-3 rounded-xl bg-linear-to-br from-purple-500 to-pink-500'>
-								<Clock className='w-6 h-6 text-white' />
-							</div>
-						</div>
-						<div className='text-3xl font-bold text-gray-900 mb-1'>
-							{stats.openDays ?? 'Indisponible'}
-						</div>
-						<div className='text-sm text-gray-600'>
-							Jours ouverts
-						</div>
-					</div>
-				</motion.div>
-
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.2 }}
-					className='relative overflow-hidden bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300'
-				>
-					<div className='absolute inset-0 bg-linear-to-br from-orange-500 to-red-500 opacity-5' />
-					<div className='relative'>
-						<div className='flex items-center justify-between mb-4'>
-							<div className='p-3 rounded-xl bg-linear-to-br from-orange-500 to-red-500'>
-								<Radius className='w-6 h-6 text-white' />
-							</div>
-						</div>
-						<div className='text-3xl font-bold text-gray-900 mb-1'>
-							{stats.actionRadius
-								? `${stats.actionRadius} km`
-								: 'Indisponible'}
-						</div>
-						<div className='text-sm text-gray-600'>
-							Rayon d&apos;action
-						</div>
-					</div>
-				</motion.div>
-
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.3 }}
-					className='relative overflow-hidden bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300'
-				>
-					<div className='absolute inset-0 bg-linear-to-br from-green-500 to-emerald-500 opacity-5' />
-					<div className='relative'>
-						<div className='flex items-center justify-between mb-4'>
-							<div className='p-3 rounded-xl bg-linear-to-br from-green-500 to-emerald-500'>
-								<MapPin className='w-6 h-6 text-white' />
-							</div>
-						</div>
-						<div className='text-3xl font-bold text-gray-900 mb-1'>
-							{stats.departments}
-						</div>
-						<div className='text-sm text-gray-600'>
-							Départements
-						</div>
-					</div>
-				</motion.div>
+			{/* Header */}
+			<div>
+				<div className='flex items-center gap-3 mb-1'>
+					<span className='w-4 h-px bg-primary/60' />
+					<span className='text-[9px] tracking-[2px] uppercase text-primary/80 font-semibold'>
+						Vue d&apos;ensemble
+					</span>
+				</div>
+				<h1 className='text-2xl font-black text-foreground tracking-tight'>
+					Tableau de bord
+				</h1>
 			</div>
 
-			<div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.2 }}
-				>
-					<Link
-						href='/services'
-						className='flex items-center gap-4 p-4 rounded-xl bg-linear-to-br from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100 transition-colors duration-300 group'
+			{/* Stats */}
+			<div className='grid grid-cols-2 lg:grid-cols-4 gap-4'>
+				{statCards(stats).map((card, i) => (
+					<motion.div
+						key={card.label}
+						initial={{ opacity: 0, y: 10 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ delay: i * 0.06 }}
+						className='border border-border bg-white overflow-hidden'
 					>
-						<div className='p-3 rounded-lg bg-linear-to-br from-blue-500 to-cyan-500 text-white'>
-							<Briefcase />
-						</div>
-						<div className='text-left'>
-							<div className='font-semibold text-gray-900 group-hover:text-blue-600 transition-colors'>
-								Gérer les services
+						<div className={`h-1 w-full ${card.top}`} />
+						<div className='p-5'>
+							<div className={`w-8 h-8 border ${card.border} ${card.bg} flex items-center justify-center mb-4`}>
+								<card.icon className={`w-4 h-4 ${card.color}`} />
 							</div>
-							<div className='text-sm text-gray-600'>
-								Modifier les tarifs et descriptions
+							<div className='text-3xl font-black text-foreground tracking-tight mb-1'>
+								{card.value}
 							</div>
-						</div>
-					</Link>
-				</motion.div>
-
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={{ opacity: 1, y: 0 }}
-					transition={{ delay: 0.4 }}
-				>
-					<Link
-						href='/schedule'
-						className='flex items-center gap-4 p-4 rounded-xl bg-linear-to-br from-purple-50 to-pink-50 hover:from-purple-100 hover:to-pink-100 transition-colors duration-300 group'
-					>
-						<div className='p-3 rounded-lg bg-linear-to-br from-purple-500 to-pink-500 text-white'>
-							<Clock />
-						</div>
-						<div className='text-left'>
-							<div className='font-semibold text-gray-900 group-hover:text-purple-600 transition-colors'>
-								Gérer les horaires
-							</div>
-							<div className='text-sm text-gray-600'>
-								Modifier les jours et heures d&apos;ouverture
+							<div className='text-[10px] tracking-[1.5px] uppercase text-muted-foreground'>
+								{card.label}
 							</div>
 						</div>
-					</Link>
-				</motion.div>
+					</motion.div>
+				))}
 			</div>
 
-			<div className='flex justify-center items-center border-2 border-dashed border-gray-400 bg-gray-100 text-gray-500 rounded-2xl h-96'>
-				{/* TODO: add stats (preference: chart otherwise numbers) from google analytics (visitors, page views, etc.) */}
-				<p>Google Analytics stats (charts preferred)</p>
+			{/* Quick links */}
+			<div>
+				<div className='flex items-center gap-3 mb-4'>
+					<span className='w-4 h-px bg-primary/60' />
+					<span className='text-[9px] tracking-[2px] uppercase text-primary/80 font-semibold'>
+						Accès rapides
+					</span>
+				</div>
+				<div className='grid grid-cols-1 sm:grid-cols-2 gap-3'>
+					{quickLinks.map((link, i) => (
+						<motion.div
+							key={link.href}
+							initial={{ opacity: 0, y: 10 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ delay: 0.24 + i * 0.06 }}
+						>
+							<Link
+								href={link.href}
+								className='flex items-center gap-4 p-4 border border-border bg-white hover:border-primary/40 hover:bg-primary/3 transition-colors group'
+							>
+								<div className='w-8 h-8 border border-primary/20 bg-primary/5 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:border-primary transition-colors'>
+									<link.icon className='w-4 h-4 text-primary group-hover:text-white transition-colors' />
+								</div>
+								<div>
+									<div className='text-sm font-semibold text-foreground group-hover:text-primary transition-colors'>
+										{link.label}
+									</div>
+									<div className='text-xs text-muted-foreground'>
+										{link.description}
+									</div>
+								</div>
+							</Link>
+						</motion.div>
+					))}
+				</div>
+			</div>
+
+			{/* Analytics placeholder */}
+			<div className='border border-dashed border-border h-64 flex items-center justify-center'>
+				<p className='text-[10px] tracking-[2px] uppercase text-muted-foreground/50'>
+					Google Analytics — à venir
+				</p>
 			</div>
 		</div>
 	);
