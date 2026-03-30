@@ -24,20 +24,11 @@ export default function ScheduleRow({
 
 	const onCheckedChange = useCallback(
 		(checked: boolean) => {
-			if (
-				checked &&
-				(schedule.time.length === 0 || schedule.location.length === 0)
-			) {
-				toast.warning(
-					"Les champs horaires et lieu doivent d'abord être remplis"
-				);
+			if (checked && (schedule.time.length === 0 || schedule.location.length === 0)) {
+				toast.warning("Les champs horaires et lieu doivent d'abord être remplis");
 				return;
 			}
-
-			setSchedule((prev) => ({
-				...prev,
-				open: !prev.open,
-			}));
+			setSchedule((prev) => ({ ...prev, open: !prev.open }));
 		},
 		[schedule]
 	);
@@ -45,28 +36,19 @@ export default function ScheduleRow({
 	const onFieldChange = useCallback(
 		(field: 'location' | 'time', value: string) => {
 			let openState = schedule.open;
-
-			if (openState && value.length === 0) {
-				openState = false;
-			}
-
-			setSchedule((prev) => ({
-				...prev,
-				[field]: value,
-				open: openState,
-			}));
+			if (openState && value.length === 0) openState = false;
+			setSchedule((prev) => ({ ...prev, [field]: value, open: openState }));
 		},
 		[schedule]
 	);
 
 	return (
-		<div className='grid grid-cols-4 gap-6'>
-			<p>{frenchDays[schedule.day]}</p>
+		<div className='grid grid-cols-4 gap-4 px-4 py-3 items-center'>
+			<p className='text-sm font-medium text-foreground'>
+				{frenchDays[schedule.day]}
+			</p>
 
-			<Label
-				htmlFor={`time-${schedule.day}`}
-				className='sr-only'
-			>
+			<Label htmlFor={`time-${schedule.day}`} className='sr-only'>
 				Heure d&apos;ouverture
 			</Label>
 			<Input
@@ -78,13 +60,9 @@ export default function ScheduleRow({
 				autoComplete='off'
 				required={schedule.open}
 				disabled={isPending}
-				className='border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20 transition-all duration-200'
 			/>
 
-			<Label
-				htmlFor={`location-${schedule.day}`}
-				className='sr-only'
-			>
+			<Label htmlFor={`location-${schedule.day}`} className='sr-only'>
 				Lieu
 			</Label>
 			<Input
@@ -96,13 +74,9 @@ export default function ScheduleRow({
 				autoComplete='off'
 				required={schedule.open}
 				disabled={isPending}
-				className='border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20 transition-all duration-200'
 			/>
 
-			<Label
-				htmlFor={`open-${schedule.day}`}
-				className='sr-only'
-			>
+			<Label htmlFor={`open-${schedule.day}`} className='sr-only'>
 				Ouvert
 			</Label>
 			<Switch
@@ -111,7 +85,6 @@ export default function ScheduleRow({
 				name={`open-${schedule.day}`}
 				disabled={isPending}
 				onCheckedChange={onCheckedChange}
-				className='data-[state=checked]:bg-[#7f5539]'
 			/>
 		</div>
 	);

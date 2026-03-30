@@ -3,7 +3,8 @@
 import type { Schedule } from '@repo/app-types';
 import { Button } from '@repo/ui';
 import { Calendar, Check, Clock } from 'lucide-react';
-import { type FormEvent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
+import type React from 'react';
 import { toast } from 'sonner';
 import ScheduleRow from './components/ScheduleRow';
 
@@ -15,7 +16,7 @@ export default function ScheduleContent({
 	const [isPending, setIsPending] = useState(false);
 
 	const onSubmit = useCallback(
-		async (ev: FormEvent<HTMLFormElement>) => {
+		async (ev: React.FormEvent<HTMLFormElement>) => {
 			ev.preventDefault();
 			setIsPending(true);
 
@@ -30,9 +31,7 @@ export default function ScheduleContent({
 
 			const promise = fetch('/api/schedules', {
 				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(updatedSchedules),
 			});
 
@@ -50,45 +49,42 @@ export default function ScheduleContent({
 	);
 
 	return (
-		<form
-			onSubmit={onSubmit}
-			className='space-y-6'
-		>
-			<div className='grid grid-cols-4 gap-6 mb-2'>
-				<div className='flex gap-2 items-center'>
-					<Calendar className='w-4 h-4 text-gray-500' />
-					<p className='text-gray-700'>Jour</p>
+		<form onSubmit={onSubmit} className='space-y-4'>
+			{/* Column headers */}
+			<div className='grid grid-cols-4 gap-4 px-4 pb-2 border-b border-border'>
+				<div className='flex items-center gap-2 text-[9px] tracking-[2px] uppercase text-muted-foreground font-semibold'>
+					<Calendar className='w-3.5 h-3.5' />
+					Jour
 				</div>
-
-				<div className='flex gap-2 items-center'>
-					<Clock className='w-4 h-4 text-gray-500' />
-					<p className='text-gray-700'>Horaire d&apos;ouverture</p>
+				<div className='flex items-center gap-2 text-[9px] tracking-[2px] uppercase text-muted-foreground font-semibold'>
+					<Clock className='w-3.5 h-3.5' />
+					Horaire
 				</div>
-
-				<div className='flex gap-2 items-center'>
-					<Clock className='w-4 h-4 text-gray-500' />
-					<p className='text-gray-700'>Lieu</p>
+				<div className='flex items-center gap-2 text-[9px] tracking-[2px] uppercase text-muted-foreground font-semibold'>
+					<Clock className='w-3.5 h-3.5' />
+					Lieu
 				</div>
-
-				<div className='flex gap-2 items-center'>
-					<Check className='w-4 h-4 text-gray-500' />
-					<p className='text-gray-700'>Ouvert</p>
+				<div className='flex items-center gap-2 text-[9px] tracking-[2px] uppercase text-muted-foreground font-semibold'>
+					<Check className='w-3.5 h-3.5' />
+					Ouvert
 				</div>
 			</div>
 
-			{schedules.map((schedule) => (
-				<ScheduleRow
-					key={schedule.day}
-					schedule={schedule}
-					isPending={isPending}
-				/>
-			))}
+			<div className='divide-y divide-border'>
+				{schedules.map((schedule) => (
+					<ScheduleRow
+						key={schedule.day}
+						schedule={schedule}
+						isPending={isPending}
+					/>
+				))}
+			</div>
 
-			<div className='pt-4 border-t border-gray-200'>
+			<div className='pt-4 border-t border-border'>
 				<Button
 					type='submit'
 					disabled={isPending}
-					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'
+					className='bg-primary hover:bg-primary/85 text-white'
 				>
 					Enregistrer les modifications
 				</Button>
