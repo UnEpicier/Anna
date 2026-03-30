@@ -202,18 +202,18 @@ export default function ServicesContent({
 
 				<button
 					type='button'
-					className='flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 rounded-md bg-gray-100/50 hover:bg-gray-100 text-gray-500 transition-colors cursor-pointer'
+					className='flex items-center justify-center gap-2 p-4 border border-dashed border-border hover:border-primary/40 hover:bg-primary/3 text-muted-foreground hover:text-primary transition-colors'
 					onClick={addService}
 				>
-					<Plus />
-					Ajouter un service
+					<Plus className='w-4 h-4' />
+					<span className='text-sm'>Ajouter un service</span>
 				</button>
 			</div>
 
-			<div className='pt-4 border-t border-gray-200'>
+			<div className='pt-4 border-t border-border'>
 				<Button
 					type='submit'
-					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200 cursor-pointer'
+					className='bg-primary hover:bg-primary/85 text-white'
 				>
 					Enregistrer les modifications
 				</Button>
