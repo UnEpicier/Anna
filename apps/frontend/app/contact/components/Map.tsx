@@ -13,36 +13,35 @@ interface Props {
 	actionRadius: number;
 }
 
-export default function ContactMap({
-	departments,
-	actionLong,
-	actionLat,
-	actionRadius,
-}: Props) {
+export default function ContactMap({ departments, actionLong, actionLat, actionRadius }: Props) {
 	return (
-		<section className='py-24 bg-linear-to-b from-white to-gray-50'>
-			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+		<section className='py-20 sm:py-28 bg-[#111]'>
+			<div className='max-w-7xl mx-auto px-6 sm:px-8 lg:px-16'>
 				<motion.div
 					initial={{ opacity: 0, y: 20 }}
 					whileInView={{ opacity: 1, y: 0 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.6 }}
-					className='text-center mb-12'
+					className='mb-10'
 				>
-					<h2 className='text-4xl md:text-5xl text-primary mb-4'>
-						Zone d&apos;Intervention
+					<div className='flex items-center gap-3 mb-4'>
+						<span className='w-5 h-px bg-primary/70' />
+						<span className='text-[9px] tracking-[2px] uppercase text-primary/80 font-semibold'>
+							Déplacements
+						</span>
+					</div>
+					<h2 className='text-4xl sm:text-5xl font-black text-white leading-none tracking-tight'>
+						Zone<br />
+						<span className='font-light text-white/45'>d&apos;intervention</span>
 					</h2>
-					<p className='text-gray-600 text-lg'>
-						Découvrez les départements où j&apos;interviens
-					</p>
 				</motion.div>
 
 				<motion.div
-					initial={{ opacity: 0, scale: 0.95 }}
+					initial={{ opacity: 0, scale: 0.98 }}
 					whileInView={{ opacity: 1, scale: 1 }}
 					viewport={{ once: true }}
 					transition={{ duration: 0.6 }}
-					className='relative h-150 rounded-xl shadow-lg overflow-hidden'
+					className='relative h-[500px] sm:h-[600px] overflow-hidden'
 				>
 					<Suspense fallback={<MapLoader />}>
 						<MapComponent

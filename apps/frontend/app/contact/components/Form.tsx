@@ -1,19 +1,10 @@
-import {
-	Button,
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-	Input,
-	Label,
-	Textarea,
-} from '@repo/ui';
+import { Button, Input, Label, Textarea } from '@repo/ui';
 import { Send } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useActionState } from 'react';
 
 export default function Form() {
-	const [_error, action, _pending] = useActionState(() => {}, null);
+	const [_error, action] = useActionState(() => {}, null);
 
 	return (
 		<motion.div
@@ -23,127 +14,78 @@ export default function Form() {
 			transition={{ duration: 0.6 }}
 			className='lg:col-span-2'
 		>
-			<Card className='border-0 shadow-lg bg-white'>
-				<CardHeader>
-					<CardTitle className='text-primary text-2xl'>
-						Formulaire de Contact
-					</CardTitle>
-					<p className='text-gray-600 mt-2'>
-						Remplissez ce formulaire et je vous répondrai dans les
-						plus brefs délais
-					</p>
-				</CardHeader>
-				<CardContent>
-					<form
-						action={action}
-						className='space-y-6'
-					>
-						<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-							<div>
-								<Label
-									htmlFor='name'
-									className='text-gray-700'
-								>
-									Nom *
-								</Label>
-								<Input
-									id='name'
-									name='name'
-									autoComplete='name'
-									required
-									className='mt-2 border-gray-200 focus:border-primary'
-								/>
-							</div>
+			<div className='flex items-center gap-3 mb-6'>
+				<span className='w-5 h-px bg-primary' />
+				<span className='text-[9px] tracking-[2px] uppercase text-primary font-semibold'>
+					Formulaire de contact
+				</span>
+			</div>
 
-							<div>
-								<Label
-									htmlFor='email'
-									className='text-gray-700'
-								>
-									Email *
-								</Label>
-								<Input
-									id='email'
-									name='email'
-									type='email'
-									autoComplete='email'
-									required
-									className='mt-2 border-gray-200 focus:border-primary'
-								/>
-							</div>
-						</div>
-						<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-							<div>
-								<Label
-									htmlFor='phone'
-									className='text-gray-700'
-								>
-									Téléphone *
-								</Label>
-								<Input
-									id='phone'
-									name='phone'
-									type='tel'
-									autoComplete='tel'
-									required
-									className='mt-2 border-gray-200 focus:border-primary'
-								/>
-							</div>
+			<form action={action} className='space-y-5'>
+				<div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
+					<div className='space-y-1.5'>
+						<Label htmlFor='name' className='text-[9px] tracking-[2px] uppercase text-muted-foreground'>
+							Nom *
+						</Label>
+						<Input id='name' name='name' autoComplete='name' required />
+					</div>
+					<div className='space-y-1.5'>
+						<Label htmlFor='email' className='text-[9px] tracking-[2px] uppercase text-muted-foreground'>
+							Email *
+						</Label>
+						<Input id='email' name='email' type='email' autoComplete='email' required />
+					</div>
+				</div>
 
-							<div>
-								<Label
-									htmlFor='animal'
-									className='text-gray-700'
-								>
-									Type d&apos;Animal *
-								</Label>
-								<Input
-									id='animal'
-									name='animal'
-									placeholder='Ex: Chien, Chat, Cheval, NAC'
-									autoComplete='off'
-									required
-									className='mt-2 border-gray-200 focus:border-primary'
-								/>
-							</div>
-						</div>
-						<div>
-							<Label
-								htmlFor='message'
-								className='text-gray-700'
-							>
-								Message *
-							</Label>
-							<Textarea
-								id='message'
-								name='message'
-								rows={6}
-								autoComplete='off'
-								required
-								className='mt-2 border-gray-200 focus:border-primary'
-								placeholder='Décrivez la raison de votre demande, les symptômes observés, vos disponibilités...'
-							/>
-						</div>
-						<div className='bg-gray-50 rounded-xl p-4 text-sm text-gray-600'>
-							<p className='mb-2'>* Champs obligatoires</p>
-							<p>
-								En soumettant ce formulaire, vous acceptez que
-								vos données soient utilisées pour vous
-								recontacter. Voir notre politique de
-								confidentialité.
-							</p>
-						</div>
-						<Button
-							type='submit'
-							className='w-full bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all group'
-							size='lg'
-						>
-							Envoyer le Message
-							<Send className='ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform' />
-						</Button>
-					</form>
-				</CardContent>
-			</Card>
+				<div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
+					<div className='space-y-1.5'>
+						<Label htmlFor='phone' className='text-[9px] tracking-[2px] uppercase text-muted-foreground'>
+							Téléphone *
+						</Label>
+						<Input id='phone' name='phone' type='tel' autoComplete='tel' required />
+					</div>
+					<div className='space-y-1.5'>
+						<Label htmlFor='animal' className='text-[9px] tracking-[2px] uppercase text-muted-foreground'>
+							Type d&apos;animal *
+						</Label>
+						<Input
+							id='animal'
+							name='animal'
+							placeholder='Chien, Chat, Cheval, NAC…'
+							autoComplete='off'
+							required
+						/>
+					</div>
+				</div>
+
+				<div className='space-y-1.5'>
+					<Label htmlFor='message' className='text-[9px] tracking-[2px] uppercase text-muted-foreground'>
+						Message *
+					</Label>
+					<Textarea
+						id='message'
+						name='message'
+						rows={6}
+						autoComplete='off'
+						required
+						placeholder='Décrivez la raison de votre demande, les symptômes observés, vos disponibilités…'
+					/>
+				</div>
+
+				<p className='text-[10px] text-muted-foreground leading-relaxed'>
+					* Champs obligatoires. En soumettant ce formulaire, vous acceptez
+					que vos données soient utilisées pour vous recontacter.
+				</p>
+
+				<Button
+					type='submit'
+					size='lg'
+					className='w-full bg-primary hover:bg-primary/85 text-white group'
+				>
+					Envoyer le message
+					<Send className='h-4 w-4 group-hover:translate-x-0.5 transition-transform' />
+				</Button>
+			</form>
 		</motion.div>
 	);
 }
