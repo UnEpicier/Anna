@@ -167,12 +167,12 @@ function TimelineSteps() {
 	}, []);
 
 	return (
-		<div ref={containerRef} className='relative'>
+		<div ref={containerRef} className='relative' style={{ position: 'relative' }}>
 			{/* Ligne fond */}
-			<div className='absolute left-[13px] sm:left-[21px] top-3.5 bottom-3.5 w-px bg-border' />
+			<div className='absolute left-3.25 sm:left-5.25 top-3.5 bottom-3.5 w-px bg-border' />
 			{/* Ligne fill scroll */}
 			<motion.div
-				className='absolute left-[13px] sm:left-[21px] top-3.5 bottom-3.5 w-px bg-primary origin-top'
+				className='absolute left-3.25 sm:left-5.25 top-3.5 bottom-3.5 w-px bg-primary origin-top'
 				style={{ scaleY: lineScaleY }}
 			/>
 
