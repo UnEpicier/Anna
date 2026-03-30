@@ -28,7 +28,7 @@ async function getData() {
 
 	// --- Services
 
-	const servicesRes = await fetch(`${process.env.API_URL}/services/res`, {
+	const servicesRes = await fetch(`${process.env.API_URL}/services`, {
 		cache: 'no-cache',
 	});
 	const servicesResponseData: ResponseObject<Service[]> =

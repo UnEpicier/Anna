@@ -1,69 +1,10 @@
 'use client';
 
 import type { Informations, Service } from '@repo/app-types';
-import {
-	BovinIcon,
-	Button,
-	Card,
-	CardContent,
-	CardHeader,
-	CardTitle,
-	OvinIcon,
-} from '@repo/ui';
-import {
-	ArrowRight,
-	Bird,
-	Bone,
-	Cat,
-	CheckCircle2,
-	Clock,
-	Dog,
-	Egg,
-	Euro,
-	Fish,
-	PawPrint,
-	Rabbit,
-	Rat,
-	Squirrel,
-} from 'lucide-react';
+import { ImageWithFallback } from '@repo/ui';
+import { ArrowRight } from 'lucide-react';
 import { motion } from 'motion/react';
 import Link from 'next/link';
-
-const availableIcons = Object.entries({
-	Bird,
-	Bone,
-	BovinIcon,
-	Cat,
-	Dog,
-	Egg,
-	Fish,
-	OvinIcon,
-	PawPrint,
-	Rabbit,
-	Rat,
-	Squirrel,
-}).map(([key, icon]) => ({ name: key, Icon: icon }));
-
-const containerVariants = {
-	hidden: { opacity: 0 },
-	visible: {
-		opacity: 1,
-		transition: {
-			staggerChildren: 0.1,
-		},
-	},
-};
-
-const itemVariants = {
-	hidden: { opacity: 0, y: 20 },
-	visible: {
-		opacity: 1,
-		y: 0,
-		transition: {
-			duration: 0.5,
-		},
-	},
-};
 
 const indications = [
 	'Boiteries et troubles locomoteurs',
@@ -75,6 +16,26 @@ const indications = [
 	'Prévention et bien-être général',
 ];
 
+const infos = [
+	{
+		label: "Zone d'intervention",
+		getValue: (info: Informations) =>
+			`À domicile dans un rayon de ${info.actionRadius} km autour de ${info.actionAddress}. Au-delà : 0,50 €/km supplémentaire.`,
+	},
+	{ label: 'Paiement', getValue: () => 'Espèces, chèque, carte bancaire.' },
+	{ label: 'Annulation', getValue: () => "48h à l'avance sans frais." },
+	{ label: 'Suivi', getValue: () => 'Compte-rendu écrit après chaque séance.' },
+];
+
+const stagger = {
+	hidden: { opacity: 0 },
+	visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
+};
+const fadeUp = {
+	hidden: { opacity: 0, y: 20 },
+	visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
 export default function ContentService({
 	services,
 	informations,
@@ -84,272 +45,232 @@ export default function ContentService({
 }) {
 	return (
 		<div className='min-h-screen'>
-			{/* Header */}
-			<section className='relative py-24 overflow-hidden'>
-				<div className='absolute inset-0 bg-linear-to-br from-secondary via-white to-primary/5'></div>
-				<div className='absolute top-20 right-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl'></div>
+			{/* ── Hero ── */}
+			<section className='-mt-18 relative min-h-[60svh] sm:min-h-[70svh] flex flex-col overflow-hidden'>
+				<div className='absolute inset-0'>
+					<ImageWithFallback
+						src='https://images.unsplash.com/photo-1450778869180-41d0601e046e'
+						alt=''
+						className='w-full h-full object-cover brightness-75'
+					/>
+					<div className='absolute inset-0 bg-linear-to-t from-[rgba(8,5,3,0.92)] via-[rgba(8,5,3,0.45)] to-transparent' />
+				</div>
 
 				<motion.div
-					initial={{ opacity: 0, y: 20 }}
+					initial={{ opacity: 0, y: -10 }}
 					animate={{ opacity: 1, y: 0 }}
-					transition={{ duration: 0.6 }}
-					className='relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center'
+					transition={{ duration: 0.6, delay: 0.2 }}
+					className='relative z-10 flex justify-center pt-28'
 				>
-					<h1 className='text-5xl md:text-6xl text-primary mb-6'>
-						Services & Tarifs
-					</h1>
-					<p className='text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed'>
-						Des soins ostéopathiques professionnels adaptés à chaque
-						animal. Déplacement à domicile inclus dans un rayon de{' '}
-						{informations.actionRadius}km.
-					</p>
+					<span className='px-4 py-2 text-[10px] tracking-[2px] uppercase text-white font-medium border border-white/30 rounded-full backdrop-blur-sm bg-white/10'>
+						Services & Tarifs · Bordeaux
+					</span>
 				</motion.div>
-			</section>
 
-			{/* Services Cards */}
-			<section className='py-16 bg-white'>
-				<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+				<div className='flex-1' />
+
+				<div className='relative z-10 px-6 sm:px-10 lg:px-16 pb-10 sm:pb-14'>
 					<motion.div
-						variants={containerVariants}
-						initial='hidden'
-						whileInView='visible'
-						viewport={{ once: true }}
-						className='grid grid-cols-1 md:grid-cols-2 gap-8'
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ duration: 0.5, delay: 0.4 }}
+						className='flex items-center gap-3 mb-4'
 					>
-						{services.map((service, index) => {
-							const IconComponent =
-								availableIcons.find(
-									(x) => x.name === service.icon
-								)?.Icon || PawPrint;
-
-							return (
-								<motion.div
-									key={index}
-									variants={itemVariants}
-								>
-									<Card className='border-0 shadow-lg hover:shadow-2xl transition-all duration-300 h-full group bg-linear-to-br from-white to-gray-50/50'>
-										<CardHeader>
-											<div className='flex items-start justify-between'>
-												<div className='flex items-center gap-4'>
-													<div className='bg-linear-to-br from-primary to-primary/80 p-4 rounded-2xl shadow-lg group-hover:scale-110 transition-transform'>
-														<IconComponent className='h-8 w-8 text-white' />
-													</div>
-													<div>
-														<CardTitle className='text-3xl text-primary'>
-															{service.title}
-														</CardTitle>
-													</div>
-												</div>
-											</div>
-										</CardHeader>
-										<CardContent>
-											<p className='text-gray-600 mb-6 leading-relaxed'>
-												{service.description}
-											</p>
-
-											<div className='flex items-center justify-between mb-8 p-6 bg-linear-to-br from-primary/5 to-transparent rounded-2xl border border-primary/10'>
-												<div className='flex items-center gap-3'>
-													<div className='bg-primary/10 p-2 rounded-xl'>
-														<Euro className='h-6 w-6 text-primary' />
-													</div>
-													<span className='text-3xl text-primary'>
-														{service.price}
-													</span>
-												</div>
-												<div className='flex items-center gap-2 text-gray-600'>
-													<Clock className='h-5 w-5' />
-													<span>
-														{service.duration}
-													</span>
-												</div>
-											</div>
-
-											<p className='space-y-3 mb-6'>
-												{service.description}
-											</p>
-										</CardContent>
-									</Card>
-								</motion.div>
-							);
-						})}
+						<span className='w-6 h-px bg-primary/70' />
+						<span className='text-[10px] tracking-[2px] uppercase text-primary/90'>
+							Ostéopathie Animalière
+						</span>
 					</motion.div>
+
+					<motion.h1
+						initial={{ opacity: 0, y: 20 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.7, delay: 0.5 }}
+						className='text-6xl sm:text-7xl lg:text-8xl font-black text-white leading-[0.95] tracking-tight mb-4'
+					>
+						Services<br />
+						<span className='font-light text-white/50'>&amp; tarifs</span>
+					</motion.h1>
+
+					<motion.p
+						initial={{ opacity: 0, y: 15 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.6, delay: 0.65 }}
+						className='text-sm text-white/55 leading-relaxed max-w-sm'
+					>
+						Soins à domicile adaptés à chaque animal. Déplacement inclus dans
+						un rayon de {informations.actionRadius} km.
+					</motion.p>
 				</div>
+
+				<div className='absolute bottom-0 right-8 w-px h-8 bg-white/15' />
 			</section>
 
-			{/* Indications */}
-			<section className='py-24 bg-linear-to-b from-white to-gray-50'>
-				<div className='max-w-4xl mx-auto px-4 sm:px-6 lg:px-8'>
+			{/* ── Services ── */}
+			<section className='py-20 sm:py-28 bg-white'>
+				<div className='max-w-7xl mx-auto px-6 sm:px-8 lg:px-16'>
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						whileInView={{ opacity: 1, y: 0 }}
 						viewport={{ once: true }}
 						transition={{ duration: 0.6 }}
-						className='text-center mb-12'
+						className='flex items-center gap-3 mb-10'
 					>
-						<h2 className='text-4xl md:text-5xl text-primary mb-4'>
-							Quand Consulter un Ostéopathe Animalier ?
-						</h2>
-						<p className='text-gray-600 text-lg'>
-							L&apos;ostéopathie peut aider dans de nombreuses
-							situations
-						</p>
+						<span className='w-5 h-px bg-primary' />
+						<span className='text-[9px] tracking-[2px] uppercase text-primary font-semibold'>
+							Nos prestations
+						</span>
 					</motion.div>
 
 					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						whileInView={{ opacity: 1, y: 0 }}
+						initial='hidden'
+						whileInView='visible'
 						viewport={{ once: true }}
-						transition={{ duration: 0.6, delay: 0.2 }}
+						variants={stagger}
+						className='divide-y divide-border'
 					>
-						<Card className='border-0 shadow-xl bg-white'>
-							<CardContent className='pt-8 pb-8'>
-								<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-									{indications.map((indication, index) => (
-										<div
-											key={index}
-											className='flex items-start gap-4 group'
-										>
-											<div className='bg-primary/10 rounded-xl p-2 group-hover:bg-primary/20 transition-colors'>
-												<div className='w-2 h-2 bg-primary rounded-full'></div>
-											</div>
-											<p className='text-gray-700 leading-relaxed'>
-												{indication}
-											</p>
-										</div>
-									))}
+						{services.map((service, i) => (
+							<motion.div
+								key={service.id}
+								variants={fadeUp}
+								className='grid grid-cols-[36px_1fr_auto] sm:grid-cols-[44px_1fr_auto] gap-4 sm:gap-6 py-6 sm:py-7 group items-start'
+							>
+								<span className='text-[10px] font-black text-primary pt-1'>
+									{String(i + 1).padStart(2, '0')}
+								</span>
+								<div>
+									<h2 className='text-base sm:text-lg font-bold text-foreground mb-1 group-hover:text-primary transition-colors'>
+										{service.title}
+									</h2>
+									<p className='text-sm text-muted-foreground leading-relaxed max-w-xl'>
+										{service.description}
+									</p>
+									<span className='mt-2 inline-block text-[9px] tracking-[2px] uppercase text-muted-foreground/60'>
+										⏱ {service.duration}
+									</span>
 								</div>
-							</CardContent>
-						</Card>
+								<div className='text-right pt-1'>
+									<div className='text-2xl sm:text-3xl font-black text-foreground tracking-tight leading-none'>
+										{service.price}€
+									</div>
+									<div className='text-[8px] tracking-[1.5px] uppercase text-muted-foreground mt-1'>
+										par séance
+									</div>
+								</div>
+							</motion.div>
+						))}
 					</motion.div>
 				</div>
 			</section>
 
-			{/* Additional Info */}
-			<section className='py-24 bg-white'>
-				<div className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8'>
-					<div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+			{/* ── Pratique (dark, fusionnée) ── */}
+			<section className='py-20 sm:py-28 bg-[#111]'>
+				<div className='max-w-7xl mx-auto px-6 sm:px-8 lg:px-16'>
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6 }}
+						className='mb-10'
+					>
+						<div className='flex items-center gap-3 mb-4'>
+							<span className='w-5 h-px bg-primary/70' />
+							<span className='text-[9px] tracking-[2px] uppercase text-primary/80 font-semibold'>
+								Informations pratiques
+							</span>
+						</div>
+						<h2 className='text-4xl sm:text-5xl font-black text-white leading-none tracking-tight'>
+							Tout ce qu&apos;il<br />
+							<span className='font-light text-white/45'>faut savoir</span>
+						</h2>
+					</motion.div>
+
+					<div className='grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20'>
+						{/* Quand consulter */}
 						<motion.div
-							initial={{ opacity: 0, x: -20 }}
-							whileInView={{ opacity: 1, x: 0 }}
+							initial='hidden'
+							whileInView='visible'
 							viewport={{ once: true }}
-							transition={{ duration: 0.6 }}
+							variants={stagger}
 						>
-							<Card className='border-0 shadow-lg h-full bg-linear-to-br from-secondary to-white'>
-								<CardContent className='pt-8 pb-8'>
-									<div className='bg-primary/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-6'>
-										<ArrowRight className='h-6 w-6 text-primary' />
-									</div>
-									<h3 className='text-2xl text-primary mb-6'>
-										Déplacements
-									</h3>
-									<p className='text-gray-600 mb-6 leading-relaxed'>
-										Je me déplace à votre domicile ou dans
-										votre écurie pour le confort de votre
-										animal.
-									</p>
-									<div className='bg-white/60 rounded-xl p-4'>
-										<p className='text-gray-700'>
-											<strong className='text-primary'>
-												Zone d&apos;intervention :
-											</strong>
-											<br />
-											Rayon de {informations.actionRadius}
-											km autour de{' '}
-											{informations.actionAddress}.
-										</p>
-										<p className='text-gray-600 mt-2'>
-											Au-delà, frais de déplacement :
-											0,50€/km supplémentaire.
-										</p>
-									</div>
-								</CardContent>
-							</Card>
+							<h3 className='text-[11px] tracking-[2px] uppercase text-white/50 font-semibold mb-6'>
+								Quand consulter ?
+							</h3>
+							{indications.map((item) => (
+								<motion.div
+									key={item}
+									variants={fadeUp}
+									className='flex items-start gap-4 py-3 border-b border-white/5 last:border-0'
+								>
+									<span className='w-1 h-1 rounded-full bg-primary mt-2 shrink-0' />
+									<span className='text-sm text-white/60 leading-relaxed'>{item}</span>
+								</motion.div>
+							))}
 						</motion.div>
 
+						{/* Infos pratiques */}
 						<motion.div
-							initial={{ opacity: 0, x: 20 }}
-							whileInView={{ opacity: 1, x: 0 }}
+							initial='hidden'
+							whileInView='visible'
 							viewport={{ once: true }}
-							transition={{ duration: 0.6 }}
+							variants={stagger}
 						>
-							<Card className='border-0 shadow-lg h-full bg-linear-to-br from-secondary to-white'>
-								<CardContent className='pt-8 pb-8'>
-									<div className='bg-primary/10 w-14 h-14 rounded-2xl flex items-center justify-center mb-6'>
-										<CheckCircle2 className='h-6 w-6 text-primary' />
-									</div>
-									<h3 className='text-2xl text-primary mb-6'>
-										Informations Pratiques
-									</h3>
-									<div className='space-y-4'>
-										<div className='bg-white/60 rounded-xl p-4'>
-											<p className='text-gray-700'>
-												<strong className='text-primary'>
-													Paiement :
-												</strong>
-												<br />
-												Espèces, chèque, carte bleue
-											</p>
+							<h3 className='text-[11px] tracking-[2px] uppercase text-white/50 font-semibold mb-6'>
+								Infos pratiques
+							</h3>
+							<div className='space-y-3'>
+								{infos.map((info) => (
+									<motion.div
+										key={info.label}
+										variants={fadeUp}
+										className='p-4 border border-white/6 bg-white/2'
+									>
+										<div className='text-[9px] tracking-[2px] uppercase text-primary font-semibold mb-2'>
+											{info.label}
 										</div>
-										<div className='bg-white/60 rounded-xl p-4'>
-											<p className='text-gray-700'>
-												<strong className='text-primary'>
-													Annulation :
-												</strong>
-												<br />
-												48h à l&apos;avance sans frais
-											</p>
-										</div>
-										<div className='bg-white/60 rounded-xl p-4'>
-											<p className='text-gray-700'>
-												<strong className='text-primary'>
-													Suivi :
-												</strong>
-												<br />
-												Compte-rendu écrit après chaque
-												séance
-											</p>
-										</div>
-									</div>
-								</CardContent>
-							</Card>
+										<p className='text-sm text-white/55 leading-relaxed'>
+											{info.getValue(informations)}
+										</p>
+									</motion.div>
+								))}
+							</div>
 						</motion.div>
 					</div>
 				</div>
 			</section>
 
-			{/* CTA */}
-			<section className='py-24 bg-linear-to-br from-primary via-primary/95 to-primary/90 text-white relative overflow-hidden'>
-				<div className='absolute inset-0 opacity-10'>
-					<div className='absolute top-10 left-10 w-64 h-64 bg-white rounded-full blur-3xl'></div>
-					<div className='absolute bottom-10 right-10 w-80 h-80 bg-white rounded-full blur-3xl'></div>
-				</div>
-
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					whileInView={{ opacity: 1, y: 0 }}
-					viewport={{ once: true }}
-					transition={{ duration: 0.6 }}
-					className='relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center'
-				>
-					<h2 className='text-4xl md:text-5xl mb-6'>
-						Des Questions sur les Tarifs ?
-					</h2>
-					<p className='text-xl mb-10 opacity-95 max-w-2xl mx-auto'>
-						N&apos;hésitez pas à me contacter pour toute information
-						complémentaire.
-					</p>
-					<Button
-						size='lg'
-						variant='secondary'
-						asChild
-						className='bg-white text-primary hover:bg-gray-100 shadow-2xl hover:shadow-xl transition-all hover:scale-105'
+			{/* ── CTA ── */}
+			<section className='py-16 sm:py-20 bg-white'>
+				<div className='max-w-7xl mx-auto px-6 sm:px-8 lg:px-16'>
+					<motion.div
+						initial={{ opacity: 0, scale: 0.98 }}
+						whileInView={{ opacity: 1, scale: 1 }}
+						viewport={{ once: true }}
+						transition={{ duration: 0.6 }}
+						className='relative bg-[#111] rounded-2xl sm:rounded-3xl px-8 sm:px-16 py-14 sm:py-20 text-center overflow-hidden'
 					>
-						<Link href='/contact'>
-							Me Contacter
-							<ArrowRight className='ml-2 h-5 w-5' />
+						<div className='absolute -top-20 left-1/2 -translate-x-1/2 w-72 h-72 bg-primary/20 rounded-full blur-3xl pointer-events-none' />
+
+						<p className='text-[9px] tracking-[2px] uppercase text-primary/70 mb-4'>
+							Prêt à commencer ?
+						</p>
+						<h2 className='text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-none tracking-tight mb-4'>
+							Prenons<br />
+							<span className='font-light text-white/50'>rendez-vous</span>
+						</h2>
+						<p className='text-sm text-white/40 mb-8 max-w-md mx-auto leading-relaxed'>
+							Consultation personnalisée à domicile. N&apos;hésitez pas à me
+							contacter pour toute question sur les tarifs.
+						</p>
+						<Link
+							href='/contact'
+							className='inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white text-[10px] font-bold tracking-[2px] uppercase px-8 py-4 transition-colors'
+						>
+							Me contacter
+							<ArrowRight className='h-4 w-4' />
 						</Link>
-					</Button>
-				</motion.div>
+					</motion.div>
+				</div>
 			</section>
 		</div>
 	);
