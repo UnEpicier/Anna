@@ -104,7 +104,9 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 					<button
 						onClick={() => void setSidebarOpen((prev) => !prev)}
 						className='p-1.5 hover:bg-muted transition-colors'
-						aria-label={sidebarOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+						aria-label={
+							sidebarOpen ? 'Fermer le menu' : 'Ouvrir le menu'
+						}
 					>
 						{sidebarOpen ? (
 							<X className='w-5 h-5' />
@@ -165,12 +167,15 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 										</span>
 									</div>
 									{navItems.map((item) => {
-										const isActive = currentSection === item.path;
+										const isActive =
+											currentSection === item.path;
 										return (
 											<Link
 												key={item.id}
 												href={item.path}
-												onClick={() => setSidebarOpen(false)}
+												onClick={() =>
+													setSidebarOpen(false)
+												}
 												className={`w-full flex items-center gap-3 px-6 py-2.5 transition-colors duration-150 border-l-2 ${
 													isActive
 														? 'border-primary bg-primary/6 text-primary'
@@ -226,11 +231,22 @@ export default function Sidebar({ children }: { children: ReactNode }) {
 									<div className='flex items-center gap-3 mb-1'>
 										<span className='w-4 h-px bg-primary/60' />
 										<span className='text-[9px] tracking-[2px] uppercase text-primary/80 font-semibold'>
-											{navItems.find((item) => item.path === currentSection)?.label}
+											{
+												navItems.find(
+													(item) =>
+														item.path ===
+														currentSection
+												)?.label
+											}
 										</span>
 									</div>
 									<h1 className='text-2xl font-black text-foreground tracking-tight'>
-										{navItems.find((item) => item.path === currentSection)?.label}
+										{
+											navItems.find(
+												(item) =>
+													item.path === currentSection
+											)?.label
+										}
 									</h1>
 								</div>
 							)}

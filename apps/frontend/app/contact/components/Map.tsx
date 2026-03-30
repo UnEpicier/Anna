@@ -13,7 +13,12 @@ interface Props {
 	actionRadius: number;
 }
 
-export default function ContactMap({ departments, actionLong, actionLat, actionRadius }: Props) {
+export default function ContactMap({
+	departments,
+	actionLong,
+	actionLat,
+	actionRadius,
+}: Props) {
 	return (
 		<section className='py-20 sm:py-28 bg-[#111]'>
 			<div className='max-w-7xl mx-auto px-6 sm:px-8 lg:px-16'>
@@ -31,8 +36,11 @@ export default function ContactMap({ departments, actionLong, actionLat, actionR
 						</span>
 					</div>
 					<h2 className='text-4xl sm:text-5xl font-black text-white leading-none tracking-tight'>
-						Zone<br />
-						<span className='font-light text-white/45'>d&apos;intervention</span>
+						Zone
+						<br />
+						<span className='font-light text-white/45'>
+							d&apos;intervention
+						</span>
 					</h2>
 				</motion.div>
 

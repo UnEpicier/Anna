@@ -24,8 +24,13 @@ export default function ScheduleRow({
 
 	const onCheckedChange = useCallback(
 		(checked: boolean) => {
-			if (checked && (schedule.time.length === 0 || schedule.location.length === 0)) {
-				toast.warning("Les champs horaires et lieu doivent d'abord être remplis");
+			if (
+				checked &&
+				(schedule.time.length === 0 || schedule.location.length === 0)
+			) {
+				toast.warning(
+					"Les champs horaires et lieu doivent d'abord être remplis"
+				);
 				return;
 			}
 			setSchedule((prev) => ({ ...prev, open: !prev.open }));
@@ -37,7 +42,11 @@ export default function ScheduleRow({
 		(field: 'location' | 'time', value: string) => {
 			let openState = schedule.open;
 			if (openState && value.length === 0) openState = false;
-			setSchedule((prev) => ({ ...prev, [field]: value, open: openState }));
+			setSchedule((prev) => ({
+				...prev,
+				[field]: value,
+				open: openState,
+			}));
 		},
 		[schedule]
 	);
@@ -48,7 +57,10 @@ export default function ScheduleRow({
 				{frenchDays[schedule.day]}
 			</p>
 
-			<Label htmlFor={`time-${schedule.day}`} className='sr-only'>
+			<Label
+				htmlFor={`time-${schedule.day}`}
+				className='sr-only'
+			>
 				Heure d&apos;ouverture
 			</Label>
 			<Input
@@ -62,7 +74,10 @@ export default function ScheduleRow({
 				disabled={isPending}
 			/>
 
-			<Label htmlFor={`location-${schedule.day}`} className='sr-only'>
+			<Label
+				htmlFor={`location-${schedule.day}`}
+				className='sr-only'
+			>
 				Lieu
 			</Label>
 			<Input
@@ -76,7 +91,10 @@ export default function ScheduleRow({
 				disabled={isPending}
 			/>
 
-			<Label htmlFor={`open-${schedule.day}`} className='sr-only'>
+			<Label
+				htmlFor={`open-${schedule.day}`}
+				className='sr-only'
+			>
 				Ouvert
 			</Label>
 			<Switch

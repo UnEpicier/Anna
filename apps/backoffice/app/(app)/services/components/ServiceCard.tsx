@@ -28,9 +28,7 @@ export default function ServiceCard({
 				service.toUpdate ? 'border-primary' : 'border-border'
 			} ${!service.enabled ? 'opacity-60' : ''}`}
 		>
-			{service.toUpdate && (
-				<div className='h-0.5 w-full bg-primary' />
-			)}
+			{service.toUpdate && <div className='h-0.5 w-full bg-primary' />}
 
 			<div className='p-6 space-y-5'>
 				{/* Header */}
@@ -40,7 +38,9 @@ export default function ServiceCard({
 					</span>
 					<Input
 						value={service.title}
-						onChange={(e) => updateService(service.id, 'title', e.target.value)}
+						onChange={(e) =>
+							updateService(service.id, 'title', e.target.value)
+						}
 						autoComplete='off'
 						required
 						placeholder='Titre du service'
@@ -56,7 +56,9 @@ export default function ServiceCard({
 						<Switch
 							id={`enabled-${service.id}`}
 							checked={service.enabled}
-							onCheckedChange={(checked) => updateService(service.id, 'enabled', checked)}
+							onCheckedChange={(checked) =>
+								updateService(service.id, 'enabled', checked)
+							}
 						/>
 						<button
 							type='button'
@@ -84,7 +86,13 @@ export default function ServiceCard({
 							value={service.price}
 							type='number'
 							min={0}
-							onChange={(e) => updateService(service.id, 'price', e.target.valueAsNumber)}
+							onChange={(e) =>
+								updateService(
+									service.id,
+									'price',
+									e.target.valueAsNumber
+								)
+							}
 							placeholder='60'
 							autoComplete='off'
 							required
@@ -102,7 +110,13 @@ export default function ServiceCard({
 						<Input
 							id={`duration-${service.id}`}
 							value={service.duration}
-							onChange={(e) => updateService(service.id, 'duration', e.target.value)}
+							onChange={(e) =>
+								updateService(
+									service.id,
+									'duration',
+									e.target.value
+								)
+							}
 							placeholder='45-60 min'
 							autoComplete='off'
 							required
@@ -122,7 +136,13 @@ export default function ServiceCard({
 					<Textarea
 						id={`description-${service.id}`}
 						value={service.description}
-						onChange={(e) => updateService(service.id, 'description', e.target.value)}
+						onChange={(e) =>
+							updateService(
+								service.id,
+								'description',
+								e.target.value
+							)
+						}
 						rows={3}
 						placeholder='Description du service...'
 						className='resize-none'

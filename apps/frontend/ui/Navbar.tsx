@@ -43,14 +43,18 @@ export default function Navbar() {
 					<div>
 						<div
 							className={`text-[12px] font-black tracking-[2.5px] uppercase transition-colors duration-300 ${
-								scrolled || mobileMenuOpen ? 'text-[#111]' : 'text-white'
+								scrolled || mobileMenuOpen
+									? 'text-[#111]'
+									: 'text-white'
 							}`}
 						>
 							Anna Nischwitz
 						</div>
 						<div
 							className={`text-[10px] tracking-[2px] uppercase mt-0.5 transition-colors duration-300 ${
-								scrolled || mobileMenuOpen ? 'text-black/50' : 'text-white/80'
+								scrolled || mobileMenuOpen
+									? 'text-black/50'
+									: 'text-white/80'
 							}`}
 						>
 							Ostéopathe Animalière
@@ -93,7 +97,9 @@ export default function Navbar() {
 				{/* Hamburger mobile */}
 				<button
 					className={`md:hidden ml-auto px-5 transition-colors duration-300 ${
-						scrolled || mobileMenuOpen ? 'text-[#111]' : 'text-white'
+						scrolled || mobileMenuOpen
+							? 'text-[#111]'
+							: 'text-white'
 					}`}
 					onClick={() => setMobileMenuOpen((prev) => !prev)}
 					aria-label={

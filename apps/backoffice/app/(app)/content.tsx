@@ -107,8 +107,12 @@ export default function HomeContent({ stats }: HomeContentProps) {
 					>
 						<div className={`h-1 w-full ${card.top}`} />
 						<div className='p-5'>
-							<div className={`w-8 h-8 border ${card.border} ${card.bg} flex items-center justify-center mb-4`}>
-								<card.icon className={`w-4 h-4 ${card.color}`} />
+							<div
+								className={`w-8 h-8 border ${card.border} ${card.bg} flex items-center justify-center mb-4`}
+							>
+								<card.icon
+									className={`w-4 h-4 ${card.color}`}
+								/>
 							</div>
 							<div className='text-3xl font-black text-foreground tracking-tight mb-1'>
 								{card.value}

@@ -4,7 +4,9 @@ import type { Leave } from '@repo/app-types';
 export class LeaveRepository {
 	async findForFrontendAsync(): Promise<Leave | null> {
 		const now = new Date();
-		const oneMonthLater = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+		const oneMonthLater = new Date(
+			now.getTime() + 30 * 24 * 60 * 60 * 1000
+		);
 		return prisma.leave.findFirst({
 			where: {
 				to: { gte: now },

@@ -21,7 +21,8 @@ export default function SocialContent({
 				const parsed = new URL(url);
 				return (
 					parsed.protocol === 'https:' &&
-					(parsed.hostname === domain || parsed.hostname === `www.${domain}`)
+					(parsed.hostname === domain ||
+						parsed.hostname === `www.${domain}`)
 				);
 			} catch {
 				return false;
@@ -40,11 +41,15 @@ export default function SocialContent({
 			};
 
 			if (!validateSocialUrl(body.facebook, 'facebook.com')) {
-				toast.error('URL Facebook invalide. Elle doit commencer par https://facebook.com ou https://www.facebook.com');
+				toast.error(
+					'URL Facebook invalide. Elle doit commencer par https://facebook.com ou https://www.facebook.com'
+				);
 				return;
 			}
 			if (!validateSocialUrl(body.instagram, 'instagram.com')) {
-				toast.error('URL Instagram invalide. Elle doit commencer par https://instagram.com ou https://www.instagram.com');
+				toast.error(
+					'URL Instagram invalide. Elle doit commencer par https://instagram.com ou https://www.instagram.com'
+				);
 				return;
 			}
 
@@ -70,7 +75,10 @@ export default function SocialContent({
 	);
 
 	return (
-		<form onSubmit={onSubmit} className='space-y-6'>
+		<form
+			onSubmit={onSubmit}
+			className='space-y-6'
+		>
 			<div className='grid grid-cols-1 md:grid-cols-2 gap-5'>
 				{/* Facebook */}
 				<div className='border border-border p-5'>
@@ -125,8 +133,9 @@ export default function SocialContent({
 			<div className='border border-sky-200 bg-sky-50 p-4 flex gap-3'>
 				<Info className='w-4 h-4 text-sky-600 shrink-0 mt-0.5' />
 				<p className='text-sm text-sky-900'>
-					Entrez l&apos;URL complète de votre profil (commençant par https://).
-					Laissez le champ vide si vous n&apos;avez pas de compte.
+					Entrez l&apos;URL complète de votre profil (commençant par
+					https://). Laissez le champ vide si vous n&apos;avez pas de
+					compte.
 				</p>
 			</div>
 

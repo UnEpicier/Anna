@@ -24,13 +24,19 @@ function safePath(segments: string[]): string | null {
 
 async function handler(req: NextRequest, ctx: RouteContext<'/api/[...path]'>) {
 	if (!isCsrfSafe(req)) {
-		return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
+		return NextResponse.json(
+			{ success: false, message: 'Forbidden' },
+			{ status: 403 }
+		);
 	}
 
 	const rawSegments = (await ctx.params).path;
 	const path = safePath(rawSegments);
 	if (!path) {
-		return NextResponse.json({ success: false, message: 'Invalid path' }, { status: 400 });
+		return NextResponse.json(
+			{ success: false, message: 'Invalid path' },
+			{ status: 400 }
+		);
 	}
 
 	const url = new URL(req.url);

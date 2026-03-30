@@ -147,17 +147,24 @@ function TimelineSteps() {
 		target: containerRef,
 		offset: ['start 70%', 'end 30%'],
 	});
-	const lineScaleY = useSpring(scrollYProgress, { stiffness: 60, damping: 20 });
+	const lineScaleY = useSpring(scrollYProgress, {
+		stiffness: 60,
+		damping: 20,
+	});
 
 	useEffect(() => {
 		const update = () => {
 			const mid = window.innerHeight / 2;
-			let best = 0, bestDist = Infinity;
+			let best = 0,
+				bestDist = Infinity;
 			stepEls.current.forEach((el, i) => {
 				if (!el) return;
 				const r = el.getBoundingClientRect();
 				const d = Math.abs(r.top + r.height / 2 - mid);
-				if (d < bestDist) { bestDist = d; best = i; }
+				if (d < bestDist) {
+					bestDist = d;
+					best = i;
+				}
 			});
 			setActiveStep(best);
 		};
@@ -167,7 +174,11 @@ function TimelineSteps() {
 	}, []);
 
 	return (
-		<div ref={containerRef} className='relative' style={{ position: 'relative' }}>
+		<div
+			ref={containerRef}
+			className='relative'
+			style={{ position: 'relative' }}
+		>
 			{/* Ligne fond */}
 			<div className='absolute left-3.25 sm:left-5.25 top-3.5 bottom-3.5 w-px bg-border' />
 			{/* Ligne fill scroll */}
@@ -183,7 +194,9 @@ function TimelineSteps() {
 				return (
 					<div
 						key={step.num}
-						ref={el => { stepEls.current[i] = el; }}
+						ref={(el) => {
+							stepEls.current[i] = el;
+						}}
 						className='grid grid-cols-[32px_1fr] sm:grid-cols-[44px_1fr] gap-4 sm:gap-6'
 					>
 						{/* Dot */}
@@ -191,15 +204,26 @@ function TimelineSteps() {
 							<motion.div
 								className='w-7 h-7 border flex items-center justify-center shrink-0 relative z-10'
 								animate={{
-									backgroundColor: isPast || isActive ? '#c4956a' : '#ffffff',
-									borderColor: isPast || isActive ? '#c4956a' : 'rgba(196,149,106,0.2)',
+									backgroundColor:
+										isPast || isActive
+											? '#c4956a'
+											: '#ffffff',
+									borderColor:
+										isPast || isActive
+											? '#c4956a'
+											: 'rgba(196,149,106,0.2)',
 									scale: isActive ? 1.35 : 1,
 								}}
 								transition={{ duration: 0.3 }}
 							>
 								<motion.span
 									className='text-[11px] font-black'
-									animate={{ color: isPast || isActive ? '#ffffff' : '#c4956a' }}
+									animate={{
+										color:
+											isPast || isActive
+												? '#ffffff'
+												: '#c4956a',
+									}}
 									transition={{ duration: 0.3 }}
 								>
 									{step.num}
@@ -210,7 +234,10 @@ function TimelineSteps() {
 						{/* Contenu */}
 						<motion.div
 							className='pb-8'
-							animate={{ scale: isActive ? 1.01 : 1, opacity: isPast ? 0.55 : 1 }}
+							animate={{
+								scale: isActive ? 1.01 : 1,
+								opacity: isPast ? 0.55 : 1,
+							}}
 							transition={{ duration: 0.3 }}
 						>
 							<div className='flex flex-wrap items-baseline justify-between gap-2 mb-2'>
@@ -219,7 +246,11 @@ function TimelineSteps() {
 								</h3>
 								<motion.span
 									className='text-[9px] tracking-[1.5px] uppercase font-semibold shrink-0'
-									animate={{ color: isActive ? '#c4956a' : 'rgba(196,149,106,0.6)' }}
+									animate={{
+										color: isActive
+											? '#c4956a'
+											: 'rgba(196,149,106,0.6)',
+									}}
 									transition={{ duration: 0.3 }}
 								>
 									{step.duration}
@@ -301,7 +332,8 @@ export default function SeanceTypePage() {
 						transition={{ duration: 0.7, delay: 0.5 }}
 						className='text-6xl sm:text-7xl lg:text-8xl font-black text-white leading-[0.95] tracking-tight mb-4'
 					>
-						Séance<br />
+						Séance
+						<br />
 						<span className='font-light text-white/50'>type</span>
 					</motion.h1>
 
@@ -311,8 +343,8 @@ export default function SeanceTypePage() {
 						transition={{ duration: 0.6, delay: 0.65 }}
 						className='text-sm text-white/55 leading-relaxed max-w-sm'
 					>
-						Découvrez le déroulement d&apos;une consultation d&apos;ostéopathie
-						animalière, étape par étape.
+						Découvrez le déroulement d&apos;une consultation
+						d&apos;ostéopathie animalière, étape par étape.
 					</motion.p>
 				</div>
 
@@ -336,20 +368,24 @@ export default function SeanceTypePage() {
 								</span>
 							</div>
 							<h2 className='text-4xl sm:text-5xl font-black text-foreground leading-none tracking-tight mb-6'>
-								Une séance<br />
-								<span className='font-light text-primary'>personnalisée</span>
+								Une séance
+								<br />
+								<span className='font-light text-primary'>
+									personnalisée
+								</span>
 							</h2>
 							<div className='space-y-4 text-sm text-muted-foreground leading-relaxed'>
 								<p>
-									Chaque séance est unique car elle est adaptée aux besoins
-									spécifiques de votre animal. Mon objectif est d&apos;identifier
-									et de traiter les causes des déséquilibres pour améliorer
-									durablement son bien-être.
+									Chaque séance est unique car elle est
+									adaptée aux besoins spécifiques de votre
+									animal. Mon objectif est d&apos;identifier
+									et de traiter les causes des déséquilibres
+									pour améliorer durablement son bien-être.
 								</p>
 								<p>
-									Je travaille en collaboration avec votre vétérinaire pour
-									assurer une prise en charge complète et optimale de votre
-									compagnon.
+									Je travaille en collaboration avec votre
+									vétérinaire pour assurer une prise en charge
+									complète et optimale de votre compagnon.
 								</p>
 							</div>
 						</motion.div>
@@ -388,8 +424,11 @@ export default function SeanceTypePage() {
 							</span>
 						</div>
 						<h2 className='text-4xl sm:text-5xl font-black text-foreground leading-none tracking-tight'>
-							Les étapes<br />
-							<span className='font-light text-primary'>de la séance</span>
+							Les étapes
+							<br />
+							<span className='font-light text-primary'>
+								de la séance
+							</span>
 						</h2>
 					</motion.div>
 
@@ -414,8 +453,11 @@ export default function SeanceTypePage() {
 							</span>
 						</div>
 						<h2 className='text-4xl sm:text-5xl font-black text-white leading-none tracking-tight'>
-							Avant &amp; après<br />
-							<span className='font-light text-white/45'>la séance</span>
+							Avant &amp; après
+							<br />
+							<span className='font-light text-white/45'>
+								la séance
+							</span>
 						</h2>
 					</motion.div>
 
@@ -436,7 +478,9 @@ export default function SeanceTypePage() {
 								<div className='text-[9px] tracking-[2px] uppercase text-primary font-semibold mb-3'>
 									{pt.label}
 								</div>
-								<p className='text-sm text-white/60 leading-relaxed'>{pt.text}</p>
+								<p className='text-sm text-white/60 leading-relaxed'>
+									{pt.text}
+								</p>
 							</motion.div>
 						))}
 					</motion.div>
@@ -444,8 +488,14 @@ export default function SeanceTypePage() {
 					{/* Avant / Après */}
 					<div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
 						{[
-							{ title: 'Avant la séance', items: preparation.avant },
-							{ title: 'Après la séance', items: preparation.apres },
+							{
+								title: 'Avant la séance',
+								items: preparation.avant,
+							},
+							{
+								title: 'Après la séance',
+								items: preparation.apres,
+							},
 						].map(({ title, items }) => (
 							<motion.div
 								key={title}
@@ -459,9 +509,14 @@ export default function SeanceTypePage() {
 								</h3>
 								<div className='space-y-0 divide-y divide-white/5'>
 									{items.map((item) => (
-										<div key={item} className='flex items-start gap-4 py-3'>
+										<div
+											key={item}
+											className='flex items-start gap-4 py-3'
+										>
 											<span className='w-1 h-1 rounded-full bg-primary mt-2 shrink-0' />
-											<span className='text-sm text-white/60 leading-relaxed'>{item}</span>
+											<span className='text-sm text-white/60 leading-relaxed'>
+												{item}
+											</span>
 										</div>
 									))}
 								</div>
@@ -488,8 +543,11 @@ export default function SeanceTypePage() {
 							</span>
 						</div>
 						<h2 className='text-4xl sm:text-5xl font-black text-foreground leading-none tracking-tight'>
-							Vos<br />
-							<span className='font-light text-primary'>questions</span>
+							Vos
+							<br />
+							<span className='font-light text-primary'>
+								questions
+							</span>
 						</h2>
 					</motion.div>
 
@@ -501,7 +559,11 @@ export default function SeanceTypePage() {
 						className='divide-y divide-border'
 					>
 						{faqs.map((faq, i) => (
-							<motion.div key={i} variants={fadeUp} className='py-6 sm:py-8 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-16'>
+							<motion.div
+								key={i}
+								variants={fadeUp}
+								className='py-6 sm:py-8 grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-16'
+							>
 								<h3 className='text-base font-bold text-foreground leading-snug'>
 									{faq.q}
 								</h3>
@@ -530,11 +592,15 @@ export default function SeanceTypePage() {
 							Prêt à commencer ?
 						</p>
 						<h2 className='text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-none tracking-tight mb-4'>
-							Réservons<br />
-							<span className='font-light text-white/50'>une séance</span>
+							Réservons
+							<br />
+							<span className='font-light text-white/50'>
+								une séance
+							</span>
 						</h2>
 						<p className='text-sm text-white/40 mb-8 max-w-md mx-auto leading-relaxed'>
-							Prenez rendez-vous pour une consultation personnalisée à domicile.
+							Prenez rendez-vous pour une consultation
+							personnalisée à domicile.
 						</p>
 						<Link
 							href='/contact'

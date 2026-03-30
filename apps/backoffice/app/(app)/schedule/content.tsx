@@ -49,7 +49,10 @@ export default function ScheduleContent({
 	);
 
 	return (
-		<form onSubmit={onSubmit} className='space-y-4'>
+		<form
+			onSubmit={onSubmit}
+			className='space-y-4'
+		>
 			{/* Column headers */}
 			<div className='grid grid-cols-4 gap-4 px-4 pb-2 border-b border-border'>
 				<div className='flex items-center gap-2 text-[9px] tracking-[2px] uppercase text-muted-foreground font-semibold'>

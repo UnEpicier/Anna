@@ -55,7 +55,9 @@ describe('Leave API Endpoints', () => {
 			// Assert
 			expect(response.statusCode).toEqual(StatusCodes.CREATED);
 			expect(responseBody.success).toBeTruthy();
-			expect(responseBody.message).toContain('Leave created successfully');
+			expect(responseBody.message).toContain(
+				'Leave created successfully'
+			);
 			if (responseBody.responseObject) {
 				compareLeave(
 					responseBody.responseObject,
@@ -83,7 +85,9 @@ describe('Leave API Endpoints', () => {
 			// Assert
 			expect(response.statusCode).toEqual(StatusCodes.OK);
 			expect(responseBody.success).toBeTruthy();
-			expect(responseBody.message).toContain('Leave updated successfully');
+			expect(responseBody.message).toContain(
+				'Leave updated successfully'
+			);
 			if (responseBody.responseObject) {
 				compareLeave(leave as Leave, responseBody.responseObject);
 			} else {
@@ -114,7 +118,9 @@ describe('Leave API Endpoints', () => {
 			// Assert
 			expect(response.statusCode).toEqual(StatusCodes.OK);
 			expect(responseBody.success).toBeTruthy();
-			expect(responseBody.message).toContain('Leave deleted successfully');
+			expect(responseBody.message).toContain(
+				'Leave deleted successfully'
+			);
 			expect(responseBody.responseObject).toBeNull();
 		});
 

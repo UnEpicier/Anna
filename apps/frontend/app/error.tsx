@@ -26,12 +26,16 @@ export default function ErrorPage() {
 				</div>
 
 				<h1 className='text-6xl sm:text-7xl font-black text-white leading-none tracking-tight mb-6'>
-					Désolé,<br />
-					<span className='font-light text-white/40'>quelque chose s&apos;est mal passé</span>
+					Désolé,
+					<br />
+					<span className='font-light text-white/40'>
+						quelque chose s&apos;est mal passé
+					</span>
 				</h1>
 
 				<p className='text-sm text-white/40 leading-relaxed mb-10'>
-					Une erreur inattendue s&apos;est produite. Veuillez réessayer ou revenir à l&apos;accueil.
+					Une erreur inattendue s&apos;est produite. Veuillez
+					réessayer ou revenir à l&apos;accueil.
 				</p>
 
 				<Button

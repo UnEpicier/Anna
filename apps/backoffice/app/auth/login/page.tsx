@@ -18,7 +18,7 @@ export default function Page() {
 			const formData = new FormData(ev.currentTarget);
 			const email = formData.get('email');
 
-			if (!email || !email.toString().trim()) {
+			if (!email?.toString().trim()) {
 				toast.error('Adresse e-mail invalide');
 				return;
 			}
@@ -69,9 +69,15 @@ export default function Page() {
 					</p>
 				</div>
 
-				<form onSubmit={onSubmit} className='space-y-4'>
+				<form
+					onSubmit={onSubmit}
+					className='space-y-4'
+				>
 					<div className='space-y-1.5'>
-						<Label htmlFor='email' className='text-xs text-muted-foreground'>
+						<Label
+							htmlFor='email'
+							className='text-xs text-muted-foreground'
+						>
 							Adresse e-mail
 						</Label>
 						<Input
@@ -83,7 +89,10 @@ export default function Page() {
 							required
 						/>
 					</div>
-					<Button type='submit' className='w-full bg-primary hover:bg-primary/85 text-white'>
+					<Button
+						type='submit'
+						className='w-full bg-primary hover:bg-primary/85 text-white'
+					>
 						Se connecter
 					</Button>
 				</form>

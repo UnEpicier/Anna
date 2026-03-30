@@ -21,31 +21,63 @@ export default function Form() {
 				</span>
 			</div>
 
-			<form action={action} className='space-y-5'>
+			<form
+				action={action}
+				className='space-y-5'
+			>
 				<div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
 					<div className='space-y-1.5'>
-						<Label htmlFor='name' className='text-[9px] tracking-[2px] uppercase text-muted-foreground'>
+						<Label
+							htmlFor='name'
+							className='text-[9px] tracking-[2px] uppercase text-muted-foreground'
+						>
 							Nom *
 						</Label>
-						<Input id='name' name='name' autoComplete='name' required />
+						<Input
+							id='name'
+							name='name'
+							autoComplete='name'
+							required
+						/>
 					</div>
 					<div className='space-y-1.5'>
-						<Label htmlFor='email' className='text-[9px] tracking-[2px] uppercase text-muted-foreground'>
+						<Label
+							htmlFor='email'
+							className='text-[9px] tracking-[2px] uppercase text-muted-foreground'
+						>
 							Email *
 						</Label>
-						<Input id='email' name='email' type='email' autoComplete='email' required />
+						<Input
+							id='email'
+							name='email'
+							type='email'
+							autoComplete='email'
+							required
+						/>
 					</div>
 				</div>
 
 				<div className='grid grid-cols-1 sm:grid-cols-2 gap-5'>
 					<div className='space-y-1.5'>
-						<Label htmlFor='phone' className='text-[9px] tracking-[2px] uppercase text-muted-foreground'>
+						<Label
+							htmlFor='phone'
+							className='text-[9px] tracking-[2px] uppercase text-muted-foreground'
+						>
 							Téléphone *
 						</Label>
-						<Input id='phone' name='phone' type='tel' autoComplete='tel' required />
+						<Input
+							id='phone'
+							name='phone'
+							type='tel'
+							autoComplete='tel'
+							required
+						/>
 					</div>
 					<div className='space-y-1.5'>
-						<Label htmlFor='animal' className='text-[9px] tracking-[2px] uppercase text-muted-foreground'>
+						<Label
+							htmlFor='animal'
+							className='text-[9px] tracking-[2px] uppercase text-muted-foreground'
+						>
 							Type d&apos;animal *
 						</Label>
 						<Input
@@ -59,7 +91,10 @@ export default function Form() {
 				</div>
 
 				<div className='space-y-1.5'>
-					<Label htmlFor='message' className='text-[9px] tracking-[2px] uppercase text-muted-foreground'>
+					<Label
+						htmlFor='message'
+						className='text-[9px] tracking-[2px] uppercase text-muted-foreground'
+					>
 						Message *
 					</Label>
 					<Textarea
@@ -73,8 +108,9 @@ export default function Form() {
 				</div>
 
 				<p className='text-[10px] text-muted-foreground leading-relaxed'>
-					* Champs obligatoires. En soumettant ce formulaire, vous acceptez
-					que vos données soient utilisées pour vous recontacter.
+					* Champs obligatoires. En soumettant ce formulaire, vous
+					acceptez que vos données soient utilisées pour vous
+					recontacter.
 				</p>
 
 				<Button

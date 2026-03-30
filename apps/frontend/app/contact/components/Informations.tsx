@@ -18,7 +18,10 @@ const fadeUp = {
 	visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
 };
 
-export default function ContactInformations({ informations, schedules }: Props) {
+export default function ContactInformations({
+	informations,
+	schedules,
+}: Props) {
 	return (
 		<motion.div
 			initial='hidden'
@@ -84,7 +87,8 @@ export default function ContactInformations({ informations, schedules }: Props) 
 								Zone d&apos;intervention
 							</div>
 							<div className='text-sm text-foreground'>
-								{informations.actionRadius} km autour de {informations.actionAddress}
+								{informations.actionRadius} km autour de{' '}
+								{informations.actionAddress}
 							</div>
 						</div>
 					</motion.div>
@@ -120,8 +124,9 @@ export default function ContactInformations({ informations, schedules }: Props) 
 							Urgences
 						</div>
 						<p className='text-xs text-amber-800/80 leading-relaxed'>
-							En cas d&apos;urgence vétérinaire, veuillez contacter directement
-							votre vétérinaire ou les urgences vétérinaires les plus proches.
+							En cas d&apos;urgence vétérinaire, veuillez
+							contacter directement votre vétérinaire ou les
+							urgences vétérinaires les plus proches.
 						</p>
 					</div>
 				</div>
@@ -142,7 +147,11 @@ const days: Record<string, string> = {
 
 function SchedulesList({ schedules }: { schedules: Schedule[] }) {
 	if (schedules.length === 0) {
-		return <span className='text-muted-foreground'>Aucun horaire disponible.</span>;
+		return (
+			<span className='text-muted-foreground'>
+				Aucun horaire disponible.
+			</span>
+		);
 	}
 
 	let sameScheduleCount = 1;
@@ -191,7 +200,10 @@ function SchedulesList({ schedules }: { schedules: Schedule[] }) {
 				Lun–Ven {formatTime(schedules[0]!.time)}{' '}
 				{formatLocation(schedules[0]!.location)}
 				{differDays.every((x) => !x.open) ? (
-					<><br />Fermé le week-end</>
+					<>
+						<br />
+						Fermé le week-end
+					</>
 				) : (
 					differDays.map((day) => (
 						<span key={day.day}>
@@ -212,7 +224,9 @@ function SchedulesList({ schedules }: { schedules: Schedule[] }) {
 				<span key={s.day}>
 					{i > 0 && <br />}
 					{capitalize(days[s.day]!)} :{' '}
-					{s.open ? `${formatTime(s.time)} ${formatLocation(s.location)}` : 'Fermé'}
+					{s.open
+						? `${formatTime(s.time)} ${formatLocation(s.location)}`
+						: 'Fermé'}
 				</span>
 			))}
 		</span>

@@ -18,7 +18,11 @@ function toInputDate(date: Date | string): string {
 	return new Date(date).toISOString().slice(0, 10);
 }
 
-export default function LeaveContent({ leaves: dbLeaves }: { leaves: Leave[] }) {
+export default function LeaveContent({
+	leaves: dbLeaves,
+}: {
+	leaves: Leave[];
+}) {
 	const [leaves, setLeaves] = useState<LeaveForm[]>(
 		(dbLeaves ?? []).map((l) => ({
 			id: l.id,
@@ -29,12 +33,20 @@ export default function LeaveContent({ leaves: dbLeaves }: { leaves: Leave[] }) 
 
 	const addLeave = useCallback(() => {
 		const today = toInputDate(new Date());
-		setLeaves((prev) => [...prev, { id: Date.now(), from: today, to: today, isNew: true }]);
+		setLeaves((prev) => [
+			...prev,
+			{ id: Date.now(), from: today, to: today, isNew: true },
+		]);
 	}, []);
 
-	const updateLeave = useCallback((id: number, field: 'from' | 'to', value: string) => {
-		setLeaves((prev) => prev.map((l) => (l.id === id ? { ...l, [field]: value } : l)));
-	}, []);
+	const updateLeave = useCallback(
+		(id: number, field: 'from' | 'to', value: string) => {
+			setLeaves((prev) =>
+				prev.map((l) => (l.id === id ? { ...l, [field]: value } : l))
+			);
+		},
+		[]
+	);
 
 	const saveLeave = useCallback(async (leave: LeaveForm) => {
 		if (!leave.from || !leave.to) {
@@ -58,7 +70,13 @@ export default function LeaveContent({ leaves: dbLeaves }: { leaves: Leave[] }) 
 				if (!data.success) throw new Error(data.message);
 				setLeaves((prev) =>
 					prev.map((l) =>
-						l.id === leave.id ? { ...l, id: data.responseObject.id, isNew: undefined } : l
+						l.id === leave.id
+							? {
+									...l,
+									id: data.responseObject.id,
+									isNew: undefined,
+								}
+							: l
 					)
 				);
 			});
@@ -89,7 +107,9 @@ export default function LeaveContent({ leaves: dbLeaves }: { leaves: Leave[] }) 
 			setLeaves((prev) => prev.filter((l) => l.id !== leave.id));
 			return;
 		}
-		const promise = fetch(`/api/leave/${leave.id}`, { method: 'DELETE' }).then(async (res) => {
+		const promise = fetch(`/api/leave/${leave.id}`, {
+			method: 'DELETE',
+		}).then(async (res) => {
 			const data = await res.json();
 			if (!data.success) throw new Error(data.message);
 			setLeaves((prev) => prev.filter((l) => l.id !== leave.id));
@@ -114,26 +134,40 @@ export default function LeaveContent({ leaves: dbLeaves }: { leaves: Leave[] }) 
 						className='flex flex-col sm:flex-row items-start sm:items-end gap-4 p-4 border border-border bg-white'
 					>
 						<div className='flex flex-col gap-1.5 flex-1'>
-							<Label htmlFor={`from-${leave.id}`} className='text-xs text-muted-foreground'>
+							<Label
+								htmlFor={`from-${leave.id}`}
+								className='text-xs text-muted-foreground'
+							>
 								Début
 							</Label>
 							<Input
 								id={`from-${leave.id}`}
 								type='date'
 								value={leave.from}
-								onChange={(e) => updateLeave(leave.id, 'from', e.target.value)}
+								onChange={(e) =>
+									updateLeave(
+										leave.id,
+										'from',
+										e.target.value
+									)
+								}
 							/>
 						</div>
 
 						<div className='flex flex-col gap-1.5 flex-1'>
-							<Label htmlFor={`to-${leave.id}`} className='text-xs text-muted-foreground'>
+							<Label
+								htmlFor={`to-${leave.id}`}
+								className='text-xs text-muted-foreground'
+							>
 								Fin
 							</Label>
 							<Input
 								id={`to-${leave.id}`}
 								type='date'
 								value={leave.to}
-								onChange={(e) => updateLeave(leave.id, 'to', e.target.value)}
+								onChange={(e) =>
+									updateLeave(leave.id, 'to', e.target.value)
+								}
 							/>
 						</div>
 

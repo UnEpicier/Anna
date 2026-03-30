@@ -15,12 +15,16 @@ class AuthController {
 		res.status(serviceResponse.statusCode);
 
 		if (serviceResponse.success) {
-			res.cookie(SESSION_COOKIE, serviceResponse.responseObject as string, {
-				httpOnly: true,
-				maxAge: 10 * 60 * 1000,
-				secure: env.isProduction,
-				sameSite: 'strict',
-			});
+			res.cookie(
+				SESSION_COOKIE,
+				serviceResponse.responseObject as string,
+				{
+					httpOnly: true,
+					maxAge: 10 * 60 * 1000,
+					secure: env.isProduction,
+					sameSite: 'strict',
+				}
+			);
 		}
 
 		res.send({ ...serviceResponse, responseObject: null });
@@ -31,14 +35,26 @@ class AuthController {
 		const { code } = req.body;
 
 		if (!sessionToken) {
-			res.status(401).send({ success: false, message: 'Missing session cookie', responseObject: null, statusCode: 401 });
+			res.status(401).send({
+				success: false,
+				message: 'Missing session cookie',
+				responseObject: null,
+				statusCode: 401,
+			});
 			return;
 		}
 
-		const serviceResponse = await authService.verifyCode(sessionToken, code);
+		const serviceResponse = await authService.verifyCode(
+			sessionToken,
+			code
+		);
 
 		if (serviceResponse.success) {
-			res.clearCookie(SESSION_COOKIE, { httpOnly: true, secure: env.isProduction, sameSite: 'strict' });
+			res.clearCookie(SESSION_COOKIE, {
+				httpOnly: true,
+				secure: env.isProduction,
+				sameSite: 'strict',
+			});
 			res.cookie(AUTH_COOKIE, serviceResponse.responseObject as string, {
 				httpOnly: true,
 				maxAge: 4 * 60 * 60 * 1000,
@@ -57,7 +73,12 @@ class AuthController {
 		const sessionToken: string | undefined = req.cookies?.[SESSION_COOKIE];
 
 		if (!sessionToken) {
-			res.status(401).send({ success: false, message: 'Missing session cookie', responseObject: null, statusCode: 401 });
+			res.status(401).send({
+				success: false,
+				message: 'Missing session cookie',
+				responseObject: null,
+				statusCode: 401,
+			});
 			return;
 		}
 
@@ -65,7 +86,10 @@ class AuthController {
 		res.status(serviceResponse.statusCode).send(serviceResponse);
 	};
 
-	public cancelLogin: RequestHandler = async (req: Request, res: Response) => {
+	public cancelLogin: RequestHandler = async (
+		req: Request,
+		res: Response
+	) => {
 		const sessionToken: string | undefined = req.cookies?.[SESSION_COOKIE];
 
 		if (sessionToken) {
@@ -73,24 +97,41 @@ class AuthController {
 		}
 
 		res.clearCookie(SESSION_COOKIE);
-		res.status(200).send({ success: true, message: 'Login cancelled', responseObject: null, statusCode: 200 });
+		res.status(200).send({
+			success: true,
+			message: 'Login cancelled',
+			responseObject: null,
+			statusCode: 200,
+		});
 	};
 
 	public checkToken: RequestHandler = async (req: Request, res: Response) => {
 		const token: string | undefined = req.cookies?.[AUTH_COOKIE];
 
 		if (!token) {
-			res.status(401).send({ success: false, message: 'Missing auth cookie', responseObject: null, statusCode: 401 });
+			res.status(401).send({
+				success: false,
+				message: 'Missing auth cookie',
+				responseObject: null,
+				statusCode: 401,
+			});
 			return;
 		}
 
 		const serviceResponse = await authService.checkTokenRevoked(token);
 
 		if (!serviceResponse.success) {
-			res.clearCookie(AUTH_COOKIE, { httpOnly: true, secure: env.isProduction, sameSite: 'strict' });
+			res.clearCookie(AUTH_COOKIE, {
+				httpOnly: true,
+				secure: env.isProduction,
+				sameSite: 'strict',
+			});
 		}
 
-		res.status(serviceResponse.statusCode).send({ ...serviceResponse, responseObject: null });
+		res.status(serviceResponse.statusCode).send({
+			...serviceResponse,
+			responseObject: null,
+		});
 	};
 
 	public logout: RequestHandler = async (req: Request, res: Response) => {
@@ -100,8 +141,17 @@ class AuthController {
 			await authService.logout(token);
 		}
 
-		res.clearCookie(AUTH_COOKIE, { httpOnly: true, secure: env.isProduction, sameSite: 'strict' });
-		res.status(200).send({ success: true, message: 'Logged out', responseObject: null, statusCode: 200 });
+		res.clearCookie(AUTH_COOKIE, {
+			httpOnly: true,
+			secure: env.isProduction,
+			sameSite: 'strict',
+		});
+		res.status(200).send({
+			success: true,
+			message: 'Logged out',
+			responseObject: null,
+			statusCode: 200,
+		});
 	};
 }
 

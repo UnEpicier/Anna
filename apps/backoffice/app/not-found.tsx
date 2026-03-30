@@ -23,15 +23,23 @@ export default function NotFound() {
 				</div>
 
 				<h1 className='text-5xl font-black text-foreground tracking-tight mb-4'>
-					Oops,<br />
-					<span className='font-light text-foreground/40'>cette page n&apos;existe pas</span>
+					Oops,
+					<br />
+					<span className='font-light text-foreground/40'>
+						cette page n&apos;existe pas
+					</span>
 				</h1>
 
 				<p className='text-sm text-muted-foreground mb-8'>
-					La page que vous cherchez est introuvable ou n&apos;est plus accessible.
+					La page que vous cherchez est introuvable ou n&apos;est plus
+					accessible.
 				</p>
 
-				<Button size='lg' className='bg-primary hover:bg-primary/85 text-white group' asChild>
+				<Button
+					size='lg'
+					className='bg-primary hover:bg-primary/85 text-white group'
+					asChild
+				>
 					<Link href='/'>
 						<ArrowLeft className='h-4 w-4 group-hover:-translate-x-0.5 transition-transform' />
 						Retour à l&apos;accueil

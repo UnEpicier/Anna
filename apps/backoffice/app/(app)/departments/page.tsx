@@ -8,9 +8,13 @@ export const dynamic = 'force-dynamic';
 async function getData() {
 	const cookieStore = await cookies();
 	const token = cookieStore.get('token')?.value;
-	const authHeaders: Record<string, string> = token ? { Cookie: `token=${token}` } : {};
+	const authHeaders: Record<string, string> = token
+		? { Cookie: `token=${token}` }
+		: {};
 
-	const res = await fetch(`${process.env.API_URL}/departments`, { headers: authHeaders });
+	const res = await fetch(`${process.env.API_URL}/departments`, {
+		headers: authHeaders,
+	});
 	const data: ResponseObject<Department[]> = await res.json();
 
 	if (!data.success) {

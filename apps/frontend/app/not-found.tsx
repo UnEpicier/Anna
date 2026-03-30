@@ -24,12 +24,16 @@ export default function NotFound() {
 				</div>
 
 				<h1 className='text-6xl sm:text-7xl font-black text-white leading-none tracking-tight mb-6'>
-					Oops,<br />
-					<span className='font-light text-white/40'>cette page n&apos;existe pas</span>
+					Oops,
+					<br />
+					<span className='font-light text-white/40'>
+						cette page n&apos;existe pas
+					</span>
 				</h1>
 
 				<p className='text-sm text-white/40 leading-relaxed mb-10'>
-					La page que vous cherchez est introuvable ou n&apos;est plus accessible.
+					La page que vous cherchez est introuvable ou n&apos;est plus
+					accessible.
 				</p>
 
 				<Button

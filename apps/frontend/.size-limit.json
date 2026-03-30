@@ -1,8 +1,8 @@
 [
-  {
-    "name": "JS chunks total",
-    "path": ".next/static/chunks/**/*.js",
-    "limit": "3400 kB",
-    "brotli": false
-  }
+	{
+		"name": "JS chunks total",
+		"path": ".next/static/chunks/**/*.js",
+		"limit": "3400 kB",
+		"brotli": false
+	}
 ]

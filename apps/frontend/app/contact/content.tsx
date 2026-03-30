@@ -61,8 +61,11 @@ export default function ContactContent({
 						transition={{ duration: 0.7, delay: 0.5 }}
 						className='text-6xl sm:text-7xl lg:text-8xl font-black text-white leading-[0.95] tracking-tight'
 					>
-						Prenons<br />
-						<span className='font-light text-white/50'>contact</span>
+						Prenons
+						<br />
+						<span className='font-light text-white/50'>
+							contact
+						</span>
 					</motion.h1>
 				</div>
 

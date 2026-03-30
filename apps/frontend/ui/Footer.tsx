@@ -21,10 +21,12 @@ export default async function Footer() {
 	const data = await getData();
 
 	return (
-		<footer data-landmark-index='2' className='bg-[#0d0d0d] border-t border-white/8'>
+		<footer
+			data-landmark-index='2'
+			className='bg-[#0d0d0d] border-t border-white/8'
+		>
 			<div className='max-w-7xl mx-auto px-6 sm:px-8 lg:px-16 py-16 sm:py-20'>
 				<div className='grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16'>
-
 					{/* Brand */}
 					<div>
 						<div className='flex items-center gap-3 mb-6'>
@@ -39,7 +41,8 @@ export default async function Footer() {
 							</div>
 						</div>
 						<p className='text-sm text-white/45 leading-relaxed max-w-xs'>
-							Ostéopathe animalier diplômée, passionnée par le bien-être de vos compagnons.
+							Ostéopathe animalier diplômée, passionnée par le
+							bien-être de vos compagnons.
 						</p>
 						{data && (data.facebook || data.instagram) && (
 							<div className='flex gap-2 mt-8'>
@@ -77,8 +80,14 @@ export default async function Footer() {
 						</div>
 						<ul className='space-y-3'>
 							{[
-								{ href: '/services', label: 'Services & Tarifs' },
-								{ href: '/seance', label: "Déroulement d'une Séance" },
+								{
+									href: '/services',
+									label: 'Services & Tarifs',
+								},
+								{
+									href: '/seance',
+									label: "Déroulement d'une Séance",
+								},
 								{ href: '/contact', label: 'Contact' },
 							].map(({ href, label }) => (
 								<li key={href}>
@@ -134,12 +143,19 @@ export default async function Footer() {
 				<div className='mt-16 pt-8 border-t border-white/8'>
 					<div className='flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4'>
 						<p className='text-[9px] tracking-[1.5px] uppercase text-white/25'>
-							© {new Date().getFullYear()} Anna Nischwitz — Tous droits réservés
+							© {new Date().getFullYear()} Anna Nischwitz — Tous
+							droits réservés
 						</p>
 						<div className='flex flex-wrap gap-6'>
 							{[
-								{ href: '/legal/mentions-legales', label: 'Mentions Légales' },
-								{ href: '/legal/confidentialite', label: 'Confidentialité' },
+								{
+									href: '/legal/mentions-legales',
+									label: 'Mentions Légales',
+								},
+								{
+									href: '/legal/confidentialite',
+									label: 'Confidentialité',
+								},
 								{ href: '/legal/cgv', label: 'CGV' },
 							].map(({ href, label }) => (
 								<Link

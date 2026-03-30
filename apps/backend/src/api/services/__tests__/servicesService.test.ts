@@ -15,12 +15,16 @@ describe('servicesService', () => {
 
 	beforeEach(() => {
 		servicesRepositoryInstance = new ServicesRepository();
-		servicesServiceInstance = new ServicesService(servicesRepositoryInstance);
+		servicesServiceInstance = new ServicesService(
+			servicesRepositoryInstance
+		);
 	});
 
 	describe('findAll', () => {
 		it('return services', async () => {
-			(servicesRepositoryInstance.findAll as Mock).mockReturnValue([mockService]);
+			(servicesRepositoryInstance.findAll as Mock).mockReturnValue([
+				mockService,
+			]);
 
 			const result = await servicesServiceInstance.findAll();
 
@@ -42,20 +46,29 @@ describe('servicesService', () => {
 		});
 
 		it('handles errors for findAll', async () => {
-			(servicesRepositoryInstance.findAll as Mock).mockRejectedValue(new Error('Database error'));
+			(servicesRepositoryInstance.findAll as Mock).mockRejectedValue(
+				new Error('Database error')
+			);
 
 			const result = await servicesServiceInstance.findAll();
 
-			expect(result.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+			expect(result.statusCode).toEqual(
+				StatusCodes.INTERNAL_SERVER_ERROR
+			);
 			expect(result.success).toBeFalsy();
-			expect(result.message).equals('An error occurred while retrieving services.');
+			expect(result.message).equals(
+				'An error occurred while retrieving services.'
+			);
 			expect(result.responseObject).toBeNull();
 		});
 	});
 
 	describe('createMany', () => {
 		it('creates and returns services', async () => {
-			const serviceData: Omit<Service, 'id' | 'enabled' | 'createdAt' | 'updatedAt'> = {
+			const serviceData: Omit<
+				Service,
+				'id' | 'enabled' | 'createdAt' | 'updatedAt'
+			> = {
 				title: 'New Service',
 				price: 50,
 				duration: '30min',
@@ -68,9 +81,13 @@ describe('servicesService', () => {
 				createdAt: new Date(),
 				updatedAt: new Date(),
 			};
-			(servicesRepositoryInstance.createMany as Mock).mockReturnValue([createdService]);
+			(servicesRepositoryInstance.createMany as Mock).mockReturnValue([
+				createdService,
+			]);
 
-			const result = await servicesServiceInstance.createMany([serviceData]);
+			const result = await servicesServiceInstance.createMany([
+				serviceData,
+			]);
 
 			expect(result.statusCode).toEqual(StatusCodes.CREATED);
 			expect(result.success).toBeTruthy();
@@ -84,7 +101,8 @@ describe('servicesService', () => {
 				'id' | 'enabled' | 'createdAt' | 'updatedAt'
 			>[];
 
-			const result = await servicesServiceInstance.createMany(invalidData);
+			const result =
+				await servicesServiceInstance.createMany(invalidData);
 
 			expect(result.statusCode).toEqual(StatusCodes.BAD_REQUEST);
 			expect(result.success).toBeFalsy();
@@ -93,30 +111,48 @@ describe('servicesService', () => {
 		});
 
 		it('handles errors for createMany', async () => {
-			const serviceData: Omit<Service, 'id' | 'enabled' | 'createdAt' | 'updatedAt'> = {
+			const serviceData: Omit<
+				Service,
+				'id' | 'enabled' | 'createdAt' | 'updatedAt'
+			> = {
 				title: 'New Service',
 				price: 50,
 				duration: '30min',
 				description: 'A description for the new service',
 			};
-			(servicesRepositoryInstance.createMany as Mock).mockRejectedValue(new Error('Database error'));
+			(servicesRepositoryInstance.createMany as Mock).mockRejectedValue(
+				new Error('Database error')
+			);
 
-			const result = await servicesServiceInstance.createMany([serviceData]);
+			const result = await servicesServiceInstance.createMany([
+				serviceData,
+			]);
 
-			expect(result.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+			expect(result.statusCode).toEqual(
+				StatusCodes.INTERNAL_SERVER_ERROR
+			);
 			expect(result.success).toBeFalsy();
-			expect(result.message).toEqual('An error occurred while creating services.');
+			expect(result.message).toEqual(
+				'An error occurred while creating services.'
+			);
 			expect(result.responseObject).toBeNull();
 		});
 	});
 
 	describe('updateMany', () => {
 		it('updates and returns services', async () => {
-			const updateData: Partial<Service> = { id: mockService.id, enabled: false };
+			const updateData: Partial<Service> = {
+				id: mockService.id,
+				enabled: false,
+			};
 			const updatedService: Service = { ...mockService, ...updateData };
-			(servicesRepositoryInstance.updateMany as Mock).mockReturnValue([updatedService]);
+			(servicesRepositoryInstance.updateMany as Mock).mockReturnValue([
+				updatedService,
+			]);
 
-			const result = await servicesServiceInstance.updateMany([updateData]);
+			const result = await servicesServiceInstance.updateMany([
+				updateData,
+			]);
 
 			expect(result.statusCode).toEqual(StatusCodes.OK);
 			expect(result.success).toBeTruthy();
@@ -125,7 +161,9 @@ describe('servicesService', () => {
 		});
 
 		it('returns 400 for missing service ID', async () => {
-			const result = await servicesServiceInstance.updateMany([{ title: 'No ID' }]);
+			const result = await servicesServiceInstance.updateMany([
+				{ title: 'No ID' },
+			]);
 
 			expect(result.statusCode).toEqual(StatusCodes.BAD_REQUEST);
 			expect(result.success).toBeFalsy();
@@ -134,7 +172,9 @@ describe('servicesService', () => {
 		});
 
 		it('returns 400 for invalid service ID', async () => {
-			const result = await servicesServiceInstance.updateMany([{ id: 'invalid' as unknown as number }]);
+			const result = await servicesServiceInstance.updateMany([
+				{ id: 'invalid' as unknown as number },
+			]);
 
 			expect(result.statusCode).toEqual(StatusCodes.BAD_REQUEST);
 			expect(result.success).toBeFalsy();
@@ -143,22 +183,34 @@ describe('servicesService', () => {
 		});
 
 		it('handles errors for updateMany', async () => {
-			(servicesRepositoryInstance.updateMany as Mock).mockRejectedValue(new Error('Database error'));
+			(servicesRepositoryInstance.updateMany as Mock).mockRejectedValue(
+				new Error('Database error')
+			);
 
-			const result = await servicesServiceInstance.updateMany([{ id: mockService.id }]);
+			const result = await servicesServiceInstance.updateMany([
+				{ id: mockService.id },
+			]);
 
-			expect(result.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+			expect(result.statusCode).toEqual(
+				StatusCodes.INTERNAL_SERVER_ERROR
+			);
 			expect(result.success).toBeFalsy();
-			expect(result.message).toEqual('An error occurred while updating services.');
+			expect(result.message).toEqual(
+				'An error occurred while updating services.'
+			);
 			expect(result.responseObject).toBeNull();
 		});
 	});
 
 	describe('delete', () => {
 		it('deletes the service', async () => {
-			(servicesRepositoryInstance.delete as Mock).mockReturnValue(undefined);
+			(servicesRepositoryInstance.delete as Mock).mockReturnValue(
+				undefined
+			);
 
-			const result = await servicesServiceInstance.delete(`${mockService.id}`);
+			const result = await servicesServiceInstance.delete(
+				`${mockService.id}`
+			);
 
 			expect(result.statusCode).toEqual(StatusCodes.OK);
 			expect(result.success).toBeTruthy();
@@ -176,13 +228,21 @@ describe('servicesService', () => {
 		});
 
 		it('handles errors for delete', async () => {
-			(servicesRepositoryInstance.delete as Mock).mockRejectedValue(new Error('Database error'));
+			(servicesRepositoryInstance.delete as Mock).mockRejectedValue(
+				new Error('Database error')
+			);
 
-			const result = await servicesServiceInstance.delete(`${mockService.id}`);
+			const result = await servicesServiceInstance.delete(
+				`${mockService.id}`
+			);
 
-			expect(result.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+			expect(result.statusCode).toEqual(
+				StatusCodes.INTERNAL_SERVER_ERROR
+			);
 			expect(result.success).toBeFalsy();
-			expect(result.message).toEqual('An error occurred while deleting service.');
+			expect(result.message).toEqual(
+				'An error occurred while deleting service.'
+			);
 			expect(result.responseObject).toBeNull();
 		});
 	});

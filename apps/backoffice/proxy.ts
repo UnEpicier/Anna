@@ -8,7 +8,7 @@ function buildCsp(nonce: string): string {
 		"img-src 'self' data: blob: https://images.unsplash.com https://api.maptiler.com",
 		"connect-src 'self' https://api.maptiler.com",
 		"font-src 'self' https://api.maptiler.com",
-		"worker-src blob:",
+		'worker-src blob:',
 		"frame-ancestors 'none'",
 		"base-uri 'self'",
 		"form-action 'self'",
@@ -66,7 +66,9 @@ export async function proxy(request: NextRequest) {
 	const requestHeaders = new Headers(request.headers);
 	requestHeaders.set('x-nonce', nonce);
 
-	const response = NextResponse.next({ request: { headers: requestHeaders } });
+	const response = NextResponse.next({
+		request: { headers: requestHeaders },
+	});
 	response.headers.set('Content-Security-Policy', csp);
 
 	return response;

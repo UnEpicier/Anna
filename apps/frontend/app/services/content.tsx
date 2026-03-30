@@ -24,7 +24,10 @@ const infos = [
 	},
 	{ label: 'Paiement', getValue: () => 'Espèces, chèque, carte bancaire.' },
 	{ label: 'Annulation', getValue: () => "48h à l'avance sans frais." },
-	{ label: 'Suivi', getValue: () => 'Compte-rendu écrit après chaque séance.' },
+	{
+		label: 'Suivi',
+		getValue: () => 'Compte-rendu écrit après chaque séance.',
+	},
 ];
 
 const stagger = {
@@ -88,8 +91,11 @@ export default function ContentService({
 						transition={{ duration: 0.7, delay: 0.5 }}
 						className='text-6xl sm:text-7xl lg:text-8xl font-black text-white leading-[0.95] tracking-tight mb-4'
 					>
-						Services<br />
-						<span className='font-light text-white/50'>&amp; tarifs</span>
+						Services
+						<br />
+						<span className='font-light text-white/50'>
+							&amp; tarifs
+						</span>
 					</motion.h1>
 
 					<motion.p
@@ -98,8 +104,8 @@ export default function ContentService({
 						transition={{ duration: 0.6, delay: 0.65 }}
 						className='text-sm text-white/55 leading-relaxed max-w-sm'
 					>
-						Soins à domicile adaptés à chaque animal. Déplacement inclus dans
-						un rayon de {informations.actionRadius} km.
+						Soins à domicile adaptés à chaque animal. Déplacement
+						inclus dans un rayon de {informations.actionRadius} km.
 					</motion.p>
 				</div>
 
@@ -180,8 +186,11 @@ export default function ContentService({
 							</span>
 						</div>
 						<h2 className='text-4xl sm:text-5xl font-black text-white leading-none tracking-tight'>
-							Tout ce qu&apos;il<br />
-							<span className='font-light text-white/45'>faut savoir</span>
+							Tout ce qu&apos;il
+							<br />
+							<span className='font-light text-white/45'>
+								faut savoir
+							</span>
 						</h2>
 					</motion.div>
 
@@ -203,7 +212,9 @@ export default function ContentService({
 									className='flex items-start gap-4 py-3 border-b border-white/5 last:border-0'
 								>
 									<span className='w-1 h-1 rounded-full bg-primary mt-2 shrink-0' />
-									<span className='text-sm text-white/60 leading-relaxed'>{item}</span>
+									<span className='text-sm text-white/60 leading-relaxed'>
+										{item}
+									</span>
 								</motion.div>
 							))}
 						</motion.div>
@@ -255,12 +266,16 @@ export default function ContentService({
 							Prêt à commencer ?
 						</p>
 						<h2 className='text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-none tracking-tight mb-4'>
-							Prenons<br />
-							<span className='font-light text-white/50'>rendez-vous</span>
+							Prenons
+							<br />
+							<span className='font-light text-white/50'>
+								rendez-vous
+							</span>
 						</h2>
 						<p className='text-sm text-white/40 mb-8 max-w-md mx-auto leading-relaxed'>
-							Consultation personnalisée à domicile. N&apos;hésitez pas à me
-							contacter pour toute question sur les tarifs.
+							Consultation personnalisée à domicile.
+							N&apos;hésitez pas à me contacter pour toute
+							question sur les tarifs.
 						</p>
 						<Link
 							href='/contact'

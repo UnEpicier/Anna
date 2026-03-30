@@ -25,7 +25,10 @@ export default function Page() {
 
 	const onCancel = useCallback(async () => {
 		try {
-			await fetch('/api/auth/cancel-login', { method: 'POST', credentials: 'include' });
+			await fetch('/api/auth/cancel-login', {
+				method: 'POST',
+				credentials: 'include',
+			});
 		} catch {
 			// best-effort cleanup, redirect regardless
 		}
@@ -34,15 +37,25 @@ export default function Page() {
 
 	const onResend = useCallback(async () => {
 		try {
-			const request = await fetch('/api/auth/resend-code', { method: 'POST', credentials: 'include' });
+			const request = await fetch('/api/auth/resend-code', {
+				method: 'POST',
+				credentials: 'include',
+			});
 			const data: ResponseObject<null> = await request.json();
 			if (data.success) {
 				toast.success('Code renvoyé');
 				setResendCountdown(RESEND_COOLDOWN);
 				return;
 			}
-			if (data.statusCode === 429) { toast.error('Veuillez patienter avant de renvoyer le code'); return; }
-			if (data.statusCode === 401) { toast.error('Session expirée, veuillez recommencer'); router.push('/auth/login'); return; }
+			if (data.statusCode === 429) {
+				toast.error('Veuillez patienter avant de renvoyer le code');
+				return;
+			}
+			if (data.statusCode === 401) {
+				toast.error('Session expirée, veuillez recommencer');
+				router.push('/auth/login');
+				return;
+			}
 			throw new Error(data.message);
 		} catch (error) {
 			console.error(error);
@@ -51,58 +64,99 @@ export default function Page() {
 	}, [router]);
 
 	const focusAt = useCallback((index: number) => {
-		inputRefs.current[Math.max(0, Math.min(CODE_LENGTH - 1, index))]?.focus();
+		inputRefs.current[
+			Math.max(0, Math.min(CODE_LENGTH - 1, index))
+		]?.focus();
 	}, []);
 
-	const handleChange = useCallback((index: number, value: string) => {
-		const digit = value.replace(/\D/g, '').slice(-1);
-		setDigits((prev) => { const next = [...prev]; next[index] = digit; return next; });
-		if (digit && index < CODE_LENGTH - 1) focusAt(index + 1);
-	}, [focusAt]);
-
-	const handleKeyDown = useCallback((index: number, ev: React.KeyboardEvent<HTMLInputElement>) => {
-		if (ev.key === 'Backspace' || ev.key === 'Delete') {
-			ev.preventDefault();
-			if (digits[index]) {
-				setDigits((prev) => { const next = [...prev]; next[index] = ''; return next; });
-			} else if (index > 0) {
-				setDigits((prev) => { const next = [...prev]; next[index - 1] = ''; return next; });
-				focusAt(index - 1);
-			}
-		} else if (ev.key === 'ArrowLeft') { focusAt(index - 1); }
-		else if (ev.key === 'ArrowRight') { focusAt(index + 1); }
-	}, [digits, focusAt]);
-
-	const handlePaste = useCallback((ev: React.ClipboardEvent<HTMLInputElement>) => {
-		ev.preventDefault();
-		const pasted = ev.clipboardData.getData('text').replace(/\D/g, '').slice(0, CODE_LENGTH);
-		if (!pasted) return;
-		const next = Array(CODE_LENGTH).fill('');
-		for (let i = 0; i < pasted.length; i++) next[i] = pasted[i];
-		setDigits(next);
-		focusAt(Math.min(pasted.length, CODE_LENGTH - 1));
-	}, [focusAt]);
-
-	const onSubmit = useCallback(async (ev: React.FormEvent<HTMLFormElement>) => {
-		ev.preventDefault();
-		const code = digits.join('');
-		if (code.length < CODE_LENGTH) { toast.error('Veuillez entrer le code complet'); return; }
-		try {
-			const request = await fetch('/api/auth/verify-code', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				credentials: 'include',
-				body: JSON.stringify({ code }),
+	const handleChange = useCallback(
+		(index: number, value: string) => {
+			const digit = value.replace(/\D/g, '').slice(-1);
+			setDigits((prev) => {
+				const next = [...prev];
+				next[index] = digit;
+				return next;
 			});
-			const data: ResponseObject<null> = await request.json();
-			if (data.success) { router.push('/'); return; }
-			if (data.statusCode === 401) { toast.error('Code invalide ou expiré'); return; }
-			throw new Error(data.message);
-		} catch (error) {
-			console.error(error);
-			toast.error('Impossible de vérifier le code pour le moment');
-		}
-	}, [digits, router]);
+			if (digit && index < CODE_LENGTH - 1) focusAt(index + 1);
+		},
+		[focusAt]
+	);
+
+	const handleKeyDown = useCallback(
+		(index: number, ev: React.KeyboardEvent<HTMLInputElement>) => {
+			if (ev.key === 'Backspace' || ev.key === 'Delete') {
+				ev.preventDefault();
+				if (digits[index]) {
+					setDigits((prev) => {
+						const next = [...prev];
+						next[index] = '';
+						return next;
+					});
+				} else if (index > 0) {
+					setDigits((prev) => {
+						const next = [...prev];
+						next[index - 1] = '';
+						return next;
+					});
+					focusAt(index - 1);
+				}
+			} else if (ev.key === 'ArrowLeft') {
+				focusAt(index - 1);
+			} else if (ev.key === 'ArrowRight') {
+				focusAt(index + 1);
+			}
+		},
+		[digits, focusAt]
+	);
+
+	const handlePaste = useCallback(
+		(ev: React.ClipboardEvent<HTMLInputElement>) => {
+			ev.preventDefault();
+			const pasted = ev.clipboardData
+				.getData('text')
+				.replace(/\D/g, '')
+				.slice(0, CODE_LENGTH);
+			if (!pasted) return;
+			const next = Array(CODE_LENGTH).fill('');
+			for (let i = 0; i < pasted.length; i++) next[i] = pasted[i];
+			setDigits(next);
+			focusAt(Math.min(pasted.length, CODE_LENGTH - 1));
+		},
+		[focusAt]
+	);
+
+	const onSubmit = useCallback(
+		async (ev: React.FormEvent<HTMLFormElement>) => {
+			ev.preventDefault();
+			const code = digits.join('');
+			if (code.length < CODE_LENGTH) {
+				toast.error('Veuillez entrer le code complet');
+				return;
+			}
+			try {
+				const request = await fetch('/api/auth/verify-code', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					credentials: 'include',
+					body: JSON.stringify({ code }),
+				});
+				const data: ResponseObject<null> = await request.json();
+				if (data.success) {
+					router.push('/');
+					return;
+				}
+				if (data.statusCode === 401) {
+					toast.error('Code invalide ou expiré');
+					return;
+				}
+				throw new Error(data.message);
+			} catch (error) {
+				console.error(error);
+				toast.error('Impossible de vérifier le code pour le moment');
+			}
+		},
+		[digits, router]
+	);
 
 	return (
 		<div className='min-h-screen flex items-center justify-center bg-[#f7f6f4] px-4'>
@@ -133,17 +187,24 @@ export default function Page() {
 					</button>
 				</div>
 
-				<form onSubmit={onSubmit} className='space-y-6'>
+				<form
+					onSubmit={onSubmit}
+					className='space-y-6'
+				>
 					<div className='flex justify-center gap-2'>
 						{digits.map((digit, index) => (
 							<input
 								key={index}
-								ref={(el) => { inputRefs.current[index] = el; }}
+								ref={(el) => {
+									inputRefs.current[index] = el;
+								}}
 								type='text'
 								inputMode='numeric'
 								maxLength={1}
 								value={digit}
-								onChange={(ev) => handleChange(index, ev.target.value)}
+								onChange={(ev) =>
+									handleChange(index, ev.target.value)
+								}
 								onKeyDown={(ev) => handleKeyDown(index, ev)}
 								onPaste={handlePaste}
 								onFocus={(ev) => ev.target.select()}
@@ -169,7 +230,9 @@ export default function Page() {
 						disabled={resendCountdown > 0}
 						className='text-xs text-muted-foreground hover:text-primary disabled:cursor-not-allowed disabled:opacity-50 transition-colors'
 					>
-						{resendCountdown > 0 ? `Renvoyer le code (${resendCountdown}s)` : 'Renvoyer le code'}
+						{resendCountdown > 0
+							? `Renvoyer le code (${resendCountdown}s)`
+							: 'Renvoyer le code'}
 					</button>
 				</div>
 			</div>

@@ -88,9 +88,7 @@ describe('Schedules API Endpoints', () => {
 
 function compareSchedule(responseSchedule: Schedule) {
 	if (!responseSchedule) {
-		throw new Error(
-			'Invalid test data: responseSchedule is undefined'
-		);
+		throw new Error('Invalid test data: responseSchedule is undefined');
 	}
 
 	expect(responseSchedule.day).toBeTypeOf('string');

@@ -29,26 +29,35 @@ describe('Services API Endpoints', () => {
 
 	describe('POST /services', () => {
 		it('should create new services', async () => {
-			const newService: Omit<Service, 'id' | 'enabled' | 'createdAt' | 'updatedAt'> = {
+			const newService: Omit<
+				Service,
+				'id' | 'enabled' | 'createdAt' | 'updatedAt'
+			> = {
 				title: 'New Service',
 				price: 150,
 				duration: '45 minutes',
 				description: 'This is a new service',
 			};
 
-			const response = await request(app).post('/services').send([newService]);
+			const response = await request(app)
+				.post('/services')
+				.send([newService]);
 			const responseBody: ServiceResponse<Service[]> = response.body;
 
 			expect(response.statusCode).toEqual(StatusCodes.CREATED);
 			expect(responseBody.success).toBeTruthy();
-			expect(responseBody.message).toContain('Services created successfully');
+			expect(responseBody.message).toContain(
+				'Services created successfully'
+			);
 			expect(responseBody.responseObject[0]).toMatchObject(newService);
 		});
 
 		it('should return 400 for missing required fields', async () => {
 			const invalidService = { price: 150 };
 
-			const response = await request(app).post('/services').send([invalidService]);
+			const response = await request(app)
+				.post('/services')
+				.send([invalidService]);
 			const responseBody: ServiceResponse = response.body;
 
 			expect(response.statusCode).toEqual(StatusCodes.BAD_REQUEST);
@@ -65,19 +74,27 @@ describe('Services API Endpoints', () => {
 				title: 'Updated Service Title',
 			};
 
-			const response = await request(app).put('/services').send([updatedServiceData]);
+			const response = await request(app)
+				.put('/services')
+				.send([updatedServiceData]);
 			const responseBody: ServiceResponse<Service[]> = response.body;
 
 			expect(response.statusCode).toEqual(StatusCodes.OK);
 			expect(responseBody.success).toBeTruthy();
-			expect(responseBody.message).toContain('Services updated successfully');
-			expect(responseBody.responseObject[0].title).toEqual(updatedServiceData.title);
+			expect(responseBody.message).toContain(
+				'Services updated successfully'
+			);
+			expect(responseBody.responseObject[0].title).toEqual(
+				updatedServiceData.title
+			);
 		});
 
 		it('should return 400 for missing service ID', async () => {
 			const invalidData = [{ title: 'No ID' }];
 
-			const response = await request(app).put('/services').send(invalidData);
+			const response = await request(app)
+				.put('/services')
+				.send(invalidData);
 			const responseBody: ServiceResponse = response.body;
 
 			expect(response.statusCode).toEqual(StatusCodes.BAD_REQUEST);
@@ -89,12 +106,16 @@ describe('Services API Endpoints', () => {
 
 	describe('DELETE /services/:id', () => {
 		it('should delete an existing service', async () => {
-			const response = await request(app).delete(`/services/${service.id}`);
+			const response = await request(app).delete(
+				`/services/${service.id}`
+			);
 			const responseBody: ServiceResponse = response.body;
 
 			expect(response.statusCode).toEqual(StatusCodes.OK);
 			expect(responseBody.success).toBeTruthy();
-			expect(responseBody.message).toContain('Service deleted successfully');
+			expect(responseBody.message).toContain(
+				'Service deleted successfully'
+			);
 		});
 
 		it('should return 400 for invalid id', async () => {

@@ -80,9 +80,9 @@ describe('schedulesService', () => {
 				updateData,
 				...mockSchedules.slice(1),
 			];
-			(
-				schedulesRepositoryInstance.updateMany as Mock
-			).mockResolvedValue(undefined);
+			(schedulesRepositoryInstance.updateMany as Mock).mockResolvedValue(
+				undefined
+			);
 			(schedulesRepositoryInstance.findAll as Mock).mockReturnValue(
 				updatedSchedules
 			);
@@ -104,8 +104,9 @@ describe('schedulesService', () => {
 			const invalidSchedule = { ...mockSchedule, day: 'funday' };
 
 			// Act
-			const result =
-				await schedulesServiceInstance.updateMany([invalidSchedule]);
+			const result = await schedulesServiceInstance.updateMany([
+				invalidSchedule,
+			]);
 
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.BAD_REQUEST);
@@ -116,13 +117,14 @@ describe('schedulesService', () => {
 
 		it('handles errors for updateMany', async () => {
 			// Arrange
-			(
-				schedulesRepositoryInstance.updateMany as Mock
-			).mockRejectedValue(new Error('Database error'));
+			(schedulesRepositoryInstance.updateMany as Mock).mockRejectedValue(
+				new Error('Database error')
+			);
 
 			// Act
-			const result =
-				await schedulesServiceInstance.updateMany([mockSchedule]);
+			const result = await schedulesServiceInstance.updateMany([
+				mockSchedule,
+			]);
 
 			// Assert
 			expect(result.statusCode).toEqual(

@@ -27,7 +27,10 @@ export class AuthService {
 		await this.mailjet.post('send', { version: 'v3.1' }).request({
 			Messages: [
 				{
-					From: { Email: 'no-reply@anna-nischwitz.fr', Name: 'Anna Nischwitz' },
+					From: {
+						Email: 'no-reply@anna-nischwitz.fr',
+						Name: 'Anna Nischwitz',
+					},
 					To: [{ Email: email, Name: email }],
 					TemplateID: 7858119,
 					TemplateLanguage: true,
@@ -83,7 +86,11 @@ export class AuthService {
 			await Promise.all([
 				redisClient.setEx(`authCode:${clientId}`, 10 * 60, hashedCode),
 				redisClient.setEx(`authEmail:${clientId}`, 10 * 60, email),
-				redisClient.setEx(`sessionClient:${sessionToken}`, 10 * 60, clientId),
+				redisClient.setEx(
+					`sessionClient:${sessionToken}`,
+					10 * 60,
+					clientId
+				),
 				redisClient.del(`authResendCooldown:${clientId}`),
 			]);
 
@@ -114,7 +121,9 @@ export class AuthService {
 		code: string
 	): Promise<ServiceResponse<string | null>> {
 		try {
-			const clientId = await redisClient.get(`sessionClient:${sessionToken}`);
+			const clientId = await redisClient.get(
+				`sessionClient:${sessionToken}`
+			);
 
 			if (!clientId) {
 				return ServiceResponse.failure(
@@ -150,7 +159,9 @@ export class AuthService {
 			]);
 
 			const jti = randomUUID();
-			const token = jwt.sign({ jti }, env.JWT_SECRET, { expiresIn: '4h' });
+			const token = jwt.sign({ jti }, env.JWT_SECRET, {
+				expiresIn: '4h',
+			});
 			await redisClient.setEx(`authSession:${jti}`, 4 * 60 * 60, '1');
 
 			return ServiceResponse.success<string>(
@@ -159,7 +170,9 @@ export class AuthService {
 				StatusCodes.OK
 			);
 		} catch (error) {
-			console.error(`Error during code verification: ${(error as Error).message}`);
+			console.error(
+				`Error during code verification: ${(error as Error).message}`
+			);
 			return ServiceResponse.failure(
 				'An error occurred during code verification.',
 				null,
@@ -170,7 +183,9 @@ export class AuthService {
 
 	async resendCode(sessionToken: string): Promise<ServiceResponse<null>> {
 		try {
-			const clientId = await redisClient.get(`sessionClient:${sessionToken}`);
+			const clientId = await redisClient.get(
+				`sessionClient:${sessionToken}`
+			);
 
 			if (!clientId) {
 				return ServiceResponse.failure(
@@ -213,9 +228,15 @@ export class AuthService {
 
 			await this.sendAuthEmail(email, authCode);
 
-			return ServiceResponse.success('Code resent successfully', null, StatusCodes.OK);
+			return ServiceResponse.success(
+				'Code resent successfully',
+				null,
+				StatusCodes.OK
+			);
 		} catch (error) {
-			console.error(`Error during code resend: ${(error as Error).message}`);
+			console.error(
+				`Error during code resend: ${(error as Error).message}`
+			);
 			return ServiceResponse.failure(
 				'An error occurred while resending the code.',
 				null,
@@ -228,11 +249,19 @@ export class AuthService {
 		try {
 			const payload = jwt.verify(token, env.JWT_SECRET) as jwt.JwtPayload;
 			if (!payload.jti) {
-				return ServiceResponse.failure('Invalid token', null, StatusCodes.UNAUTHORIZED);
+				return ServiceResponse.failure(
+					'Invalid token',
+					null,
+					StatusCodes.UNAUTHORIZED
+				);
 			}
 			return ServiceResponse.success('Token valid', null, StatusCodes.OK);
 		} catch {
-			return ServiceResponse.failure('Invalid or expired token', null, StatusCodes.UNAUTHORIZED);
+			return ServiceResponse.failure(
+				'Invalid or expired token',
+				null,
+				StatusCodes.UNAUTHORIZED
+			);
 		}
 	}
 
@@ -243,7 +272,11 @@ export class AuthService {
 		const { jti } = jwt.decode(token) as jwt.JwtPayload;
 		const session = await redisClient.get(`authSession:${jti}`);
 		if (!session) {
-			return ServiceResponse.failure('Token has been revoked', null, StatusCodes.UNAUTHORIZED);
+			return ServiceResponse.failure(
+				'Token has been revoked',
+				null,
+				StatusCodes.UNAUTHORIZED
+			);
 		}
 		return ServiceResponse.success('Token valid', null, StatusCodes.OK);
 	}
@@ -258,13 +291,19 @@ export class AuthService {
 			return ServiceResponse.success('Logged out', null, StatusCodes.OK);
 		} catch (error) {
 			console.error(`Error during logout: ${(error as Error).message}`);
-			return ServiceResponse.failure('An error occurred during logout.', null, StatusCodes.INTERNAL_SERVER_ERROR);
+			return ServiceResponse.failure(
+				'An error occurred during logout.',
+				null,
+				StatusCodes.INTERNAL_SERVER_ERROR
+			);
 		}
 	}
 
 	async cancelLogin(sessionToken: string): Promise<ServiceResponse<null>> {
 		try {
-			const clientId = await redisClient.get(`sessionClient:${sessionToken}`);
+			const clientId = await redisClient.get(
+				`sessionClient:${sessionToken}`
+			);
 			if (clientId) {
 				await Promise.all([
 					redisClient.del(`authCode:${clientId}`),
@@ -273,9 +312,15 @@ export class AuthService {
 				]);
 			}
 			await redisClient.del(`sessionClient:${sessionToken}`);
-			return ServiceResponse.success('Login cancelled', null, StatusCodes.OK);
+			return ServiceResponse.success(
+				'Login cancelled',
+				null,
+				StatusCodes.OK
+			);
 		} catch (error) {
-			console.error(`Error during login cancellation: ${(error as Error).message}`);
+			console.error(
+				`Error during login cancellation: ${(error as Error).message}`
+			);
 			return ServiceResponse.failure(
 				'An error occurred while cancelling login.',
 				null,
