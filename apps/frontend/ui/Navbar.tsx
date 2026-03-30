@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@repo/ui';
 import { Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import Link from 'next/link';
@@ -14,18 +13,13 @@ const navItems = [
 	{ name: 'Contact', href: '/contact' },
 ];
 
-const MotionLink = motion.create(Link);
-
 export default function Navbar() {
 	const currentPage = usePathname();
-
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [scrolled, setScrolled] = useState(false);
 
 	useEffect(() => {
-		const handleScroll = () => {
-			setScrolled(window.scrollY > 20);
-		};
+		const handleScroll = () => setScrolled(window.scrollY > 20);
 		window.addEventListener('scroll', handleScroll);
 		return () => window.removeEventListener('scroll', handleScroll);
 	}, []);
@@ -33,83 +27,89 @@ export default function Navbar() {
 	return (
 		<nav
 			data-landmark-index='0'
-			className={`sticky top-0 z-50 transition-all duration-300 ${
+			className={`sticky top-0 z-50 transition-colors duration-300 ${
 				scrolled
-					? 'glass-effect shadow-lg border-b border-border'
+					? 'bg-white border-b border-[#e8e8e8]'
 					: 'bg-transparent'
 			}`}
 		>
-			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-				<div className='flex justify-between items-center h-20'>
-					<MotionLink
-						href='/'
-						className='flex items-center gap-3 group'
-						whileHover={{ scale: 1.02 }}
-						whileTap={{ scale: 0.98 }}
-					>
-						<div className='relative'>
-							<div className='absolute inset-0 bg-primary/20 rounded-2xl blur-lg group-hover:blur-xl transition-all'></div>
-							<div className='relative w-12 h-12 bg-linear-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center text-white shadow-lg'>
-								AN
-							</div>
-						</div>
-						<div>
-							<div className='text-lg text-primary transition-colors'>
-								Anna Nischwitz
-							</div>
-							<div className='text-sm text-muted-foreground'>
-								Ostéopathe Animalier
-							</div>
-						</div>
-					</MotionLink>
-
-					{/* Desktop Navigation */}
-					<div className='hidden md:flex items-center gap-8'>
-						{navItems.map((item) => (
-							<Link
-								key={item.href}
-								href={item.href}
-								className={`relative py-2 transition-all ${
-									currentPage === item.href
-										? 'text-primary'
-										: 'text-gray-600 hover:text-primary'
-								}`}
-							>
-								{item.name}
-								{currentPage === item.href && (
-									<motion.div
-										layoutId='activeTab'
-										className='absolute -bottom-1 left-0 right-0 h-0.5 bg-primary rounded-full'
-										transition={{
-											type: 'spring',
-											stiffness: 380,
-											damping: 30,
-										}}
-									/>
-								)}
-							</Link>
-						))}
-					</div>
-
-					{/* Mobile menu button */}
-					<div className='md:hidden'>
-						<Button
-							variant='ghost'
-							size='sm'
-							onClick={() => setMobileMenuOpen((prev) => !prev)}
-							className='hover:bg-primary/10'
+			<div className='flex items-stretch h-18'>
+				{/* Brand */}
+				<Link
+					href='/'
+					className='flex items-center gap-3 px-6 sm:px-8 lg:px-10 shrink-0 transition-colors duration-300'
+				>
+					<span className='w-1.5 h-1.5 rounded-full bg-primary shrink-0' />
+					<div>
+						<div
+							className={`text-[12px] font-black tracking-[2.5px] uppercase transition-colors duration-300 ${
+								scrolled || mobileMenuOpen ? 'text-[#111]' : 'text-white'
+							}`}
 						>
-							{mobileMenuOpen ? (
-								<X className='h-6 w-6' />
-							) : (
-								<Menu className='h-6 w-6' />
-							)}
-						</Button>
+							Anna Nischwitz
+						</div>
+						<div
+							className={`text-[10px] tracking-[2px] uppercase mt-0.5 transition-colors duration-300 ${
+								scrolled || mobileMenuOpen ? 'text-black/50' : 'text-white/80'
+							}`}
+						>
+							Ostéopathe Animalière
+						</div>
 					</div>
+				</Link>
+
+				{/* Spacer */}
+				<div className='hidden md:block flex-1' />
+
+				{/* Desktop links */}
+				<div className='hidden md:flex items-center'>
+					{navItems.map((item) => (
+						<Link
+							key={item.href}
+							href={item.href}
+							className={`text-[10px] tracking-[2px] uppercase px-4 h-full flex items-center transition-colors duration-300 ${
+								currentPage === item.href
+									? scrolled
+										? 'text-[#111] font-semibold'
+										: 'text-white font-semibold'
+									: scrolled
+										? 'text-black/70 hover:text-[#111] font-medium'
+										: 'text-white/85 hover:text-white font-medium'
+							}`}
+						>
+							{item.name}
+						</Link>
+					))}
 				</div>
+
+				{/* CTA desktop */}
+				<Link
+					href='/contact'
+					className='hidden md:flex items-center px-7 ml-auto bg-primary hover:bg-primary/85 text-[10px] tracking-[2px] uppercase text-white font-bold transition-colors duration-200 shrink-0'
+				>
+					Rendez-vous →
+				</Link>
+
+				{/* Hamburger mobile */}
+				<button
+					className={`md:hidden ml-auto px-5 transition-colors duration-300 ${
+						scrolled || mobileMenuOpen ? 'text-[#111]' : 'text-white'
+					}`}
+					onClick={() => setMobileMenuOpen((prev) => !prev)}
+					aria-label={
+						mobileMenuOpen ? 'Fermer le menu' : 'Ouvrir le menu'
+					}
+					aria-expanded={mobileMenuOpen}
+				>
+					{mobileMenuOpen ? (
+						<X className='h-5 w-5' />
+					) : (
+						<Menu className='h-5 w-5' />
+					)}
+				</button>
 			</div>
 
-			{/* Mobile Navigation */}
+			{/* Menu mobile */}
 			<AnimatePresence>
 				{mobileMenuOpen && (
 					<motion.div
@@ -117,23 +117,30 @@ export default function Navbar() {
 						animate={{ opacity: 1, height: 'auto' }}
 						exit={{ opacity: 0, height: 0 }}
 						transition={{ duration: 0.2 }}
-						className='md:hidden glass-effect border-t border-border overflow-hidden'
+						className='md:hidden bg-white border-t border-[#e8e8e8] overflow-hidden'
 					>
-						<div className='px-4 py-4 space-y-1'>
+						<div className='px-6 py-3'>
 							{navItems.map((item) => (
-								<MotionLink
+								<Link
 									key={item.href}
 									href={item.href}
-									className={`block w-full text-left px-4 py-3 rounded-xl transition-all ${
+									onClick={() => setMobileMenuOpen(false)}
+									className={`block py-3.5 text-[10px] tracking-[2px] uppercase transition-colors border-b border-[#f4f4f4] last:border-0 ${
 										currentPage === item.href
-											? 'bg-primary text-white shadow-md'
-											: 'text-gray-600 hover:bg-primary/10'
+											? 'text-[#111] font-bold'
+											: 'text-black/55 hover:text-[#111]'
 									}`}
-									whileTap={{ scale: 0.98 }}
 								>
 									{item.name}
-								</MotionLink>
+								</Link>
 							))}
+							<Link
+								href='/contact'
+								onClick={() => setMobileMenuOpen(false)}
+								className='block pt-4 pb-2 text-[10px] tracking-[2px] uppercase text-primary font-bold'
+							>
+								Rendez-vous →
+							</Link>
 						</div>
 					</motion.div>
 				)}
