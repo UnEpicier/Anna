@@ -23,11 +23,11 @@ export default function useLayers(
 			getPosition: (d: any) => d.position,
 			getRadius: radius * 1000, // Convert km to meters
 			radiusUnits: 'meters',
-			getFillColor: [127, 85, 57, 100],
+			getFillColor: [196, 149, 106, 100],
 			stroked: true,
 			lineWidthUnits: 'pixels',
 			getLineWidth: 2,
-			getLineColor: [127, 85, 57, 200],
+			getLineColor: [196, 149, 106, 200],
 			filled: true,
 			pickable: false,
 		});
@@ -43,7 +43,7 @@ export default function useLayers(
 				}
 			).render(
 				{
-					stroke: '#7f5539',
+					stroke: '#c4956a',
 					strokeWidth: 1.5,
 					fill: '#f5ebe0',
 					width: ICON_SIZE,
