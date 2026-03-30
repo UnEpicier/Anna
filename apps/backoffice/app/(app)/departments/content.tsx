@@ -1,7 +1,7 @@
 'use client';
 
 import type { Department } from '@repo/app-types';
-import { Badge, Button, Input } from '@repo/ui';
+import { Button, Input } from '@repo/ui';
 import { LoaderCircle, MapPin, Search, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { type FormEvent, useCallback, useMemo, useState } from 'react';
@@ -16,7 +16,6 @@ export default function DepartmentsContent({
 		departments.filter((x) => x.active).map((x) => x.code)
 	);
 
-	// Search
 	const [searchTerm, setSearchTerm] = useState('');
 
 	const filteredDepartments = useMemo(() => {
@@ -30,9 +29,7 @@ export default function DepartmentsContent({
 	const toggleDepartment = useCallback(
 		(code: string) => {
 			if (selectedDepartments.includes(code)) {
-				setSelectedDepartments(
-					selectedDepartments.filter((d) => d !== code)
-				);
+				setSelectedDepartments(selectedDepartments.filter((d) => d !== code));
 			} else {
 				setSelectedDepartments([...selectedDepartments, code]);
 			}
@@ -47,11 +44,9 @@ export default function DepartmentsContent({
 			ev.preventDefault();
 			setIsPending(true);
 
-			const promise = fetch(`/api/departments`, {
+			const promise = fetch('/api/departments', {
 				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(selectedDepartments),
 			});
 
@@ -69,87 +64,71 @@ export default function DepartmentsContent({
 	);
 
 	return (
-		<form
-			onSubmit={onSubmit}
-			className='space-y-6'
-		>
-			{/* Info */}
-			<div className='bg-blue-50 border border-blue-200 rounded-xl p-4'>
-				<div className='flex gap-3'>
-					<MapPin className='w-5 h-5 text-blue-600 shrink-0 mt-0.5' />
-					<div>
-						<p className='font-semibold text-blue-900 mb-1'>
-							Zone d&apos;intervention
-						</p>
-						<p className='text-sm text-blue-800'>
-							Sélectionnez les départements où vous intervenez.
-							Ils seront affichés en surbrillance sur la carte de
-							la page contact.
-						</p>
-					</div>
+		<form onSubmit={onSubmit} className='space-y-6'>
+			{/* Info banner */}
+			<div className='border border-sky-200 bg-sky-50 p-4 flex gap-3'>
+				<MapPin className='w-4 h-4 text-sky-600 shrink-0 mt-0.5' />
+				<div>
+					<p className='text-sm font-semibold text-sky-900 mb-0.5'>
+						Zone d&apos;intervention
+					</p>
+					<p className='text-sm text-sky-800/80'>
+						Sélectionnez les départements où vous intervenez. Ils seront affichés
+						en surbrillance sur la carte de la page contact.
+					</p>
 				</div>
 			</div>
 
 			{/* Selected departments */}
-			<div className='bg-linear-to-br from-gray-50 to-white rounded-2xl p-6 border border-gray-200'>
+			<div className='border border-border p-5'>
 				<div className='flex items-center justify-between mb-4'>
-					<h3 className='font-semibold text-gray-900'>
-						Départements sélectionnés ({selectedDepartments.length})
-					</h3>
+					<div className='flex items-center gap-3'>
+						<span className='w-4 h-px bg-primary/60' />
+						<span className='text-[9px] tracking-[2px] uppercase text-primary/80 font-semibold'>
+							Sélectionnés ({selectedDepartments.length})
+						</span>
+					</div>
 					{selectedDepartments.length > 0 && (
-						<Button
+						<button
 							type='button'
-							variant='ghost'
-							size='sm'
 							onClick={() => setSelectedDepartments([])}
-							className='text-red-600 hover:text-red-700 hover:bg-red-50'
+							className='text-[10px] tracking-[1px] uppercase text-destructive/70 hover:text-destructive transition-colors flex items-center gap-1.5'
 						>
-							<X className='w-4 h-4 mr-2' />
+							<X className='w-3 h-3' />
 							Tout effacer
-						</Button>
+						</button>
 					)}
 				</div>
 
 				<AnimatePresence mode='popLayout'>
 					{selectedDepartments.length === 0 ? (
-						<div className='text-center py-8'>
-							<div className='inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4'>
-								<MapPin className='w-8 h-8 text-gray-400' />
+						<div className='py-8 text-center'>
+							<div className='w-10 h-10 border border-border flex items-center justify-center mx-auto mb-3'>
+								<MapPin className='w-4 h-4 text-muted-foreground' />
 							</div>
-							<p className='text-gray-600'>
+							<p className='text-sm text-muted-foreground'>
 								Aucun département sélectionné
 							</p>
 						</div>
 					) : (
 						<div className='flex flex-wrap gap-2'>
 							{selectedDepartments.map((code) => {
-								const dept = departments.find(
-									(d) => d.code === code
-								);
-
+								const dept = departments.find((d) => d.code === code);
 								if (!dept) return null;
-
 								return (
-									<motion.div
+									<motion.button
 										key={code}
-										initial={{ opacity: 0, scale: 0.8 }}
+										type='button'
+										initial={{ opacity: 0, scale: 0.9 }}
 										animate={{ opacity: 1, scale: 1 }}
-										exit={{ opacity: 0, scale: 0.8 }}
+										exit={{ opacity: 0, scale: 0.9 }}
+										onClick={() => toggleDepartment(dept.code)}
+										className='flex items-center gap-1.5 px-3 py-1.5 bg-primary text-white text-xs font-medium hover:bg-primary/85 transition-colors group'
 									>
-										<Badge className='px-3 py-2 bg-linear-to-r from-[#7f5539] to-[#5a3a26] text-white border-0 hover:shadow-lg transition-all duration-200'>
-											<MapPin className='w-3 h-3 mr-2' />
-											{dept.code} - {dept.name}
-											<button
-												type='button'
-												onClick={() =>
-													toggleDepartment(dept.code)
-												}
-												className='ml-2 hover:text-red-200'
-											>
-												<X className='h-3 w-3' />
-											</button>
-										</Badge>
-									</motion.div>
+										<MapPin className='w-3 h-3' />
+										{dept.code} — {dept.name}
+										<X className='w-3 h-3 opacity-60 group-hover:opacity-100' />
+									</motion.button>
 								);
 							})}
 						</div>
@@ -159,46 +138,42 @@ export default function DepartmentsContent({
 
 			{/* Search */}
 			<div className='relative'>
-				<Search className='absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400' />
+				<Search className='absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground' />
 				<Input
 					value={searchTerm}
 					onChange={(e) => setSearchTerm(e.target.value)}
 					placeholder='Rechercher un département...'
 					disabled={isPending}
-					className='pl-12 h-12 border-gray-200 focus:border-[#7f5539] focus:ring-[#7f5539]/20'
+					className='pl-10'
 				/>
 			</div>
 
 			{/* Departments grid */}
-			<div className='bg-white rounded-2xl border border-gray-200 overflow-hidden'>
-				<div className='p-4 bg-gray-50 border-b border-gray-200'>
-					<h3 className='font-semibold text-gray-900'>
+			<div className='border border-border overflow-hidden'>
+				<div className='px-5 py-3 border-b border-border bg-muted/30 flex items-center gap-3'>
+					<span className='text-[9px] tracking-[2px] uppercase text-muted-foreground font-semibold'>
 						Tous les départements
-						{searchTerm &&
-							` (${filteredDepartments.length} résultat${filteredDepartments.length > 1 ? 's' : ''})`}
-					</h3>
+						{searchTerm && ` — ${filteredDepartments.length} résultat${filteredDepartments.length > 1 ? 's' : ''}`}
+					</span>
 				</div>
 
-				<div className='p-4'>
-					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 max-h-96 overflow-y-auto'>
+				<div className='p-4 max-h-96 overflow-y-auto'>
+					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5'>
 						{filteredDepartments.map((dept) => {
-							const isSelected = selectedDepartments.includes(
-								dept.code
-							);
+							const isSelected = selectedDepartments.includes(dept.code);
 							return (
 								<button
 									key={dept.code}
 									type='button'
 									onClick={() => toggleDepartment(dept.code)}
-									className={`text-left px-4 py-3 rounded-xl transition-all duration-200 ${
+									className={`text-left px-4 py-2.5 border transition-colors duration-150 text-sm ${
 										isSelected
-											? 'bg-linear-to-r from-[#7f5539] to-[#5a3a26] text-white shadow-md'
-											: 'bg-gray-50 hover:bg-gray-100 text-gray-700 hover:shadow-sm'
+											? 'border-primary bg-primary text-white'
+											: 'border-border bg-white hover:border-primary/40 hover:bg-primary/4 text-foreground'
 									}`}
 								>
-									<span className='text-sm font-medium'>
-										{dept.code} - {dept.name}
-									</span>
+									<span className='font-medium tabular-nums'>{dept.code}</span>
+									<span className='text-current/70 ml-2'>{dept.name}</span>
 								</button>
 							);
 						})}
@@ -206,12 +181,12 @@ export default function DepartmentsContent({
 				</div>
 			</div>
 
-			<div className='pt-4 border-t border-gray-200'>
-				<Button
-					type='submit'
-					disabled={isPending}
-					className='bg-linear-to-r from-[#7f5539] to-[#5a3a26] hover:shadow-lg hover:shadow-[#7f5539]/20 transition-all duration-200'
-				>
+			{/* Submit */}
+			<div className='pt-2 border-t border-border flex items-center justify-between'>
+				<span className='text-xs text-muted-foreground'>
+					{selectedDepartments.length} département{selectedDepartments.length > 1 ? 's' : ''} sélectionné{selectedDepartments.length > 1 ? 's' : ''}
+				</span>
+				<Button type='submit' disabled={isPending} className='bg-primary hover:bg-primary/85 text-white'>
 					{isPending ? (
 						<>
 							<LoaderCircle className='animate-spin' />
