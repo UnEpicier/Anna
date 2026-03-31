@@ -170,6 +170,8 @@ export default function ServicesContent({
 		} = {
 			id: Date.now(), // Temporary ID, replace with real one from backend
 			title: '',
+			emoji: '',
+			shortDescription: '',
 			description: '',
 			duration: '',
 			price: 0,

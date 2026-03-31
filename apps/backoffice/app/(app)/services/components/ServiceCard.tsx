@@ -2,7 +2,7 @@
 
 import type { Service } from '@repo/app-types';
 import { Input, Label, Switch, Textarea } from '@repo/ui';
-import { AlignLeft, Clock, Euro, Trash2 } from 'lucide-react';
+import { AlignLeft, Clock, Euro, Smile, Trash2 } from 'lucide-react';
 import { motion } from 'motion/react';
 
 interface ServiceCardProps {
@@ -71,6 +71,27 @@ export default function ServiceCard({
 					</div>
 				</div>
 
+				{/* Emoji */}
+				<div className='space-y-1.5'>
+					<Label
+						htmlFor={`emoji-${service.id}`}
+						className='flex items-center gap-2 text-xs text-muted-foreground'
+					>
+						<Smile className='w-3.5 h-3.5' />
+						Emoji
+					</Label>
+					<Input
+						id={`emoji-${service.id}`}
+						value={service.emoji}
+						onChange={(e) =>
+							updateService(service.id, 'emoji', e.target.value)
+						}
+						placeholder='🐾'
+						autoComplete='off'
+						required
+					/>
+				</div>
+
 				{/* Price + Duration */}
 				<div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
 					<div className='space-y-1.5'>
@@ -122,6 +143,31 @@ export default function ServiceCard({
 							required
 						/>
 					</div>
+				</div>
+
+				{/* Short Description */}
+				<div className='space-y-1.5'>
+					<Label
+						htmlFor={`shortDescription-${service.id}`}
+						className='flex items-center gap-2 text-xs text-muted-foreground'
+					>
+						<AlignLeft className='w-3.5 h-3.5' />
+						Description courte (landing page)
+					</Label>
+					<Input
+						id={`shortDescription-${service.id}`}
+						value={service.shortDescription}
+						onChange={(e) =>
+							updateService(
+								service.id,
+								'shortDescription',
+								e.target.value
+							)
+						}
+						placeholder="Courte description affichée sur la page d'accueil"
+						autoComplete='off'
+						required
+					/>
 				</div>
 
 				{/* Description */}
