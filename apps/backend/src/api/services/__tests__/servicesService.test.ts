@@ -73,6 +73,8 @@ describe('servicesService', () => {
 				price: 50,
 				duration: '30min',
 				description: 'A description for the new service',
+				emoji: '🧪',
+				shortDescription: 'Short test description',
 			};
 			const createdService: Service = {
 				id: 2,
@@ -119,6 +121,8 @@ describe('servicesService', () => {
 				price: 50,
 				duration: '30min',
 				description: 'A description for the new service',
+				emoji: '🧪',
+				shortDescription: 'Short test description',
 			};
 			(servicesRepositoryInstance.createMany as Mock).mockRejectedValue(
 				new Error('Database error')

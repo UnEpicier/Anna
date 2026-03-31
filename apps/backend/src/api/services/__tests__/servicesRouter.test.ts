@@ -37,6 +37,8 @@ describe('Services API Endpoints', () => {
 				price: 150,
 				duration: '45 minutes',
 				description: 'This is a new service',
+				emoji: '🧪',
+				shortDescription: 'Short test description',
 			};
 
 			const response = await request(app)
@@ -137,6 +139,8 @@ function validateServiceStructure(responseService: Service) {
 
 	expect(responseService.id).toBeTypeOf('number');
 	expect(responseService.title).toBeTypeOf('string');
+	expect(responseService.emoji).toBeTypeOf('string');
+	expect(responseService.shortDescription).toBeTypeOf('string');
 	expect(responseService.price).toBeTypeOf('number');
 	expect(responseService.duration).toBeTypeOf('string');
 	expect(responseService.enabled).toBeTypeOf('boolean');
