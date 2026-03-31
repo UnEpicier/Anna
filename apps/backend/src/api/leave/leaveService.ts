@@ -1,8 +1,9 @@
-import type { Leave } from '@repo/app-types';
-import { StatusCodes } from 'http-status-codes';
 import { LeaveRepository } from '@/api/leave/leaveRepository';
 import { ServiceResponse } from '@/commons/models/serviceResponse';
 import { Prisma } from '@/generated/prisma-client/client';
+import redisClient from '@/libs/redis';
+import type { Leave } from '@repo/app-types';
+import { StatusCodes } from 'http-status-codes';
 
 function parseDateUTC(value: Date | string): Date {
 	if (value instanceof Date) return value;
@@ -24,7 +25,20 @@ export class LeaveService {
 
 	async findForFrontend(): Promise<ServiceResponse<Leave | null>> {
 		try {
-			const leave = await this.leaveRepository.findForFrontendAsync();
+			let leave: Leave | null = null;
+
+			const cachedLeave = await redisClient.get('frontendLeave');
+
+			if (cachedLeave) {
+				leave = JSON.parse(cachedLeave);
+			} else {
+				leave = await this.leaveRepository.findForFrontendAsync();
+
+				if (leave) {
+					redisClient.set('frontendLeave', JSON.stringify(leave));
+				}
+			}
+
 			if (!leave) {
 				return ServiceResponse.failure(
 					'No leave found',
@@ -46,7 +60,17 @@ export class LeaveService {
 
 	async findAll(): Promise<ServiceResponse<Leave[] | null>> {
 		try {
-			const leaves = await this.leaveRepository.findAllAsync();
+			let leaves: Leave[] = [];
+
+			const cachedLeaves = await redisClient.get('leaves');
+
+			if (cachedLeaves) {
+				leaves = JSON.parse(cachedLeaves);
+			} else {
+				leaves = await this.leaveRepository.findAllAsync();
+				redisClient.set('leaves', JSON.stringify(leaves));
+			}
+
 			return ServiceResponse.success<Leave[]>('Leaves found', leaves);
 		} catch (error) {
 			const errorMessage = `Error finding leaves: ${(error as Error).message}`;
@@ -67,6 +91,10 @@ export class LeaveService {
 				from: parseDateUTC(data.from as Date | string),
 				to: parseDateUTC(data.to as Date | string),
 			});
+
+			redisClient.del('leaves');
+			redisClient.del('frontendLeave');
+
 			return ServiceResponse.success<Leave>(
 				'Leave created successfully',
 				newLeave,
@@ -97,6 +125,10 @@ export class LeaveService {
 				id,
 				parsed
 			);
+
+			redisClient.del('leaves');
+			redisClient.del('frontendLeave');
+
 			return ServiceResponse.success<Leave>(
 				'Leave updated successfully',
 				updatedLeave
@@ -124,6 +156,10 @@ export class LeaveService {
 	async delete(id: number): Promise<ServiceResponse<Leave | null>> {
 		try {
 			await this.leaveRepository.deleteAsync(id);
+
+			redisClient.del('leaves');
+			redisClient.del('frontendLeave');
+
 			return ServiceResponse.success<null>(
 				'Leave deleted successfully',
 				null
@@ -153,6 +189,9 @@ export class LeaveService {
 			const count = await this.leaveRepository.deleteExpiredAsync();
 			if (count > 0) {
 				console.info(`Deleted ${count} expired leave(s).`);
+
+				redisClient.del('leaves');
+				redisClient.del('frontendLeave');
 			}
 		} catch (error) {
 			console.error(

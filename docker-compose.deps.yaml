@@ -25,6 +25,11 @@ services:
         environment:
             REDIS_HOST: ${REDIS_HOST:-localhost}
             REDIS_PORT: ${REDIS_PORT:-6379}
+            REDIS_PASSWORD: ${REDIS_PASSWORD}
+        command:
+            - /bin/sh
+            - -c
+            - redis-server --requirepass "$${REDIS_PASSWORD?:REDIS_PASSWORD is not set}"
         volumes:
             - redis_data:/data
         ports:

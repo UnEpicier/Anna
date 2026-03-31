@@ -1,8 +1,9 @@
-import { createClient, type RedisClientType } from 'redis';
 import { env } from '@/commons/utils/envConfig';
+import { createClient, type RedisClientType } from 'redis';
 
 const redisClient: RedisClientType = createClient({
 	url: `redis://${env.REDIS_HOST}:${env.REDIS_PORT}`,
+	password: env.REDIS_PASSWORD,
 });
 redisClient.on('error', (err) => console.error('Redis Client Error', err));
 

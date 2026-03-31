@@ -1,5 +1,6 @@
 import { DepartmentsRepository } from '@/api/departments/departmentsRepository';
 import { ServiceResponse } from '@/commons/models/serviceResponse';
+import redisClient from '@/libs/redis';
 import type { Department } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 
@@ -14,8 +15,18 @@ export class DepartmentsService {
 
 	async findAll(): Promise<ServiceResponse<Department[] | null>> {
 		try {
-			const departments = await this.departmentsRepository.findAllAsync();
-			if (!departments) {
+			let departments: Department[] = [];
+
+			const cachedDepartments = await redisClient.get('departments');
+
+			if (cachedDepartments) {
+				departments = JSON.parse(cachedDepartments);
+			} else {
+				departments = await this.departmentsRepository.findAllAsync();
+				redisClient.set('departments', JSON.stringify(departments));
+			}
+
+			if (departments.length === 0) {
 				return ServiceResponse.failure(
 					'No departments found',
 					null,
@@ -39,13 +50,27 @@ export class DepartmentsService {
 
 	async findActives(): Promise<ServiceResponse<Department[] | null>> {
 		try {
-			const departments =
-				await this.departmentsRepository.findActivesAsync();
-			if (!departments) {
+			let departments: Department[] = [];
+
+			const cachedDepartments =
+				await redisClient.get('activeDepartments');
+
+			if (cachedDepartments) {
+				departments = JSON.parse(cachedDepartments);
+			} else {
+				departments =
+					await this.departmentsRepository.findActivesAsync();
+				redisClient.set(
+					'activeDepartments',
+					JSON.stringify(departments)
+				);
+			}
+
+			if (departments.length === 0) {
 				return ServiceResponse.failure(
 					'No active departments found',
 					null,
-					StatusCodes.NOT_FOUND
+					StatusCodes.NO_CONTENT
 				);
 			}
 			return ServiceResponse.success<Department[]>(
@@ -88,6 +113,9 @@ export class DepartmentsService {
 					StatusCodes.NOT_FOUND
 				);
 			}
+
+			redisClient.del('activeDepartments');
+
 			return ServiceResponse.success<Department[]>(
 				'Department updated successfully',
 				updatedDepartment

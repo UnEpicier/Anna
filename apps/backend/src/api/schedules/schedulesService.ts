@@ -1,5 +1,6 @@
 import { SchedulesRepository } from '@/api/schedules/schedulesRepository';
 import { ServiceResponse } from '@/commons/models/serviceResponse';
+import redisClient from '@/libs/redis';
 import type { Schedule } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 
@@ -22,12 +23,22 @@ export class SchedulesService {
 
 	async findAll(): Promise<ServiceResponse<Schedule[] | null>> {
 		try {
-			const schedules = await this.schedulesRepository.findAll();
-			if (!schedules) {
+			let schedules: Schedule[] = [];
+
+			const cachedSchedules = await redisClient.get('schedules');
+
+			if (cachedSchedules) {
+				schedules = JSON.parse(cachedSchedules);
+			} else {
+				schedules = await this.schedulesRepository.findAll();
+				redisClient.set('schedules', JSON.stringify(schedules));
+			}
+
+			if (schedules.length === 0) {
 				return ServiceResponse.failure(
 					'No schedules found',
 					null,
-					StatusCodes.NOT_FOUND
+					StatusCodes.NO_CONTENT
 				);
 			}
 			return ServiceResponse.success<Schedule[]>(
@@ -59,12 +70,14 @@ export class SchedulesService {
 				}
 			}
 
-			await this.schedulesRepository.updateMany(data);
+			const updatedSchedules =
+				await this.schedulesRepository.updateMany(data);
 
-			const newSchedules = await this.schedulesRepository.findAll();
+			redisClient.del('schedules');
+
 			return ServiceResponse.success<Schedule[]>(
 				'Schedule updated successfully',
-				newSchedules
+				updatedSchedules
 			);
 		} catch (error) {
 			const errorMessage = `Error updating schedule: ${(error as Error).message}`;

@@ -1,8 +1,9 @@
+import { ServicesRepository } from '@/api/services/servicesRepository';
+import { ServiceResponse } from '@/commons/models/serviceResponse';
+import redisClient from '@/libs/redis';
 import { type Service, ServiceSchema } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 import z from 'zod';
-import { ServicesRepository } from '@/api/services/servicesRepository';
-import { ServiceResponse } from '@/commons/models/serviceResponse';
 
 export class ServicesService {
 	private servicesRepository: ServicesRepository;
@@ -13,12 +14,22 @@ export class ServicesService {
 
 	async findAll(): Promise<ServiceResponse<Service[] | null>> {
 		try {
-			const services = await this.servicesRepository.findAll();
-			if (!services) {
+			let services: Service[] = [];
+
+			const cachedServices = await redisClient.get('services');
+
+			if (cachedServices) {
+				services = JSON.parse(cachedServices);
+			} else {
+				services = await this.servicesRepository.findAll();
+				redisClient.set('services', JSON.stringify(services));
+			}
+
+			if (services.length === 0) {
 				return ServiceResponse.failure(
 					'No services found',
 					null,
-					StatusCodes.NOT_FOUND
+					StatusCodes.NO_CONTENT
 				);
 			}
 			return ServiceResponse.success<Service[]>(
@@ -61,6 +72,9 @@ export class ServicesService {
 			const newServices = await this.servicesRepository.createMany(
 				validationResult.data
 			);
+
+			redisClient.del('services');
+
 			return ServiceResponse.success<Service[]>(
 				'Services created successfully',
 				newServices,
@@ -115,6 +129,9 @@ export class ServicesService {
 
 			const updatedServices =
 				await this.servicesRepository.updateMany(data);
+
+			redisClient.del('services');
+
 			return ServiceResponse.success<Service[]>(
 				'Services updated successfully',
 				updatedServices
@@ -142,6 +159,9 @@ export class ServicesService {
 			}
 
 			await this.servicesRepository.delete(parsedId);
+
+			redisClient.del('services');
+
 			return ServiceResponse.success<null>(
 				'Service deleted successfully',
 				null

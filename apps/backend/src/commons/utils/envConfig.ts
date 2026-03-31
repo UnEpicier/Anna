@@ -27,6 +27,7 @@ const envSchema = z.object({
 
 	REDIS_HOST: z.string().default('localhost'),
 	REDIS_PORT: z.coerce.number().int().positive().default(6379),
+	REDIS_PASSWORD: z.string(),
 
 	MAILJET_PUBLIC_KEY: z.string(),
 	MAILJET_PRIVATE_KEY: z.string(),

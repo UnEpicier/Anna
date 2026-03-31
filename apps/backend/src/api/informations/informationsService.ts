@@ -1,7 +1,8 @@
-import type { Informations } from '@repo/app-types';
-import { StatusCodes } from 'http-status-codes';
 import { InformationsRepository } from '@/api/informations/informationsRepository';
 import { ServiceResponse } from '@/commons/models/serviceResponse';
+import redisClient from '@/libs/redis';
+import type { Informations } from '@repo/app-types';
+import { StatusCodes } from 'http-status-codes';
 
 export class InformationsService {
 	private informationsRepository: InformationsRepository;
@@ -14,7 +15,17 @@ export class InformationsService {
 
 	async find(): Promise<ServiceResponse<Informations | null>> {
 		try {
-			const informations = await this.informationsRepository.findAsync();
+			let informations: Informations | null = null;
+
+			const cachedInformations = await redisClient.get('informations');
+
+			if (cachedInformations) {
+				informations = JSON.parse(cachedInformations);
+			} else {
+				informations = await this.informationsRepository.findAsync();
+				redisClient.set('informations', JSON.stringify(informations));
+			}
+
 			if (!informations) {
 				return ServiceResponse.failure(
 					'No Informations found',
@@ -43,6 +54,9 @@ export class InformationsService {
 		try {
 			const updatedInformations =
 				await this.informationsRepository.updateAsync(data);
+
+			redisClient.del('informations');
+
 			return ServiceResponse.success<Informations>(
 				'Informations updated successfully',
 				updatedInformations
