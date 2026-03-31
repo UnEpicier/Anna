@@ -50,12 +50,14 @@ model Leave {
 }
 
 model Services {
-  id          Int @id @default(autoincrement())
-  title       String
-  price       Decimal @db.Decimal(10,2)
-  duration    String
-  description String
-  enabled     Boolean @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id               Int      @id @default(autoincrement())
+  title            String
+  emoji            String   @default("🐾")
+  shortDescription String   @default("")
+  price            Decimal  @db.Decimal(10,2)
+  duration         String
+  description      String
+  enabled          Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
