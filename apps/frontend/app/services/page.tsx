@@ -29,7 +29,7 @@ async function getData() {
 	// --- Services
 
 	const servicesRes = await fetch(`${process.env.API_URL}/services`, {
-		cache: 'no-cache',
+		cache: 'no-store',
 	});
 	const servicesResponseData: ResponseObject<Service[]> =
 		await servicesRes.json();
@@ -42,7 +42,7 @@ async function getData() {
 	// --- Informations
 
 	const infoRes = await fetch(`${process.env.API_URL}/informations`, {
-		cache: 'no-cache',
+		cache: 'no-store',
 	});
 	const infoResponseData: ResponseObject<Informations> = await infoRes.json();
 

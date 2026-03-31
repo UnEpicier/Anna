@@ -38,7 +38,7 @@ async function getData() {
 	const departmentsRes = await fetch(
 		`${process.env.API_URL}/departments/actives`,
 		{
-			cache: 'no-cache',
+			cache: 'no-store',
 		}
 	);
 	const departmentsResponseData: ResponseObject<Department[]> =
@@ -53,7 +53,7 @@ async function getData() {
 	// --- Informations
 
 	const infoRes = await fetch(`${process.env.API_URL}/informations`, {
-		cache: 'no-cache',
+		cache: 'no-store',
 	});
 	const infoResponseData: ResponseObject<Informations> = await infoRes.json();
 
@@ -64,7 +64,7 @@ async function getData() {
 	// --- Schedules
 
 	const schedulesRes = await fetch(`${process.env.API_URL}/schedules`, {
-		cache: 'no-cache',
+		cache: 'no-store',
 	});
 	const schedulesResponseData: ResponseObject<Schedule[]> =
 		await schedulesRes.json();
