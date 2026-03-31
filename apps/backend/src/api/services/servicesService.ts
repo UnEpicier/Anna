@@ -98,6 +98,19 @@ export class ServicesService {
 						StatusCodes.BAD_REQUEST
 					);
 				}
+
+				if (service.emoji !== undefined) {
+					const validation = ServiceSchema.shape.emoji.safeParse(
+						service.emoji
+					);
+					if (!validation.success) {
+						return ServiceResponse.failure(
+							'Invalid emoji: must be a single emoji character',
+							null,
+							StatusCodes.BAD_REQUEST
+						);
+					}
+				}
 			}
 
 			const updatedServices =

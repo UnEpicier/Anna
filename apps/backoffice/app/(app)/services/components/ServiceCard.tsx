@@ -83,13 +83,26 @@ export default function ServiceCard({
 					<Input
 						id={`emoji-${service.id}`}
 						value={service.emoji}
-						onChange={(e) =>
-							updateService(service.id, 'emoji', e.target.value)
-						}
+						onChange={(e) => {
+							const val = e.target.value;
+							const segmenter = new Intl.Segmenter();
+							const segments = [...segmenter.segment(val)];
+							const single =
+								segments.length > 0
+									? segments[segments.length - 1].segment
+									: '';
+							updateService(service.id, 'emoji', single);
+						}}
 						placeholder='🐾'
 						autoComplete='off'
 						required
 					/>
+					{service.emoji &&
+						!/\p{Extended_Pictographic}/u.test(service.emoji) && (
+							<p className='text-xs text-destructive'>
+								Veuillez saisir un emoji valide.
+							</p>
+						)}
 				</div>
 
 				{/* Price + Duration */}
