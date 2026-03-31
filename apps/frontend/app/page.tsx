@@ -1,5 +1,5 @@
-import HomeContent from '@/app/content';
 import type { ResponseObject, Service } from '@repo/app-types';
+import HomeContent from '@/app/content';
 
 async function getData(): Promise<Service[]> {
 	const res = await fetch(`${process.env.API_URL}/services`, {
