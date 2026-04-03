@@ -5,6 +5,13 @@ import { StatusCodes } from 'http-status-codes';
 import type { Mock } from 'vitest';
 
 vi.mock('@/api/informations/informationsRepository');
+vi.mock('@/libs/redis', () => ({
+	default: {
+		get: vi.fn().mockResolvedValue(null),
+		set: vi.fn().mockResolvedValue('OK'),
+		del: vi.fn().mockResolvedValue(1),
+	},
+}));
 
 describe('informationsService', () => {
 	let informationsServiceInstance: InformationsService;

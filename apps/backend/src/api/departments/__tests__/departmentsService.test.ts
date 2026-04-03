@@ -8,6 +8,13 @@ import {
 import { DepartmentsService } from '@/api/departments/departmentsService';
 
 vi.mock('@/api/departments/departmentsRepository');
+vi.mock('@/libs/redis', () => ({
+	default: {
+		get: vi.fn().mockResolvedValue(null),
+		set: vi.fn().mockResolvedValue('OK'),
+		del: vi.fn().mockResolvedValue(1),
+	},
+}));
 
 describe('departmentsService', () => {
 	let departmentsServiceInstance: DepartmentsService;

@@ -6,6 +6,13 @@ import type { Mock } from 'vitest';
 import { schedules as mockSchedules } from '../../../../prisma/data/schedules';
 
 vi.mock('@/api/schedules/schedulesRepository');
+vi.mock('@/libs/redis', () => ({
+	default: {
+		get: vi.fn().mockResolvedValue(null),
+		set: vi.fn().mockResolvedValue('OK'),
+		del: vi.fn().mockResolvedValue(1),
+	},
+}));
 
 const mockSchedule = mockSchedules[0];
 

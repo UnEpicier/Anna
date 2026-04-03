@@ -25,11 +25,11 @@ export class ServicesService {
 				redisClient.set('services', JSON.stringify(services));
 			}
 
-			if (services.length === 0) {
+			if (!services || services.length === 0) {
 				return ServiceResponse.failure(
 					'No services found',
 					null,
-					StatusCodes.NO_CONTENT
+					StatusCodes.NOT_FOUND
 				);
 			}
 			return ServiceResponse.success<Service[]>(

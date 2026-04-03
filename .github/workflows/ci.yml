@@ -93,19 +93,11 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-      redis:
-        image: redis:8-alpine
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/db
       REDIS_HOST: localhost
       REDIS_PORT: "6379"
+      REDIS_PASSWORD: password123
       NODE_ENV: test
       PORT: "8080"
       CORS_ORIGIN: http://localhost:3000
@@ -116,6 +108,11 @@ jobs:
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Start Redis
+        run: |
+          docker run -d --name redis -p 6379:6379 redis:8-alpine redis-server --requirepass password123
+          until docker exec redis redis-cli -a password123 ping; do sleep 1; done
 
       - uses: pnpm/action-setup@v4
 

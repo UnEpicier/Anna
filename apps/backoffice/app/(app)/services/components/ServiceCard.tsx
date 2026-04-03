@@ -87,10 +87,8 @@ export default function ServiceCard({
 							const val = e.target.value;
 							const segmenter = new Intl.Segmenter();
 							const segments = [...segmenter.segment(val)];
-							const single =
-								segments.length > 0
-									? segments[segments.length - 1].segment
-									: '';
+							const last = segments.at(-1);
+							const single = last ? last.segment : '';
 							updateService(service.id, 'emoji', single);
 						}}
 						placeholder='🐾'

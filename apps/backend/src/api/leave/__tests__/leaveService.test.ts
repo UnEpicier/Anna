@@ -15,6 +15,13 @@ const notFoundError = new Prisma.PrismaClientKnownRequestError(
 );
 
 vi.mock('@/api/leave/leaveRepository');
+vi.mock('@/libs/redis', () => ({
+	default: {
+		get: vi.fn().mockResolvedValue(null),
+		set: vi.fn().mockResolvedValue('OK'),
+		del: vi.fn().mockResolvedValue(1),
+	},
+}));
 
 describe('leaveService', () => {
 	let leaveServiceInstance: LeaveService;

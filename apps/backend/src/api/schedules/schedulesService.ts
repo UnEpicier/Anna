@@ -34,11 +34,11 @@ export class SchedulesService {
 				redisClient.set('schedules', JSON.stringify(schedules));
 			}
 
-			if (schedules.length === 0) {
+			if (!schedules || schedules.length === 0) {
 				return ServiceResponse.failure(
 					'No schedules found',
 					null,
-					StatusCodes.NO_CONTENT
+					StatusCodes.NOT_FOUND
 				);
 			}
 			return ServiceResponse.success<Schedule[]>(
@@ -70,10 +70,11 @@ export class SchedulesService {
 				}
 			}
 
-			const updatedSchedules =
-				await this.schedulesRepository.updateMany(data);
+			await this.schedulesRepository.updateMany(data);
 
 			redisClient.del('schedules');
+
+			const updatedSchedules = await this.schedulesRepository.findAll();
 
 			return ServiceResponse.success<Schedule[]>(
 				'Schedule updated successfully',

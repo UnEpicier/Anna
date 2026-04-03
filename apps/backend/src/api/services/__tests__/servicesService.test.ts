@@ -8,6 +8,13 @@ import { services } from '../../../../prisma/data/services';
 const mockService = services[0];
 
 vi.mock('@/api/services/servicesRepository');
+vi.mock('@/libs/redis', () => ({
+	default: {
+		get: vi.fn().mockResolvedValue(null),
+		set: vi.fn().mockResolvedValue('OK'),
+		del: vi.fn().mockResolvedValue(1),
+	},
+}));
 
 describe('servicesService', () => {
 	let servicesServiceInstance: ServicesService;
