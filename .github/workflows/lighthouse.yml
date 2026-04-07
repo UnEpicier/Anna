@@ -36,19 +36,11 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-      redis:
-        image: redis:8-alpine
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd "redis-cli ping"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/db
       REDIS_HOST: localhost
       REDIS_PORT: "6379"
+      REDIS_PASSWORD: password123
       NODE_ENV: production
       PORT: "8080"
       CORS_ORIGIN: http://localhost:3000
@@ -60,6 +52,11 @@ jobs:
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Start Redis
+        run: |
+          docker run -d --name redis -p 6379:6379 redis:8-alpine redis-server --requirepass password123
+          until docker exec redis redis-cli -a password123 ping; do sleep 1; done
 
       - uses: pnpm/action-setup@v4
 
@@ -96,21 +93,24 @@ jobs:
         env:
           NODE_ENV: test
 
+      - name: Start backend
+        working-directory: apps/backend
+        run: node dist/index.js &
+
+      - name: Wait for backend
+        run: timeout 60 bash -c 'until curl -s http://localhost:8080/health-check > /dev/null; do sleep 2; done'
+
       - name: Build frontend
         working-directory: apps/frontend
-        run: pnpm build
+        run: pnpm run build
         env:
           NEXT_PUBLIC_MAPTILER_API_KEY: ${{ secrets.NEXT_PUBLIC_MAPTILER_API_KEY }}
 
       - name: Build backoffice
         working-directory: apps/backoffice
-        run: pnpm build
+        run: pnpm run build
         env:
           NEXT_PUBLIC_MAPTILER_API_KEY: ${{ secrets.NEXT_PUBLIC_MAPTILER_API_KEY }}
-
-      - name: Start backend
-        working-directory: apps/backend
-        run: node dist/index.js &
 
       - name: Start frontend server
         working-directory: apps/frontend
@@ -122,7 +122,6 @@ jobs:
 
       - name: Wait for servers to be ready
         run: |
-          timeout 60 bash -c 'until curl -s http://localhost:8080/health-check > /dev/null; do sleep 2; done'
           timeout 60 bash -c 'until curl -s http://localhost:3000 > /dev/null; do sleep 2; done'
           timeout 60 bash -c 'until curl -s http://localhost:3001 > /dev/null; do sleep 2; done'
 
@@ -151,14 +150,17 @@ jobs:
           token = f"{header}.{payload}.{sig}"
 
           # Store session in Redis via raw socket (no redis-cli needed)
+          password = os.environ['REDIS_PASSWORD']
           key = f'authSession:{jti}'.encode()
-          cmd = (
+          auth_cmd = f'*2\r\n$4\r\nAUTH\r\n${len(password)}\r\n{password}\r\n'.encode()
+          set_cmd = (
             f'*5\r\n$3\r\nSET\r\n${len(key)}\r\n'.encode() + key +
             f'\r\n$1\r\n1\r\n$2\r\nEX\r\n$5\r\n14400\r\n'.encode()
           )
-          import socket
           with socket.create_connection(('localhost', 6379)) as s:
-            s.sendall(cmd)
+            s.sendall(auth_cmd)
+            s.recv(100)
+            s.sendall(set_cmd)
             s.recv(100)
 
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
@@ -166,6 +168,7 @@ jobs:
           EOF
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          REDIS_PASSWORD: password123
 
       - name: Create reports directory
         run: mkdir -p lighthouse-reports lighthouse-reports/coverage
