@@ -26,8 +26,8 @@
 		"zod": "^4"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.9",
+		"@biomejs/biome": "2.4.10",
 		"@repo/typescript-config": "workspace:*",
-		"@types/node": "^25.5.0"
+		"@types/node": "^25.5.2"
 	}
 }
