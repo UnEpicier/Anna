@@ -18,14 +18,11 @@ export default async function LeaveBanner() {
 		to: new Date(leaveResponseData.responseObject.to),
 	};
 
-	const text = `Je serais absente du ${leave.from.toLocaleDateString(
-		'fr-FR',
-		{
-			month: 'long',
-			day: '2-digit',
-			weekday: 'long',
-		}
-	)} au ${leave.to.toLocaleDateString('fr-FR', {
+	const text = `Je serai absente du ${leave.from.toLocaleDateString('fr-FR', {
+		month: 'long',
+		day: '2-digit',
+		weekday: 'long',
+	})} au ${leave.to.toLocaleDateString('fr-FR', {
 		month: 'long',
 		day: '2-digit',
 		weekday: 'long',

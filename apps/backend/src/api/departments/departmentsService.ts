@@ -66,13 +66,6 @@ export class DepartmentsService {
 				);
 			}
 
-			if (departments.length === 0) {
-				return ServiceResponse.failure(
-					'No active departments found',
-					null,
-					StatusCodes.NO_CONTENT
-				);
-			}
 			return ServiceResponse.success<Department[]>(
 				'Active departments found',
 				departments

@@ -91,8 +91,10 @@ export default function LeaveContent({
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(body),
 			}).then(async (res) => {
-				const data = await res.json();
-				if (!data.success) throw new Error(data.message);
+				if (!res.ok) {
+					const data = await res.json().catch(() => ({}));
+					throw new Error(data.message ?? 'Erreur serveur');
+				}
 			});
 			toast.promise(promise, {
 				loading: 'Mise à jour du congé...',
@@ -110,8 +112,10 @@ export default function LeaveContent({
 		const promise = fetch(`/api/leave/${leave.id}`, {
 			method: 'DELETE',
 		}).then(async (res) => {
-			const data = await res.json();
-			if (!data.success) throw new Error(data.message);
+			if (!res.ok) {
+				const data = await res.json().catch(() => ({}));
+				throw new Error(data.message ?? 'Erreur serveur');
+			}
 			setLeaves((prev) => prev.filter((l) => l.id !== leave.id));
 		});
 		toast.promise(promise, {
