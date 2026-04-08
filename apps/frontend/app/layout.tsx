@@ -2,7 +2,7 @@ import Footer from '@/ui/Footer';
 import LeaveBanner from '@/ui/LeaveBanner';
 import Navbar from '@/ui/Navbar';
 import AnnouncementModal from '@/ui/AnnouncementModal';
-import type { Informations, PopupMessage, ResponseObject, Service } from '@repo/app-types';
+import type { Announcement, Informations, ResponseObject, Service } from '@repo/app-types';
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
@@ -87,17 +87,17 @@ export const metadata: Metadata = {
 async function getJsonLdData(): Promise<{
 	informations: Informations | null;
 	services: Service[];
-	popupMessage: PopupMessage | null;
+	announcement: Announcement | null;
 }> {
 	try {
-		const [infoRes, servicesRes, popupRes] = await Promise.all([
+		const [infoRes, servicesRes, announcementRes] = await Promise.all([
 			fetch(`${process.env.API_URL}/informations`, {
 				next: { revalidate: 3600 },
 			}),
 			fetch(`${process.env.API_URL}/services`, {
 				next: { revalidate: 3600 },
 			}),
-			fetch(`${process.env.API_URL}/popup-message`, {
+			fetch(`${process.env.API_URL}/announcement`, {
 				cache: 'no-cache',
 			}),
 		]);
@@ -105,17 +105,17 @@ async function getJsonLdData(): Promise<{
 		const infoData: ResponseObject<Informations> = await infoRes.json();
 		const servicesData: ResponseObject<Service[]> =
 			await servicesRes.json();
-		const popupData: ResponseObject<PopupMessage> = await popupRes.json();
+		const announcementData: ResponseObject<Announcement> = await announcementRes.json();
 
 		return {
 			informations: infoData.success ? infoData.responseObject : null,
 			services: servicesData.success
 				? servicesData.responseObject.filter((s) => s.enabled)
 				: [],
-			popupMessage: popupData.success ? popupData.responseObject : null,
+			announcement: announcementData.success ? announcementData.responseObject : null,
 		};
 	} catch {
-		return { informations: null, services: [], popupMessage: null };
+		return { informations: null, services: [], announcement: null };
 	}
 }
 
@@ -184,7 +184,7 @@ export default async function RootLayout({
 }: Readonly<{
 	children: ReactNode;
 }>) {
-	const { informations, services, popupMessage } = await getJsonLdData();
+	const { informations, services, announcement } = await getJsonLdData();
 	const jsonLd = buildJsonLd(informations, services);
 
 	return (
@@ -199,7 +199,7 @@ export default async function RootLayout({
 				>
 					{JSON.stringify(jsonLd)}
 				</script>
-				<AnnouncementModal data={popupMessage} />
+				<AnnouncementModal data={announcement} />
 				<div className='min-h-screen flex flex-col'>
 					<LeaveBanner />
 					<Navbar />

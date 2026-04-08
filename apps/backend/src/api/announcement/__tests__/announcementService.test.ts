@@ -1,10 +1,10 @@
-import { PopupMessageRepository } from '@/api/popup-message/popupMessageRepository';
-import { PopupMessageService } from '@/api/popup-message/popupMessageService';
-import type { PopupMessage } from '@repo/app-types';
+import { AnnouncementRepository } from '@/api/announcement/announcementRepository';
+import { AnnouncementService } from '@/api/announcement/announcementService';
+import type { Announcement } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 import type { Mock } from 'vitest';
 
-vi.mock('@/api/popup-message/popupMessageRepository');
+vi.mock('@/api/announcement/announcementRepository');
 vi.mock('@/libs/redis', () => ({
 	default: {
 		get: vi.fn().mockResolvedValue(null),
@@ -13,30 +13,31 @@ vi.mock('@/libs/redis', () => ({
 	},
 }));
 
-describe('popupMessageService', () => {
-	let service: PopupMessageService;
-	let repository: PopupMessageRepository;
+describe('announcementService', () => {
+	let service: AnnouncementService;
+	let repository: AnnouncementRepository;
 
-	const mockPopupMessage: PopupMessage = {
+	const mockAnnouncement: Announcement = {
 		id: 1,
 		enabled: true,
 		title: 'Annonce',
 		message: 'Bonjour !',
 		ctaLabel: null,
 		ctaUrl: null,
+		ctaOpenInNewTab: false,
 		createdAt: new Date(),
 		updatedAt: new Date(),
 	};
 
 	beforeEach(() => {
-		repository = new PopupMessageRepository();
-		service = new PopupMessageService(repository);
+		repository = new AnnouncementRepository();
+		service = new AnnouncementService(repository);
 	});
 
 	describe('find', () => {
-		it('returns popup message', async () => {
+		it('returns announcement', async () => {
 			// Arrange
-			(repository.findAsync as Mock).mockReturnValue(mockPopupMessage);
+			(repository.findAsync as Mock).mockReturnValue(mockAnnouncement);
 
 			// Act
 			const result = await service.find();
@@ -44,8 +45,8 @@ describe('popupMessageService', () => {
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.OK);
 			expect(result.success).toBeTruthy();
-			expect(result.message).equals('PopupMessage found');
-			expect(result.responseObject).toEqual(mockPopupMessage);
+			expect(result.message).equals('Announcement found');
+			expect(result.responseObject).toEqual(mockAnnouncement);
 		});
 
 		it('handles errors for findAsync', async () => {
@@ -61,17 +62,17 @@ describe('popupMessageService', () => {
 			expect(result.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
 			expect(result.success).toBeFalsy();
 			expect(result.message).equals(
-				'An error occurred while retrieving popup message.'
+				'An error occurred while retrieving announcement.'
 			);
 			expect(result.responseObject).toBeNull();
 		});
 	});
 
 	describe('update', () => {
-		it('updates and returns popup message', async () => {
+		it('updates and returns announcement', async () => {
 			// Arrange
-			const updateData: Partial<PopupMessage> = { message: 'Updated!' };
-			const updated: PopupMessage = { ...mockPopupMessage, ...updateData };
+			const updateData: Partial<Announcement> = { message: 'Updated!' };
+			const updated: Announcement = { ...mockAnnouncement, ...updateData };
 			(repository.updateAsync as Mock).mockReturnValue(updated);
 
 			// Act
@@ -80,7 +81,7 @@ describe('popupMessageService', () => {
 			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.OK);
 			expect(result.success).toBeTruthy();
-			expect(result.message).toEqual('PopupMessage updated successfully');
+			expect(result.message).toEqual('Announcement updated successfully');
 			expect(result.responseObject).toEqual(updated);
 		});
 
@@ -97,7 +98,7 @@ describe('popupMessageService', () => {
 			expect(result.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
 			expect(result.success).toBeFalsy();
 			expect(result.message).toEqual(
-				'An error occurred while updating popup message.'
+				'An error occurred while updating announcement.'
 			);
 			expect(result.responseObject).toBeNull();
 		});

@@ -4,7 +4,7 @@ export { UpServicesSchema, type UpServices } from './dev.js';
 export { GeoJsonSchema, type GeoJson } from './geojson.js';
 export { InformationSchema, type Informations } from './informations.js';
 export { LeaveSchema, type Leave } from './leave.js';
-export { PopupMessageSchema, type PopupMessage } from './popup-message.js';
+export { AnnouncementSchema, type Announcement } from './announcement.js';
 export { ResponseSchema, type ResponseObject } from './response.js';
 export { ScheduleSchema, type Schedule } from './schedule.js';
 export { ServiceSchema, type Service } from './service.js';

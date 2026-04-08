@@ -3,7 +3,7 @@ import { exit } from 'node:process';
 import prisma from '../src/libs/prisma.js';
 import { informations } from './data/informations.js';
 import { leave } from './data/leave.js';
-import { popupMessage } from './data/popup-message.js';
+import { announcement } from './data/announcement.js';
 import { schedules } from './data/schedules.js';
 import { services } from './data/services.js';
 
@@ -62,14 +62,14 @@ async function main() {
 		create: { id: leaveId, ...restLeave },
 	});
 
-	const { id: popupMessageId, ...restPopupMessage } = popupMessage;
-	await prisma.popupMessage.upsert({
-		where: { id: popupMessageId },
+	const { id: announcementId, ...restAnnouncement } = announcement;
+	await prisma.announcement.upsert({
+		where: { id: announcementId },
 		update: {},
-		create: { id: popupMessageId, ...restPopupMessage },
+		create: { id: announcementId, ...restAnnouncement },
 	});
 
-	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"PopupMessage"', 'id'), (SELECT MAX(id) FROM "PopupMessage"))`;
+	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Announcement"', 'id'), (SELECT MAX(id) FROM "Announcement"))`;
 	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Services"', 'id'), (SELECT MAX(id) FROM "Services"))`;
 	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Informations"', 'id'), (SELECT MAX(id) FROM "Informations"))`;
 	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Leave"', 'id'), (SELECT MAX(id) FROM "Leave"))`;

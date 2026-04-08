@@ -1,6 +1,6 @@
 'use client';
 
-import type { PopupMessage } from '@repo/app-types';
+import type { Announcement } from '@repo/app-types';
 import { Button, Input, Label, Switch, Textarea } from '@repo/ui';
 import { LoaderCircle, Megaphone } from 'lucide-react';
 import { useCallback, useState } from 'react';
@@ -10,10 +10,11 @@ import { toast } from 'sonner';
 export default function AnnouncementContent({
 	data,
 }: {
-	data: PopupMessage;
+	data: Announcement;
 }) {
 	const [isPending, setIsPending] = useState(false);
 	const [enabled, setEnabled] = useState(data.enabled);
+	const [ctaOpenInNewTab, setCtaOpenInNewTab] = useState(data.ctaOpenInNewTab);
 
 	const onSubmit = useCallback(
 		async (ev: React.FormEvent<HTMLFormElement>) => {
@@ -36,12 +37,13 @@ export default function AnnouncementContent({
 				message: formData.get('message') as string,
 				ctaLabel,
 				ctaUrl,
+				ctaOpenInNewTab,
 			};
 
 			setIsPending(true);
 
 			try {
-				const promise = fetch('/api/popup-message', {
+				const promise = fetch('/api/announcement', {
 					method: 'PUT',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify(body),
@@ -58,7 +60,7 @@ export default function AnnouncementContent({
 				setIsPending(false);
 			}
 		},
-		[enabled]
+		[enabled, ctaOpenInNewTab]
 	);
 
 	return (
@@ -167,6 +169,20 @@ export default function AnnouncementContent({
 							autoComplete='off'
 						/>
 					</div>
+				</div>
+				<div className='flex items-center gap-3 mt-4'>
+					<Switch
+						id='ctaOpenInNewTab'
+						checked={ctaOpenInNewTab}
+						onCheckedChange={setCtaOpenInNewTab}
+						disabled={isPending}
+					/>
+					<Label
+						htmlFor='ctaOpenInNewTab'
+						className='text-sm text-muted-foreground cursor-pointer'
+					>
+						Ouvrir dans un nouvel onglet
+					</Label>
 				</div>
 			</div>
 

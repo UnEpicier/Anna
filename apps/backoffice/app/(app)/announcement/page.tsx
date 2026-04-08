@@ -1,11 +1,11 @@
 import AnnouncementContent from '@/app/(app)/announcement/content';
-import type { PopupMessage, ResponseObject } from '@repo/app-types';
+import type { Announcement, ResponseObject } from '@repo/app-types';
 import { cookies } from 'next/headers';
 import type { Metadata } from 'next';
 
 export const dynamic = 'force-dynamic';
 
-async function getData(): Promise<PopupMessage | null> {
+async function getData(): Promise<Announcement | null> {
 	try {
 		const cookieStore = await cookies();
 		const token = cookieStore.get('token')?.value;
@@ -13,11 +13,11 @@ async function getData(): Promise<PopupMessage | null> {
 			? { Cookie: `token=${token}` }
 			: {};
 
-		const res = await fetch(`${process.env.API_URL}/popup-message`, {
+		const res = await fetch(`${process.env.API_URL}/announcement`, {
 			headers: authHeaders,
 		});
 		if (!res.ok) return null;
-		const data: ResponseObject<PopupMessage> = await res.json();
+		const data: ResponseObject<Announcement> = await res.json();
 
 		if (!data.success) return null;
 		return data.responseObject;

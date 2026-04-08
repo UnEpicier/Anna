@@ -62,13 +62,14 @@ model Services {
   updatedAt        DateTime @updatedAt
 }
 
-model PopupMessage {
-  id        Int      @id @default(autoincrement())
-  enabled   Boolean  @default(false)
-  title     String?
-  message   String
-  ctaLabel  String?
-  ctaUrl    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Announcement {
+  id              Int      @id @default(autoincrement())
+  enabled         Boolean  @default(false)
+  title           String?
+  message         String
+  ctaLabel        String?
+  ctaUrl          String?
+  ctaOpenInNewTab Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
