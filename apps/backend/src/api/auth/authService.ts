@@ -4,8 +4,8 @@ import { env } from '@/commons/utils/envConfig';
 import redisClient from '@/libs/redis';
 import bcrypt from 'bcrypt';
 import { StatusCodes } from 'http-status-codes';
-import nodeMailjet from 'node-mailjet';
 import jwt from 'jsonwebtoken';
+import nodeMailjet from 'node-mailjet';
 import { createHash, randomUUID } from 'node:crypto';
 
 export class AuthService {
@@ -57,7 +57,7 @@ export class AuthService {
 		const sessionToken = randomUUID();
 
 		try {
-			const validEmail = await informationsService.find();
+			const validEmail = await informationsService.find(false);
 
 			if (!validEmail.success) {
 				return ServiceResponse.failure(

@@ -13,17 +13,28 @@ export class InformationsService {
 		this.informationsRepository = repository;
 	}
 
-	async find(): Promise<ServiceResponse<Informations | null>> {
+	async find(
+		cache: boolean = true
+	): Promise<ServiceResponse<Informations | null>> {
 		try {
 			let informations: Informations | null = null;
 
-			const cachedInformations = await redisClient.get('informations');
+			if (cache) {
+				const cachedInformations =
+					await redisClient.get('informations');
 
-			if (cachedInformations) {
-				informations = JSON.parse(cachedInformations);
+				if (cachedInformations) {
+					informations = JSON.parse(cachedInformations);
+				} else {
+					informations =
+						await this.informationsRepository.findAsync();
+					redisClient.set(
+						'informations',
+						JSON.stringify(informations)
+					);
+				}
 			} else {
 				informations = await this.informationsRepository.findAsync();
-				redisClient.set('informations', JSON.stringify(informations));
 			}
 
 			if (!informations) {
