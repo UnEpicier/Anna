@@ -68,8 +68,8 @@ async function main() {
 		update: {},
 		create: { id: popupMessageId, ...restPopupMessage },
 	});
-	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"PopupMessage"', 'id'), (SELECT MAX(id) FROM "PopupMessage"))`;
 
+	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"PopupMessage"', 'id'), (SELECT MAX(id) FROM "PopupMessage"))`;
 	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Services"', 'id'), (SELECT MAX(id) FROM "Services"))`;
 	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Informations"', 'id'), (SELECT MAX(id) FROM "Informations"))`;
 	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Leave"', 'id'), (SELECT MAX(id) FROM "Leave"))`;
