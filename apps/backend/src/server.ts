@@ -3,6 +3,7 @@ import { departmentsRouter } from '@/api/departments/departmentsRouter';
 import { healthCheckRouter } from '@/api/healthCheck/healthCheckRouter';
 import { informationsRouter } from '@/api/informations/informationsRouter';
 import { leaveRouter } from '@/api/leave/leaveRouter';
+import { popupMessageRouter } from '@/api/popup-message/popupMessageRouter';
 import { schedulesRouter } from '@/api/schedules/schedulesRouter';
 import { servicesRouter } from '@/api/services/servicesRouter';
 import errorHandler from '@/commons/middleware/errorHandler';
@@ -39,6 +40,7 @@ app.use('/departments', departmentsRouter);
 app.use('/health-check', healthCheckRouter);
 app.use('/informations', informationsRouter);
 app.use('/leave', leaveRouter);
+app.use('/popup-message', popupMessageRouter);
 app.use('/schedules', schedulesRouter);
 app.use('/services', servicesRouter);
 
