@@ -3,6 +3,7 @@ import { exit } from 'node:process';
 import prisma from '../src/libs/prisma.js';
 import { informations } from './data/informations.js';
 import { leave } from './data/leave.js';
+import { popupMessage } from './data/popup-message.js';
 import { schedules } from './data/schedules.js';
 import { services } from './data/services.js';
 
@@ -60,6 +61,14 @@ async function main() {
 		update: restLeave,
 		create: { id: leaveId, ...restLeave },
 	});
+
+	const { id: popupMessageId, ...restPopupMessage } = popupMessage;
+	await prisma.popupMessage.upsert({
+		where: { id: popupMessageId },
+		update: {},
+		create: { id: popupMessageId, ...restPopupMessage },
+	});
+	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"PopupMessage"', 'id'), (SELECT MAX(id) FROM "PopupMessage"))`;
 
 	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Services"', 'id'), (SELECT MAX(id) FROM "Services"))`;
 	await prisma.$executeRaw`SELECT setval(pg_get_serial_sequence('"Informations"', 'id'), (SELECT MAX(id) FROM "Informations"))`;
