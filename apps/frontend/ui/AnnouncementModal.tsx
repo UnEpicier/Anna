@@ -20,7 +20,7 @@ export default function AnnouncementModal({
 
 		sessionStorage.setItem(STORAGE_KEY, '1');
 		dialogRef.current?.showModal();
-	}, [data?.id, data?.enabled]);
+	}, [data]);
 
 	if (!data || !data.enabled) return null;
 
