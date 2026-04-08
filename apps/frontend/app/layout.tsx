@@ -1,7 +1,8 @@
 import Footer from '@/ui/Footer';
 import LeaveBanner from '@/ui/LeaveBanner';
 import Navbar from '@/ui/Navbar';
-import type { Informations, ResponseObject, Service } from '@repo/app-types';
+import AnnouncementModal from '@/ui/AnnouncementModal';
+import type { Informations, PopupMessage, ResponseObject, Service } from '@repo/app-types';
 import type { Metadata, Viewport } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
@@ -86,29 +87,35 @@ export const metadata: Metadata = {
 async function getJsonLdData(): Promise<{
 	informations: Informations | null;
 	services: Service[];
+	popupMessage: PopupMessage | null;
 }> {
 	try {
-		const [infoRes, servicesRes] = await Promise.all([
+		const [infoRes, servicesRes, popupRes] = await Promise.all([
 			fetch(`${process.env.API_URL}/informations`, {
 				next: { revalidate: 3600 },
 			}),
 			fetch(`${process.env.API_URL}/services`, {
 				next: { revalidate: 3600 },
 			}),
+			fetch(`${process.env.API_URL}/popup-message`, {
+				cache: 'no-cache',
+			}),
 		]);
 
 		const infoData: ResponseObject<Informations> = await infoRes.json();
 		const servicesData: ResponseObject<Service[]> =
 			await servicesRes.json();
+		const popupData: ResponseObject<PopupMessage> = await popupRes.json();
 
 		return {
 			informations: infoData.success ? infoData.responseObject : null,
 			services: servicesData.success
 				? servicesData.responseObject.filter((s) => s.enabled)
 				: [],
+			popupMessage: popupData.success ? popupData.responseObject : null,
 		};
 	} catch {
-		return { informations: null, services: [] };
+		return { informations: null, services: [], popupMessage: null };
 	}
 }
 
@@ -177,7 +184,7 @@ export default async function RootLayout({
 }: Readonly<{
 	children: ReactNode;
 }>) {
-	const { informations, services } = await getJsonLdData();
+	const { informations, services, popupMessage } = await getJsonLdData();
 	const jsonLd = buildJsonLd(informations, services);
 
 	return (
@@ -192,6 +199,7 @@ export default async function RootLayout({
 				>
 					{JSON.stringify(jsonLd)}
 				</script>
+				<AnnouncementModal data={popupMessage} />
 				<div className='min-h-screen flex flex-col'>
 					<LeaveBanner />
 					<Navbar />
