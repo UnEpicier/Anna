@@ -67,6 +67,8 @@ export default function AnnouncementModal({
 					<a
 						href={data.ctaUrl}
 						onClick={close}
+						target='_blank'
+						rel='noopener noreferrer'
 						className='inline-flex items-center justify-center bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary/85'
 					>
 						{data.ctaLabel}

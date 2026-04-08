@@ -1,7 +1,7 @@
 import { PopupMessageRepository } from '@/api/popup-message/popupMessageRepository';
 import { ServiceResponse } from '@/commons/models/serviceResponse';
 import redisClient from '@/libs/redis';
-import type { PopupMessage } from '@repo/app-types';
+import { PopupMessageSchema, type PopupMessage } from '@repo/app-types';
 import { StatusCodes } from 'http-status-codes';
 
 export class PopupMessageService {
@@ -43,11 +43,28 @@ export class PopupMessageService {
 	}
 
 	async update(
-		data: Partial<PopupMessage>
+		data: unknown
 	): Promise<ServiceResponse<PopupMessage | null>> {
+		const UpdateSchema = PopupMessageSchema.pick({
+			enabled: true,
+			title: true,
+			message: true,
+			ctaLabel: true,
+			ctaUrl: true,
+		}).partial();
+
+		const parsed = UpdateSchema.safeParse(data);
+		if (!parsed.success) {
+			return ServiceResponse.failure(
+				'Invalid popup message data.',
+				null,
+				StatusCodes.BAD_REQUEST
+			);
+		}
+
 		try {
 			const updated =
-				await this.popupMessageRepository.updateAsync(data);
+				await this.popupMessageRepository.updateAsync(parsed.data);
 			redisClient.del('popup-message');
 			return ServiceResponse.success<PopupMessage>(
 				'PopupMessage updated successfully',
