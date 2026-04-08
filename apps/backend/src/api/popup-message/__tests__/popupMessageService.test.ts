@@ -35,10 +35,13 @@ describe('popupMessageService', () => {
 
 	describe('find', () => {
 		it('returns popup message', async () => {
+			// Arrange
 			(repository.findAsync as Mock).mockReturnValue(mockPopupMessage);
 
+			// Act
 			const result = await service.find();
 
+			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.OK);
 			expect(result.success).toBeTruthy();
 			expect(result.message).equals('PopupMessage found');
@@ -46,12 +49,15 @@ describe('popupMessageService', () => {
 		});
 
 		it('handles errors for findAsync', async () => {
+			// Arrange
 			(repository.findAsync as Mock).mockRejectedValue(
 				new Error('Database error')
 			);
 
+			// Act
 			const result = await service.find();
 
+			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
 			expect(result.success).toBeFalsy();
 			expect(result.message).equals(
@@ -63,12 +69,15 @@ describe('popupMessageService', () => {
 
 	describe('update', () => {
 		it('updates and returns popup message', async () => {
+			// Arrange
 			const updateData: Partial<PopupMessage> = { message: 'Updated!' };
 			const updated: PopupMessage = { ...mockPopupMessage, ...updateData };
 			(repository.updateAsync as Mock).mockReturnValue(updated);
 
+			// Act
 			const result = await service.update(updateData);
 
+			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.OK);
 			expect(result.success).toBeTruthy();
 			expect(result.message).toEqual('PopupMessage updated successfully');
@@ -76,12 +85,15 @@ describe('popupMessageService', () => {
 		});
 
 		it('handles errors for updateAsync', async () => {
+			// Arrange
 			(repository.updateAsync as Mock).mockRejectedValue(
 				new Error('Database error')
 			);
 
+			// Act
 			const result = await service.update({ message: 'fail' });
 
+			// Assert
 			expect(result.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
 			expect(result.success).toBeFalsy();
 			expect(result.message).toEqual(
