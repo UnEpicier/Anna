@@ -40,40 +40,29 @@ export default function AnnouncementContent({
 
 			setIsPending(true);
 
-			const promise = fetch('/api/popup-message', {
-				method: 'PUT',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(body),
-			});
+			try {
+				const promise = fetch('/api/popup-message', {
+					method: 'PUT',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(body),
+				});
 
-			await toast
-				.promise(promise, {
-					loading: 'Enregistrement en cours...',
-					success: 'Annonce mise à jour avec succès',
-					error: 'Impossible de sauvegarder les modifications',
-				})
-				.unwrap();
-
-			setIsPending(false);
+				await toast
+					.promise(promise, {
+						loading: 'Enregistrement en cours...',
+						success: 'Annonce mise à jour avec succès',
+						error: 'Impossible de sauvegarder les modifications',
+					})
+					.unwrap();
+			} finally {
+				setIsPending(false);
+			}
 		},
 		[enabled]
 	);
 
 	return (
 		<form onSubmit={onSubmit} className='space-y-6'>
-			{/* Header */}
-			<div>
-				<div className='flex items-center gap-3 mb-1'>
-					<span className='w-4 h-px bg-primary/60' />
-					<span className='text-[9px] tracking-[2px] uppercase text-primary/80 font-semibold'>
-						Message d&apos;annonce
-					</span>
-				</div>
-				<h1 className='text-2xl font-black text-foreground tracking-tight'>
-					Annonce
-				</h1>
-			</div>
-
 			{/* Enabled toggle */}
 			<div className='flex items-center gap-3'>
 				<Switch

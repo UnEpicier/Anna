@@ -6,19 +6,24 @@ import type { Metadata } from 'next';
 export const dynamic = 'force-dynamic';
 
 async function getData(): Promise<PopupMessage | null> {
-	const cookieStore = await cookies();
-	const token = cookieStore.get('token')?.value;
-	const authHeaders: Record<string, string> = token
-		? { Cookie: `token=${token}` }
-		: {};
+	try {
+		const cookieStore = await cookies();
+		const token = cookieStore.get('token')?.value;
+		const authHeaders: Record<string, string> = token
+			? { Cookie: `token=${token}` }
+			: {};
 
-	const res = await fetch(`${process.env.API_URL}/popup-message`, {
-		headers: authHeaders,
-	});
-	const data: ResponseObject<PopupMessage> = await res.json();
+		const res = await fetch(`${process.env.API_URL}/popup-message`, {
+			headers: authHeaders,
+		});
+		if (!res.ok) return null;
+		const data: ResponseObject<PopupMessage> = await res.json();
 
-	if (!data.success) return null;
-	return data.responseObject;
+		if (!data.success) return null;
+		return data.responseObject;
+	} catch {
+		return null;
+	}
 }
 
 export const metadata: Metadata = {
