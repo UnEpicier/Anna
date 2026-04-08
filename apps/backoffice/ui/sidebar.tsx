@@ -7,6 +7,7 @@ import {
 	Home,
 	LogOut,
 	MapPin,
+	Megaphone,
 	Menu,
 	PlaneTakeoff,
 	Settings,
@@ -25,7 +26,8 @@ type Section =
 	| 'schedule'
 	| 'social'
 	| 'services'
-	| 'leave';
+	| 'leave'
+	| 'announcement';
 
 const navItems = [
 	{
@@ -69,6 +71,12 @@ const navItems = [
 		label: 'Absences',
 		icon: PlaneTakeoff,
 		path: '/leave',
+	},
+	{
+		id: 'announcement' as Section,
+		label: 'Annonce',
+		icon: Megaphone,
+		path: '/announcement',
 	},
 ];
 
