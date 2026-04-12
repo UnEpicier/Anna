@@ -13,10 +13,10 @@
 		"check-types": "turbo run check-types"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.4.10",
+		"@biomejs/biome": "2.4.11",
 		"@repo/typescript-config": "workspace:*",
-		"knip": "^6.3.1",
-		"turbo": "^2.9.5",
+		"knip": "^6.4.1",
+		"turbo": "^2.9.6",
 		"typescript": "^6.0.2"
 	},
 	"packageManager": "pnpm@10.33.0",
