@@ -323,3 +323,63 @@ jobs:
         run: pnpm run build
         env:
           NEXT_PUBLIC_MAPTILER_API_KEY: ${{ secrets.NEXT_PUBLIC_MAPTILER_API_KEY }}
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs: [build]
+    # Only runs on push to main, never on PRs or release commits themselves
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          # If main is branch-protected (requires PR reviews), use a PAT instead:
+          # token: ${{ secrets.RELEASE_TOKEN }}
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Each step runs semantic-release scoped to its directory via
+      # semantic-release-monorepo, which filters commits by the files
+      # changed in that path. A successful release creates and pushes a
+      # chore(release): name@x.y.z [skip ci] commit + tag.
+      # Packages are released in dependency order.
+
+      - name: Release app-types
+        working-directory: packages/app-types
+        run: npx semantic-release -e semantic-release-monorepo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release backend
+        working-directory: apps/backend
+        run: npx semantic-release -e semantic-release-monorepo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release frontend
+        working-directory: apps/frontend
+        run: npx semantic-release -e semantic-release-monorepo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release backoffice
+        working-directory: apps/backoffice
+        run: npx semantic-release -e semantic-release-monorepo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
