@@ -36,6 +36,12 @@ pnpm build
 Backend (`apps/backend`) : `pnpm test` (reset + seed de la DB via `pretest`), `pnpm test:cov` (seuils 75 %), `pnpm prisma:migrate`, `pnpm prisma:generate`.
 Frontend (`apps/frontend`) : `pnpm size` (size-limit, 3400 kB de JS chunks max, à lancer après `pnpm build`).
 
+## Docker
+
+- Image du backend : `docker build -f apps/backend/Dockerfile -t anna-api .` (contexte = racine du repo). Multi-stage : install filtré `--filter backend...`, build de `@repo/app-types`, `prisma generate`, build, puis `pnpm deploy --prod --legacy` pour un runner minimal en `node:24-alpine`, utilisateur `node`, avec `HEALTHCHECK` sur `/health-check`.
+- Aucun `.env` n'est copié dans l'image : la configuration est injectée à l'exécution (`env_file` + `environment` dans `docker-compose.yaml`, où `DATABASE_URL` et `REDIS_HOST` pointent sur les services `postgres` et `redis`).
+- Le `.dockerignore` est à la racine. Si une nouvelle dépendance workspace est utilisée par le backend, ajouter son `package.json` et son dossier dans le Dockerfile.
+
 ## CI (à garder au vert avant de pousser)
 
 `lint`, `check-types`, `knip`, `test-backend` (couverture), `size-limit`, `build`, puis `release`. Workflow `security.yml` : OSV scanner sur `pnpm-lock.yaml`, gitleaks, semgrep (`p/typescript`, `p/nodejs`, `p/owasp-top-ten`), Trivy (HIGH/CRITICAL, `ignore-unfixed`), `npm audit signatures` (signatures et provenance des paquets installés) et Socket (`socket ci`, nécessite le secret `SOCKET_SECURITY_API_KEY`, ignoré s'il est absent).

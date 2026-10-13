@@ -5,10 +5,15 @@ services:
     api:
         build:
             context: .
-            dockerfile: Dockerfile
+            dockerfile: apps/backend/Dockerfile
         container_name: api_container
         env_file:
-            -   .env
+            -   apps/backend/.env
+        environment:
+            # Inside the compose network the dependencies are reached by service name
+            DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-website}?schema=public
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
         networks:
             - backend
         ports:

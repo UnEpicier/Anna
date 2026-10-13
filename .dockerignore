@@ -1,0 +1,22 @@
+# Dependencies and build output (rebuilt inside the image)
+**/node_modules
+**/dist
+**/.next
+**/.turbo
+**/coverage
+**/generated
+
+# Secrets and local environment files
+**/.env
+**/.env.*
+!**/.env.example
+
+# VCS, IDE and tooling
+.git
+.idea
+.vscode
+.claude
+
+# Docker
+**/Dockerfile
+docker-compose*.yaml
