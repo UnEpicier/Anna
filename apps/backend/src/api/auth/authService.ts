@@ -67,7 +67,12 @@ export class AuthService {
 				);
 			}
 
-			if (validEmail.responseObject?.email !== email) {
+			const normalizedStoredEmail = validEmail.responseObject?.email
+				.trim()
+				.toLowerCase();
+			const normalizedInputEmail = email.trim().toLowerCase();
+
+			if (normalizedStoredEmail !== normalizedInputEmail) {
 				return ServiceResponse.failure(
 					'Invalid credentials',
 					null,
@@ -83,9 +88,16 @@ export class AuthService {
 
 			// authCode and authEmail are keyed by clientId — overwriting any previous
 			// pending session for this client without needing a separate lookup key
+			const canonicalEmail = validEmail.responseObject
+				?.email as string;
+
 			await Promise.all([
 				redisClient.setEx(`authCode:${clientId}`, 10 * 60, hashedCode),
-				redisClient.setEx(`authEmail:${clientId}`, 10 * 60, email),
+				redisClient.setEx(
+					`authEmail:${clientId}`,
+					10 * 60,
+					canonicalEmail
+				),
 				redisClient.setEx(
 					`sessionClient:${sessionToken}`,
 					10 * 60,
@@ -94,7 +106,7 @@ export class AuthService {
 				redisClient.del(`authResendCooldown:${clientId}`),
 			]);
 
-			await this.sendAuthEmail(email, authCode);
+			await this.sendAuthEmail(canonicalEmail, authCode);
 
 			return ServiceResponse.success<string>(
 				'Login initiated',
