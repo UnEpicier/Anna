@@ -10,6 +10,15 @@ export default function MarqueeText({
 	const containerRef = useRef<HTMLDivElement>(null);
 	const measureRef = useRef<HTMLSpanElement>(null);
 	const [isOverflowing, setIsOverflowing] = useState(false);
+	const [isMobile, setIsMobile] = useState(false);
+
+	useEffect(() => {
+		const mq = window.matchMedia('(max-width: 639px)');
+		const update = () => setIsMobile(mq.matches);
+		update();
+		mq.addEventListener('change', update);
+		return () => mq.removeEventListener('change', update);
+	}, []);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: children dependencies is needed
 	useEffect(() => {
@@ -41,7 +50,7 @@ export default function MarqueeText({
 				{children}
 			</span>
 
-			{isOverflowing ? (
+			{isOverflowing || isMobile ? (
 				<div className='animate-marquee inline-flex whitespace-nowrap'>
 					<span className='pr-24'>{children}</span>
 					<span

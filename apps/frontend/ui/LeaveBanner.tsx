@@ -33,7 +33,7 @@ export default async function LeaveBanner() {
 			role='status'
 			aria-live='polite'
 			aria-atomic
-			className='w-full p-4 bg-linear-to-r from-primary to-primary/80 text-center text-white'
+			className='w-full px-4 py-2 bg-linear-to-r from-primary to-primary/80 text-sm text-center text-white'
 		>
 			<MarqueeText>{text}</MarqueeText>
 		</div>
