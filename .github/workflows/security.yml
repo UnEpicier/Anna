@@ -66,3 +66,40 @@ jobs:
           severity: HIGH,CRITICAL
           exit-code: '1'
           ignore-unfixed: true
+
+  npm-signatures:
+    name: npm audit signatures
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
+
+      # Verifies registry signatures and provenance attestations of every installed package
+      - name: Verify signatures
+        run: npm audit signatures
+
+  socket:
+    name: Socket
+    runs-on: ubuntu-latest
+    env:
+      SOCKET_SECURITY_API_KEY: ${{ secrets.SOCKET_SECURITY_API_KEY }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      # Skipped (not failed) until the SOCKET_SECURITY_API_KEY repository secret is configured
+      - name: Socket scan
+        run: |
+          if [ -z "$SOCKET_SECURITY_API_KEY" ]; then
+            echo "::warning::SOCKET_SECURITY_API_KEY is not set, skipping Socket scan"
+            exit 0
+          fi
+          npx --yes socket@1.4.2 ci
