@@ -20,6 +20,8 @@ Site vitrine + backoffice d'un cabinet d'ostéopathie animalière. Monorepo pnpm
 
 ## Commandes
 
+Node ≥ 22.14 requis (vitest 5, size-limit 14, @semantic-release/git 11) ; la CI tourne en Node 22.
+
 ```bash
 pnpm deps:up          # PostgreSQL + Redis (docker) pour le dev
 pnpm dev              # toutes les apps (ou --filter=backend|frontend|backoffice)
