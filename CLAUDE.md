@@ -20,7 +20,7 @@ Site vitrine + backoffice d'un cabinet d'ostéopathie animalière. Monorepo pnpm
 
 ## Commandes
 
-Node ≥ 22.14 requis (vitest 5, size-limit 14, @semantic-release/git 11) ; la CI tourne en Node 22.
+Node ≥ 24 requis (LTS active) ; la CI et l'image Docker (`node:24-alpine`, épinglée pour éviter le saut automatique du tag `lts`) tournent en Node 24. Les `@types/node` suivent cette majeure.
 
 ```bash
 pnpm deps:up          # PostgreSQL + Redis (docker) pour le dev

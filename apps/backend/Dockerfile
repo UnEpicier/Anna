@@ -1,5 +1,5 @@
 # Base stage with pnpm setup
-FROM node:lts-alpine AS base
+FROM node:24-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -18,7 +18,7 @@ RUN pnpm run prisma:generate
 RUN pnpm run build
 
 # Final stage - combine production dependencies and build output
-FROM node:lts-alpine AS runner
+FROM node:24-alpine AS runner
 WORKDIR /app
 
 COPY --from=build --chown=node:node /app/node_modules ./node_modules
