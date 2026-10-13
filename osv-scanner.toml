@@ -1,0 +1,6 @@
+# braces@3.0.3 is the latest release and no fix exists upstream.
+# It is only reachable through semantic-release (devDependency, CI release tooling).
+[[IgnoredVulns]]
+id = "GHSA-vfj7-8cjw-p6xm"
+ignoreUntil = 2027-01-13
+reason = "No fixed version available; dev-only transitive dependency of semantic-release"

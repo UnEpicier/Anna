@@ -1,3 +1,9 @@
-packages:
+packages: # nosemgrep: package_managers.pnpm.pnpm-trust-policy.pnpm-trust-policy
   - "apps/*"
   - "packages/*"
+
+# Supply-chain hardening (semgrep p/nodejs).
+# trustPolicy: no-downgrade is intentionally not enabled: it rejects legitimate
+# legacy transitive versions (semver@5, chokidar@4, ...) published without provenance.
+blockExoticSubdeps: true
+minimumReleaseAge: 10080
