@@ -31,9 +31,19 @@ const config: KnipConfig = {
 	// tailwindcss is consumed via PostCSS plugin, not via JS imports
 	// @deck.gl/react is intentionally kept as a future dependency
 	// @repo/utils is intentionally kept in backoffice for future use
-	ignoreDependencies: ["@prisma/client", "tailwindcss", "@deck.gl/react", "@repo/utils"],
-	// size-limit binary is used in CI yaml — not a JS import
-	ignoreBinaries: ["size"],
+	// semantic-release plugins are referenced by name in release.config.base.js, not imported
+	ignoreDependencies: [
+		"@prisma/client",
+		"tailwindcss",
+		"@deck.gl/react",
+		"@repo/utils",
+		"@semantic-release/changelog",
+		"@semantic-release/commit-analyzer",
+		"@semantic-release/git",
+		"@semantic-release/npm",
+		"@semantic-release/release-notes-generator",
+		"semantic-release-monorepo",
+	],
 	// Exports used only within the same file/package (e.g. internal helpers)
 	ignoreExportsUsedInFile: true,
 	ignore: ["packages/typescript-config/**"],
