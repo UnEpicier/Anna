@@ -36,7 +36,7 @@ Frontend (`apps/frontend`) : `pnpm size` (size-limit, 3400 kB de JS chunks max, 
 
 ## CI (à garder au vert avant de pousser)
 
-`lint`, `check-types`, `knip`, `test-backend` (couverture), `size-limit`, `build`, puis `release`. Workflow `security.yml` : OSV scanner sur `pnpm-lock.yaml`, gitleaks, semgrep (`p/typescript`, `p/nodejs`, `p/owasp-top-ten`), Trivy (HIGH/CRITICAL, `ignore-unfixed`).
+`lint`, `check-types`, `knip`, `test-backend` (couverture), `size-limit`, `build`, puis `release`. Workflow `security.yml` : OSV scanner sur `pnpm-lock.yaml`, gitleaks, semgrep (`p/typescript`, `p/nodejs`, `p/owasp-top-ten`), Trivy (HIGH/CRITICAL, `ignore-unfixed`), `npm audit signatures` (signatures et provenance des paquets installés) et Socket (`socket ci`, nécessite le secret `SOCKET_SECURITY_API_KEY`, ignoré s'il est absent).
 
 ## Style de code
 
