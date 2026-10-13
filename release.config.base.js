@@ -3,7 +3,7 @@
 /**
  * Shared semantic-release configuration factory for the monorepo.
  *
- * Usage in each package:
+ * Usage in each package (release.config.cjs, because the packages are "type": "module"):
  *   const base = require('../../release.config.base');
  *   module.exports = base('frontend');
  *
