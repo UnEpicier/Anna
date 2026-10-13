@@ -74,4 +74,8 @@ Frontend (`apps/frontend`) : `pnpm size` (size-limit, 3400 kB de JS chunks max, 
 ## Sécurité
 
 - Ne jamais committer de `.env` ni de secret (gitleaks tourne en CI). Mettre à jour les `.env.example` à la place.
-- Les overrides de sécurité de `pnpm.overrides` (racine) servent à corriger des CVE transitives : ne pas les retirer sans relancer `osv-scanner`.
+- Les overrides de sécurité de `pnpm.overrides` (racine) servent à corriger des CVE transitives : ne pas les retirer sans relancer `osv-scanner`. Une CVE sans correctif upstream s'ignore dans `osv-scanner.toml` avec raison et date d'expiration.
+- `pnpm-workspace.yaml` impose `minimumReleaseAge: 10080` (7 jours) et `blockExoticSubdeps` : une version publiée depuis moins de 7 jours ne s'installe pas, il faut viser la dernière version plus ancienne. `trustPolicy: no-downgrade` est volontairement désactivé (rejette des versions legacy légitimes).
+- `prisma`, `@prisma/client` et `@prisma/adapter-pg` sont épinglés en exact (7.9.1) : `prisma@7.10.0` a été publié sans provenance/trusted publisher alors que les versions précédentes en avaient. À ne remonter qu'une fois la provenance rétablie.
+- Les actions GitHub des workflows sont épinglées par SHA de commit (avec le tag en commentaire) : garder ce format pour toute nouvelle action (règle semgrep `github-actions-mutable-action-tag`).
+- Le `turbo` CLI génère un `AGENTS.md` quand il détecte un agent : ne pas le committer.
