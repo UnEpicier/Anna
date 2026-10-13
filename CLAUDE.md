@@ -38,9 +38,14 @@ Frontend (`apps/frontend`) : `pnpm size` (size-limit, 3400 kB de JS chunks max, 
 
 ## Docker
 
-- Image du backend : `docker build -f apps/backend/Dockerfile -t anna-api .` (contexte = racine du repo). Multi-stage : install filtré `--filter backend...`, build de `@repo/app-types`, `prisma generate`, build, puis `pnpm deploy --prod --legacy` pour un runner minimal en `node:24-alpine`, utilisateur `node`, avec `HEALTHCHECK` sur `/health-check`.
-- Aucun `.env` n'est copié dans l'image : la configuration est injectée à l'exécution (`env_file` + `environment` dans `docker-compose.yaml`, où `DATABASE_URL` et `REDIS_HOST` pointent sur les services `postgres` et `redis`).
+- Image du backend : `docker build -f apps/backend/Dockerfile -t anna-api .` (contexte = racine du repo). Multi-stage : install filtré `--filter backend...`, build de `@repo/app-types`, `prisma generate`, build, puis `pnpm deploy --prod --legacy` pour un runner en `node:24-alpine`, utilisateur `node`, avec `HEALTHCHECK` sur `/health-check`.
+- **Migrations automatiques** : le conteneur démarre via `apps/backend/start.sh`, qui lance `prisma migrate deploy` puis `node dist/index.js`. Un `rollout restart` applique donc les migrations en attente avant que l'API ne serve du trafic ; `migrate deploy` prend un verrou advisory PostgreSQL, plusieurs réplicas peuvent démarrer en même temps. Si une migration échoue, le conteneur sort en erreur (l'ancien pod continue de servir). `SKIP_MIGRATIONS=true` désactive l'étape.
+- `prisma` est une dépendance de production du backend (nécessaire à `migrate deploy`) et son moteur (`schema-engine`) est téléchargé au build : aucun accès réseau n'est requis au démarrage. Les moteurs des autres bases (sqlite, mysql, sqlserver, cockroachdb) sont supprimés de `@prisma/client` dans l'image.
+- Le seed n'est pas exécuté automatiquement (table `departments` à alimenter une fois : `pnpm prisma:seed` depuis `apps/backend` avec `DATABASE_URL` pointant sur la base cible).
+- Aucun `.env` n'est copié dans l'image : la configuration est injectée à l'exécution (`env_file` + `environment` dans `docker-compose.yaml`, où `DATABASE_URL` et `REDIS_HOST` pointent sur les services `postgres` et `redis`). Variables requises par l'API : voir `envConfig.ts`.
+- `docker-compose.yaml` : l'API attend que postgres et redis soient `healthy` (healthchecks dans `docker-compose.deps.yaml`). Les `container_name` sont fixes : ne pas lancer deux stacks sur la même machine.
 - Le `.dockerignore` est à la racine. Si une nouvelle dépendance workspace est utilisée par le backend, ajouter son `package.json` et son dossier dans le Dockerfile.
+- `next dev` et `turbo` génèrent des `AGENTS.md` / `CLAUDE.md` : ne pas les committer.
 
 ## CI (à garder au vert avant de pousser)
 
